@@ -1,0 +1,10 @@
+<!-- Cashier -->
+<h1>Cashier</h1>
+<nav class="flex justify-between p-2 bg-blue-300">
+    <h1>Insert LOGO HERE</h1>
+    <div class="flex justify-evenly gap-8">
+        <h2>Checkout</h2>
+        <h2>Logs</h2>
+    </div>
+    <span class="text-sm">LOGOUT</span>
+</nav>
