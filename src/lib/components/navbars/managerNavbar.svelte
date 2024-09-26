@@ -5,7 +5,7 @@
     <div class="flex justify-evenly gap-8">
         <h2>View Patients</h2>
         <h2>Account Manager</h2>
-        <a href="/inventory">Inventory</a>
+        <a href="/inventory" class="hover:font-bold">Inventory</a>
         <h2>Reports</h2>
         <h2>Logs</h2>
     </div>
