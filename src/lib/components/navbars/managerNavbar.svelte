@@ -5,6 +5,7 @@
     <div class="flex justify-evenly gap-8">
         <a href="/viewPatients" class="hover:font-bold">View Patients</a>
         <h2>Account Manager</h2>
+        <a href="/createUser" class="hover:font-bold">Create User</a>
         <a href="/inventory" class="hover:font-bold">Inventory</a>
         <h2>Reports</h2>
         <h2>Logs</h2>
