@@ -7,8 +7,8 @@
     let drugInputValue = "";
     let personInputElement;
     let drugInputElement;
-    let people = new Map();
-    let drugs = new Map();
+    let people = [];
+    let drugs = [];
   
     // Event handler for clicks outside of the input/dropdown
     const handleClickOutside = (event) => {
@@ -31,18 +31,19 @@
     }
   
     const drugSearch = () => {
-      // Function call to the database that returns a list of drug names and their ids that will be hidden
+      drugs.push({'name':'Advil', 'id':'1'}) // Function call to the database that returns a list of drug names and their ids that will be hidden
     }
   </script>
   
   <main>
-    <div class="text-center flex flex-col gap-4 mx-8">
-      <h1>Enter A New Prescription</h1>
+    <div class="mx-auto text-center flex-col gap-4 w-3/12">
+      <h1 class="text-xl">Enter A New Prescription</h1>
   
       <form method="POST">
         <div id="personInput">
             <input
                 type="text"
+                class="border-2 border-neutral-300 rounded-lg px-2 py-1 m-5"
                 placeholder="Search Patient By Name."
                 autocomplete="off"
                 id="peopleInput"
@@ -58,12 +59,12 @@
                 <div class="dropdown visible">
                     {#each people as person}
                         <span hidden>{person.id}</span>
-                        <button on:click={() => personInputValue = person.name}>{person.name}</button>
+                        <button class="border-2 border-neutral-300 rounded-lg px-2 py-1" on:click={() => personInputValue = person.name}>{person.name}</button>
                     {/each}
                 </div>
             {:else if patientDropdownVisible}
                 <div class="dropdown visible">
-                <p>No results found</p>
+                <p class="border-2 border-neutral-300 rounded-lg px-2 py-1">No results found</p>
                 </div>
             {/if}
         </div>
@@ -71,6 +72,7 @@
         <div id="drugTypeInput">
             <input
                 type="text"
+                class="border-2 border-neutral-300 rounded-lg px-2 py-1 m-5"
                 placeholder="Search Drug By Name."
                 autocomplete="off"
                 id="drugInput"
@@ -82,30 +84,33 @@
                 patientDropdownVisible = false;
                 }}
             />
-            {#if drugDropdownVisible && drugs.size > 0}
+            {#if drugDropdownVisible && drugs.length > 0}
                 <div class="dropdown visible">
                     {#each drugs as drug}
-                    <span hidden>{drug.id}</span>
-                        <button on:click={() => drugInputValue = drug.name}>{drug.name}</button>
+                      <span hidden>{drug.id}</span>
+                      <button class="border-2 border-neutral-300 rounded-lg px-2 py-1" on:click={() => drugInputValue = drug.name}>{drug.name}</button>
                     {/each}
                 </div>
             {:else if drugDropdownVisible}
                 <div class="dropdown visible">
-                <p>No results found</p>
+                <p class="border-2 border-neutral-300 rounded-lg px-2 py-1">No results found</p>
                 </div>
             {/if}
         </div>
-  
-        <label>
-          Number of Pills
-          <input name="numPills" autocomplete="off" />
-        </label>
-        <label>
-          Prescription Frequency
-          <input name="oftenPills" autocomplete="off" />
-        </label>
-
-        <button type='submit'>Submit</button>
+        
+        <div class='flex flex-col m-5'>
+          <label for='numPills'>Number of Pills</label>
+          <input class="border-2 border-neutral-300 rounded-lg px-2 py-1" id="numPills" autocomplete="off" />
+        </div>
+        <div class='flex flex-col m-5'>
+          <label for='oftenPills'>Prescription Period</label>
+          <input class="border-2 border-neutral-300 rounded-lg px-2 py-1" id="oftenPills" autocomplete="off" />
+        </div>
+        
+        <div class='flex flex-col m-5'>
+          <button class='bg-black text-white rounded-lg' type='submit'>Submit</button>
+        </div>
+        
       </form>
     </div>
   </main>
