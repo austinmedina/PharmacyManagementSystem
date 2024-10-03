@@ -1,11 +1,11 @@
 export type UserID = number;
-export type productID = number;
-export type patientID = number;
-export type inventoryID = number;
-export type logID = number;
-export type purchaseLogID = number;
-export type inventoryLogID = number;
-export type itemID = number;
+export type ProductID = number;
+export type PatientID = number;
+export type InventoryID = number;
+export type LogID = number;
+export type PurchaseLogID = number;
+export type InventoryLogID = number;
+export type ItemID = number;
 export type quantity = number;
 
 export enum UserType {
@@ -31,46 +31,46 @@ export enum Log {
 };
 
 export type Prescription = {
-    ID : UserID;
-    productID : productID;
-    patientID : patientID;
+    id : UserID;
+    productID : ProductID;
+    patientID : PatientID;
     quantity : quantity;
     period : number;
 };
 
 export type Inventory = {
-    ID : inventoryID;
-    productID : productID;
+    id : InventoryID;
+    productID : ProductID;
     expirationDate : Date;
     quantity : quantity;
 };
 
 export type LogLogLog = {
-    ID : logID;
+    id : LogID;
     time : Date;
     userID : UserID;
     action : Log;
 };
 
-export type purchaseLogEntry = {
-    ID : purchaseLogID;
+export type PurchaseLogEntry = {
+    id : PurchaseLogID;
     time : Date;
-    itemID : itemID;
+    itemID : ItemID;
     totalPrice : number;
     quantity : quantity;
     cartID : string;
 };
 
 export type InventoryLogEntry = {
-    id: inventoryLogID;
+    id: InventoryLogID;
     time: Date;
-    product: productID;
+    product: ProductID;
     action: InventoryAction;
     quantity: number;
 }
 
 export type Products = {
-    id: productID;
+    id: ProductID;
     name: string;
     type: ProductType;
     price: number;
