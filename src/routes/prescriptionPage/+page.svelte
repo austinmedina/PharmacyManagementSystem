@@ -1,7 +1,5 @@
 <script>
-    import { onMount } from "svelte";
     import PeopleSearch from "$lib/components/peopleSearch.svelte";
-
     
     let drugDropdownVisible = false;
     
@@ -26,14 +24,6 @@
       document.addEventListener("click", handleClickOutside);
       return () => document.removeEventListener("click", handleClickOutside);
     });
-
-    
-  
-    const peopleSearch = () => {
-      people = [];
-      people.push({'name':'Edward', 'id':'1'})
-      // Function call to the database that returns a list of people names and their ids that will be hidden
-    }
   
     const drugSearch = () => {
       drugs = [];

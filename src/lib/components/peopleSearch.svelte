@@ -7,16 +7,22 @@
 
     // Event handler for clicks outside of the input/dropdown
     const handleClickOutside = (event) => {
-    if (patientDropdownVisible && !personInputElement.contains(event.target)) {
-      patientDropdownVisible = false;
-    }
-  };
+        if (patientDropdownVisible && !personInputElement.contains(event.target)) {
+        patientDropdownVisible = false;
+        }
+    };
 
     // Attach and detach the click listener for the document
     onMount(() => {
       document.addEventListener("click", handleClickOutside);
       return () => document.removeEventListener("click", handleClickOutside);
     });
+
+    const peopleSearch = () => {
+      people = [];
+      people.push({'name':'Edward', 'id':'1'})
+      // Function call to the database that returns a list of people names and their ids that will be hidden
+    }
 
 
 </script>
