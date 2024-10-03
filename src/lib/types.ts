@@ -4,6 +4,7 @@ export type patientID = number;
 export type inventoryID = number;
 export type logID = number;
 export type purchaseLogID = number;
+export type inventoryLogID = number;
 export type itemID = number;
 export type quantity = number;
 
