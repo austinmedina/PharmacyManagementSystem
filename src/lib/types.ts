@@ -30,6 +30,25 @@ export enum Log {
     Out
 };
 
+export type User = {
+    id: UserID;
+    firstName: string;
+    lastName:  string;
+    username: string;
+    password: string;
+    type: UserType;
+};
+
+export type Patient = {
+    id: PatientID;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: Date;
+    email: string;
+    phone: string;
+    insurance: string;
+};
+
 export type Prescription = {
     id : UserID;
     productID : ProductID;
@@ -38,14 +57,14 @@ export type Prescription = {
     period : number;
 };
 
-export type Inventory = {
+export type InventoryEntry = {
     id : InventoryID;
     productID : ProductID;
     expirationDate : Date;
     quantity : quantity;
 };
 
-export type LogLogLog = {
+export type LogLogLogEntry = {
     id : LogID;
     time : Date;
     userID : UserID;
@@ -69,7 +88,7 @@ export type InventoryLogEntry = {
     quantity: number;
 }
 
-export type Products = {
+export type Product = {
     id: ProductID;
     name: string;
     type: ProductType;
