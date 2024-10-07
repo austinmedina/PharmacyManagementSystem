@@ -4,7 +4,7 @@
     <h1>Insert LOGO HERE</h1>
     <div class="flex justify-evenly gap-8">
         <a href="/viewPatients" class="hover:font-bold">View Patients</a>
-        <h2>Account Manager</h2>
+        <a href="/manageAccounts" class="hover:font-bold">Manage Accounts</a>
         <a href="/createUser" class="hover:font-bold">Create User</a>
         <a href="/inventory" class="hover:font-bold">Inventory</a>
         <h2>Reports</h2>
