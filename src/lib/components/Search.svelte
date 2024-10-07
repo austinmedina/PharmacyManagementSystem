@@ -39,7 +39,7 @@
       <div class="dropdown visible mt-2 max-h-48 overflow-y-auto">
         <ul class="p-4 space-y-2">
           {#each displayed as item}
-            <button class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1 mb-1" on:click={() => inputValue = item.name}>{item.name}</button>
+            <button class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1 mb-1" on:mousedown={() => inputValue = item.name}>{item.name}</button>
           {/each}
         </ul>
       </div>
