@@ -7,7 +7,7 @@
         <a href="/manageAccounts" class="hover:font-bold">Manage Accounts</a>
         <a href="/createUser" class="hover:font-bold">Create User</a>
         <a href="/inventory" class="hover:font-bold">Inventory</a>
-        <h2>Reports</h2>
+        <a href="/reports" class="hover:font-bold">Reports</a>
         <h2>Logs</h2>
     </div>
     <span class="text-sm">LOGOUT</span>
