@@ -16,8 +16,12 @@ if (dev) {
     });
     env = await mf.getBindings();
 
-    env.DB.exec("CREATE TABLE IF NOT EXISTS Products (id int, name text, type int, price float);")
-    env.DB.exec("INSERT INTO Products VALUES(1, 'Advil', 1, 7.30),(2, 'Claritin', 1, 11.50), (3, 'Tylenol', 1, 9.50);")
+    env.DB.exec(
+        "CREATE TABLE IF NOT EXISTS Products (id int, name text, type int, price float);"
+    );
+    env.DB.exec(
+        "INSERT INTO Products VALUES(1, 'Advil', 1, 7.30),(2, 'Claritin', 1, 11.50), (3, 'Tylenol', 1, 9.50);"
+    );
 }
 
 // This function handles authentication and session management using Lucia framework.

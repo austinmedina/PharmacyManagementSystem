@@ -9,5 +9,5 @@
         <h2>Reports</h2>
         <h2>Logs</h2>
     </div>
-    <span class="text-sm">LOGOUT</span> 
+    <span class="text-sm">LOGOUT</span>
 </nav>

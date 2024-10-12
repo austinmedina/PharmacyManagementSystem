@@ -6,5 +6,7 @@
     <span>ID#</span>
     <h1>Patient Name</h1>
     <p>Patient Info</p>
-    <button class="bg-purple-500 hover:bg-purple-600 text-white py-1 px-4 rounded-xl">Remove Patient</button>
+    <button
+        class="bg-purple-500 hover:bg-purple-600 text-white py-1 px-4 rounded-xl"
+        >Remove Patient</button>
 </div>
