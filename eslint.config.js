@@ -16,6 +16,12 @@ export default [
             globals: {
                 ...globals.browser,
                 ...globals.node
+            },
+            parserOptions: {
+                parser: ts.parser,
+                svelteFeatures: {
+                    experimentalGenerics: true
+                }
             }
         }
     },
@@ -28,6 +34,18 @@ export default [
         }
     },
     {
-        ignores: ["build/", ".svelte-kit/", "dist/"]
+        ignores: ["build/", ".svelte-kit/", "dist/", "src/app.d.ts"]
+    },
+    {
+        rules: {
+            "@typescript-eslint/no-unused-vars": [
+                "warn",
+                {
+                    argsIgnorePattern: "^_",
+                    varsIgnorePattern: "^_",
+                    caughtErrorsIgnorePattern: "^_"
+                }
+            ]
+        }
     }
 ];

@@ -1,9 +1,8 @@
-import type {PageServerLoad} from "./$types";
+import type {PageServerLoad, Actions} from "./$types";
 import {loadProducts} from "$lib/util";
-import {ProductType} from "$lib/types";
 
 export const load: PageServerLoad = async ({platform}) => {
-    let products = await loadProducts(
+    const products = await loadProducts(
         platform?.env.DB as unknown as D1Database
     );
     return {
@@ -13,7 +12,8 @@ export const load: PageServerLoad = async ({platform}) => {
 
 export const actions = {
     default: async ({request}) => {
-        const data = await request.formData();
+        // Prefixed with underscore to avoid unused var warning
+        const _data = await request.formData();
         //Insert into database here
     }
-};
+} satisfies Actions;

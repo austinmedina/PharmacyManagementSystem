@@ -3,8 +3,6 @@
     import Search from "$lib/components/Search.svelte";
     export let data: PageData;
     console.log(data);
-
-    let drugs = data.products;
 </script>
 
 <main class="flex justify-center mt-10">

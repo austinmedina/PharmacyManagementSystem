@@ -1,6 +1,4 @@
 <script>
-    import Icon from "@iconify/svelte";
-
     let firstName = "";
     let lastName = "";
     let username = "";
