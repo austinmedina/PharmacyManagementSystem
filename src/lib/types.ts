@@ -94,3 +94,7 @@ export type Product = {
     type: ProductType;
     price: number;
 };
+
+export type Searchable = {
+    name: string;
+};

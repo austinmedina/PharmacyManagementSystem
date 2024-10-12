@@ -1,11 +1,13 @@
-<script lang="ts">
-    export let items;
-    export let placeholder;
-    let displayed;
+<script lang="ts" generics="T extends Searchable">
+    import type {Searchable} from "$lib/types";
+
+    export let items: T[];
+    export let placeholder: string;
+    let displayed: typeof items;
     let dropdownVisible = false;
     let inputValue = "";
 
-    const search = (items, inputValue) => {
+    const search = (items: T[], inputValue: string) => {
         displayed = items;
         if (inputValue != "") {
             displayed = displayed.filter((item) => {
