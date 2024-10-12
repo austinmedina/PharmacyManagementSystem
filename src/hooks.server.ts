@@ -1,7 +1,6 @@
 //import {initializeLucia} from "$lib/server/auth";
 import type {Handle} from "@sveltejs/kit";
 import {dev} from "$app/environment";
-import {D1Database} from "@cloudflare/workers-types";
 
 let env = {};
 
@@ -15,9 +14,6 @@ if (dev) {
         script: ""
     });
     env = await mf.getBindings();
-
-    env.DB.exec("CREATE TABLE IF NOT EXISTS Products (id int, name text, type int, price float);")
-    env.DB.exec("INSERT INTO Products VALUES(1, 'Advil', 1, 7.30),(2, 'Claritin', 1, 11.50), (3, 'Tylenol', 1, 9.50);")
 }
 
 // This function handles authentication and session management using Lucia framework.
@@ -29,7 +25,7 @@ export const handle: Handle = async ({event, resolve}) => {
     if (dev) {
         event.platform = {
             ...event.platform,
-            // @ts-ignore
+            // @ts-expect-error DB present in both dev and prod
             env
         };
     }

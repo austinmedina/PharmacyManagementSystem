@@ -1,15 +1,19 @@
 <script>
-    import Icon from '@iconify/svelte';
-    import Medication from '$lib/components/medication.svelte';
+    import Icon from "@iconify/svelte";
+    import Medication from "$lib/components/medication.svelte";
 </script>
 
 <main>
     <!-- Only one of these icons will be shown at a time -->
-     <div class="flex justify-end">
-        <Icon icon="material-symbols-light:notifications-rounded" class="text-5xl"/>
-        <Icon icon="material-symbols-light:notifications-active-rounded" class="text-5xl"/>
-     </div>
-    
+    <div class="flex justify-end">
+        <Icon
+            icon="material-symbols-light:notifications-rounded"
+            class="text-5xl" />
+        <Icon
+            icon="material-symbols-light:notifications-active-rounded"
+            class="text-5xl" />
+    </div>
+
     <h1 class="text-center text-3xl mb-4">Inventory</h1>
     <div class="flex flex-col gap-4 mx-8">
         <div class="flex justify-around text-lg">
@@ -25,4 +29,3 @@
         <Medication />
     </div>
 </main>
-

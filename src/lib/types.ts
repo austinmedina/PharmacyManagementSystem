@@ -13,27 +13,27 @@ export enum UserType {
     Pharmacist,
     Cashier,
     Technician
-};
+}
 
 export enum ProductType {
     Prescription,
-    NonPrescription    
-};
+    NonPrescription
+}
 
 export enum InventoryAction {
     In,
     Out
-};
+}
 
 export enum Log {
     In,
     Out
-};
+}
 
 export type User = {
     id: UserID;
     firstName: string;
-    lastName:  string;
+    lastName: string;
     username: string;
     password: string;
     type: UserType;
@@ -50,34 +50,34 @@ export type Patient = {
 };
 
 export type Prescription = {
-    id : UserID;
-    productID : ProductID;
-    patientID : PatientID;
-    quantity : quantity;
-    period : number;
+    id: UserID;
+    productID: ProductID;
+    patientID: PatientID;
+    quantity: quantity;
+    period: number;
 };
 
 export type InventoryEntry = {
-    id : InventoryID;
-    productID : ProductID;
-    expirationDate : Date;
-    quantity : quantity;
+    id: InventoryID;
+    productID: ProductID;
+    expirationDate: Date;
+    quantity: quantity;
 };
 
 export type LogLogLogEntry = {
-    id : LogID;
-    time : Date;
-    userID : UserID;
-    action : Log;
+    id: LogID;
+    time: Date;
+    userID: UserID;
+    action: Log;
 };
 
 export type PurchaseLogEntry = {
-    id : PurchaseLogID;
-    time : Date;
-    itemID : ItemID;
-    totalPrice : number;
-    quantity : quantity;
-    cartID : string;
+    id: PurchaseLogID;
+    time: Date;
+    itemID: ItemID;
+    totalPrice: number;
+    quantity: quantity;
+    cartID: string;
 };
 
 export type InventoryLogEntry = {
@@ -86,11 +86,15 @@ export type InventoryLogEntry = {
     product: ProductID;
     action: InventoryAction;
     quantity: number;
-}
+};
 
 export type Product = {
     id: ProductID;
     name: string;
     type: ProductType;
     price: number;
+};
+
+export type Searchable = {
+    name: string;
 };

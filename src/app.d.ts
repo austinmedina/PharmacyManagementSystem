@@ -1,7 +1,7 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
-	namespace App {
+    namespace App {
         interface Platform {
             env: {
                 DB: D1Database;
@@ -10,8 +10,8 @@ declare global {
                 waitUntil(promise: Promise<any>): void;
             };
             caches: CacheStorage & {default: Cache};
-            cf: CfProperties
-            ctx: ExecutionContext
+            cf: CfProperties;
+            ctx: ExecutionContext;
         }
     }
 }

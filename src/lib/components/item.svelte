@@ -7,5 +7,7 @@
     <h1>Item Name</h1>
     <span># in stock</span>
     <span>Price</span>
-    <button class="bg-orange-500 px-4 py-1 rounded-lg hover:bg-orange-400 text-white">Add to Cart</button>
+    <button
+        class="bg-orange-500 px-4 py-1 rounded-lg hover:bg-orange-400 text-white"
+        >Add to Cart</button>
 </div>
