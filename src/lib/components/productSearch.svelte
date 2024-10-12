@@ -6,6 +6,7 @@
     let displayed: typeof items;
     let dropdownVisible = false;
     let inputValue = "";
+    let productID : number;
 
     const search = (items: T[], inputValue: string) => {
         displayed = items;
@@ -23,28 +24,27 @@
 
 <div id="search" class="w-full">
     <input
-        type="text"
-        class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1"
-        {placeholder}
-        autocomplete="off"
-        bind:value={inputValue}
-        on:focus={() => {
-            dropdownVisible = true;
-        }}
-        on:blur={() => {
-            dropdownVisible = false;
-        }} />
+      class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1"
+      placeholder={ placeholder }
+      autocomplete="off"
+      bind:value={inputValue}
+      on:focus={() => {
+        dropdownVisible = true;
+      }}
+      on:blur={() => {
+        dropdownVisible = false;
+      }}
+      required
+    />
+    <input hidden name="productID" bind:value={ productID }>
     {#if dropdownVisible && displayed.length > 0}
-        <div class="dropdown visible mt-2 max-h-48 overflow-y-auto">
-            <ul class="p-4 space-y-2">
-                {#each displayed as item}
-                    <button
-                        class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1 mb-1"
-                        on:mousedown={() => (inputValue = item.name)}
-                        >{item.name}</button>
-                {/each}
-            </ul>
-        </div>
+      <div class="dropdown visible mt-2 max-h-48 overflow-y-auto">
+        <ul class="p-4 space-y-2">
+          {#each displayed as item}
+            <button class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1 mb-1" on:mousedown={() => { inputValue = item.name; productID = item.id}}>{item.name}</button>
+          {/each}
+        </ul>
+      </div>
     {:else if dropdownVisible}
         <div class="dropdown visible mt-2">
             <p class="border-2 border-neutral-300 rounded-lg px-2 py-1">
