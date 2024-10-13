@@ -34,7 +34,13 @@ export default [
         }
     },
     {
-        ignores: ["build/", ".svelte-kit/", "dist/", "src/app.d.ts"]
+        ignores: [
+            "build/",
+            ".svelte-kit/",
+            "dist/",
+            "src/app.d.ts",
+            ".wrangler"
+        ]
     },
     {
         rules: {
