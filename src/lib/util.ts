@@ -17,7 +17,7 @@ export async function insertPrescription(
 ): Promise<void> {
     await db
         .prepare(
-            "INSERT INTO prescriptions (patient, product, quantity, period) VALUES (?, ?, ?, ?)"
+            "INSERT INTO prescriptions (patient_id, product_id, quantity, period) VALUES (?, ?, ?, ?)"
         )
         .bind(p.patientID, p.productID, p.quantity, p.period)
         .run();
