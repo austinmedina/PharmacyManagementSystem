@@ -1,3 +1,4 @@
+import { fail } from '@sveltejs/kit';
 import type {PageServerLoad, Actions} from "./$types";
 import {loadProducts, loadPatients, insertPrescription} from "$lib/util";
 
@@ -17,47 +18,45 @@ export const load: PageServerLoad = async ({platform}) => {
 
 export const actions: Actions = {
     default: async ({request, platform}) => {
-        console.log("IN SUBMIT");
+        // console.log("IN SUBMIT");
         const data = await request.formData();
-        const patientId = data.get("patientID");
-        const productId = data.get("productID");
-        const quantity = data.get("quantity");
-        const period = data.get("period");
+        const patientID = parseInt(data.get("patientID") as string);
+        const productID = parseInt(data.get("productID") as string);
+        const quantity = parseInt(data.get("quantity") as string);
+        const period = parseInt(data.get("period") as string);
 
         const errors: {[key: string]: string} = {}; // Object to hold error messages
 
-        // Validate patientId
-        if (!patientId || typeof patientId !== "string") {
+        // Validate patientID
+        if (isNaN(patientID)|| typeof patientID !== "number") {
             errors.patientID = "Invalid or Missing Patient";
         }
 
-        // Validate productId
-        if (!productId || typeof productId !== "string") {
+        // Validate productID
+        if (isNaN(productID) || typeof productID !== "number") {
             errors.productID = "Invalid or Missing Product";
         }
 
         // Validate quantity
-        const quantityParsed = parseInt(quantity as string);
-        if (isNaN(quantityParsed) || quantityParsed <= 0) {
+        if (isNaN(quantity) || quantity <= 0) {
             errors.quantity = "Invalid or Missing Quantity";
         }
 
         // Validate period
-        const periodParsed = parseInt(period as string);
-        if (isNaN(periodParsed) || periodParsed <= 0) {
+        if (isNaN(period) || period <= 0) {
             errors.period = "Invalid or Missing Period";
         }
 
         if (Object.keys(errors).length > 0) {
-            return {errors}; // Return all errors if any exist
+            return fail(400, {errors}); // Return all errors if any exist
         } else {
             await insertPrescription(
                 platform?.env.DB as unknown as D1Database,
                 {
-                    patientId,
-                    productId,
-                    quantity: parseInt(quantity as string),
-                    period: parseInt(period as string)
+                    patientID,
+                    productID,
+                    quantity,
+                    period
                 }
             );
 

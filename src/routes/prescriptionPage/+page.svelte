@@ -1,9 +1,10 @@
 <script lang="ts">
-    import type {PageData} from "./$types";
+    import type {PageData, ActionData} from "./$types";
     import SearchableInput from "$lib/components/SearchableInput.svelte";
+    import Patient from "$lib/components/patient.svelte";
 
     export let data: PageData;
-    export let form;
+    export let form: ActionData;
 </script>
 
 <main class="flex justify-center mt-10">
@@ -21,9 +22,12 @@
                 <p class="error text-red-500 mt-2">{form?.errors.patientID}</p>
             {/if}
             <SearchableInput
-                items={data.patients.map((product) => {
-                    product.name = product.firstName + " " + product.lastName;
-                    return product;
+                items={data.patients.map((patient) => {
+                    let p = {
+                        ...patient,
+                        name: patient.firstName + " " + patient.lastName
+                };
+                    return p;
                 })}
                 placeholder="Search Person By Name"
                 name="patient" />
