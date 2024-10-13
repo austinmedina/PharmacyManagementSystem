@@ -24,15 +24,16 @@ export async function insertPrescription(
 }
 
 export async function checkPatientID(db: D1Database, patientId: number): Promise<boolean> {
-   const result = await db.prepare("SELECT * FROM Patients WHERE patient = ?")
+   const result = await db.prepare("SELECT COUNT(*) as count FROM Patients WHERE patientId = ?")
                           .bind(patientId)
-                          .run();
-   return result.results.length > 0; // Changed to > 0, because you're checking if any record exists
+                          .first(); // Use .first() to get the first row of the result
+   return result.count > 0; // Check if count is greater than 0
 }
 
+
 export async function checkProductID(db: D1Database, productId: number): Promise<boolean> {
-   const result = await db.prepare("SELECT * FROM Products WHERE product = ?")
+   const result = await db.prepare("SELECT COUNT(*) as count FROM Products WHERE product = ?")
                           .bind(productId)
-                          .run();
-   return result.results.length > 0; // Changed to > 0 for the same reason
+                          .first();
+   return result.count > 0; // Changed to > 0 for the same reason
 }
