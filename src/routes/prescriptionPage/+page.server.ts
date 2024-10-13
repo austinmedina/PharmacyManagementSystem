@@ -8,13 +8,9 @@ import {
     checkProductID
 } from "$lib/util";
 
-export const load: PageServerLoad = async ({platform}) => {
-    const products = await loadProducts(
-        platform?.env.DB as unknown as D1Database
-    );
-    const patients = await loadPatients(
-        platform?.env.DB as unknown as D1Database
-    );
+export const load: PageServerLoad = async ({locals}) => {
+    const products = await loadProducts(locals.db);
+    const patients = await loadPatients(locals.db);
 
     return {
         patients: patients,
@@ -23,7 +19,7 @@ export const load: PageServerLoad = async ({platform}) => {
 };
 
 export const actions: Actions = {
-    default: async ({request, platform}) => {
+    default: async ({request, locals}) => {
         const data = await request.formData();
         console.log(data);
         const patientID = parseInt(data.get("patientID") as string);
@@ -38,10 +34,7 @@ export const actions: Actions = {
             console.log(typeof patientID);
             errors.patientID = "Invalid or Missing Patient";
         } else {
-            const patientIDValid = await checkPatientID(
-                platform?.env.DB as unknown as D1Database,
-                patientID
-            );
+            const patientIDValid = await checkPatientID(locals.db, patientID);
             console.log("Made is to patientCheck");
             if (!patientIDValid) {
                 errors.patientID = "Patient ID not found or invalid";
@@ -52,10 +45,7 @@ export const actions: Actions = {
         if (isNaN(productID) || productID <= 0) {
             errors.productID = "Invalid or Missing Product";
         } else {
-            const productIDValid = await checkProductID(
-                platform?.env.DB as unknown as D1Database,
-                productID
-            );
+            const productIDValid = await checkProductID(locals.db, productID);
             if (!productIDValid) {
                 errors.productID = "Product ID not found or invalid";
             }
@@ -74,17 +64,12 @@ export const actions: Actions = {
         if (Object.keys(errors).length > 0) {
             return fail(400, {errors}); // Return all errors if any exist
         } else {
-            console.log("made it to insert");
-            await insertPrescription(
-                platform?.env.DB as unknown as D1Database,
-                {
-                    patientID,
-                    productID,
-                    quantity,
-                    period
-                }
-            );
-            console.log("Made it to end");
+            await insertPrescription(locals.db, {
+                patientID,
+                productID,
+                quantity,
+                period
+            });
             // const prescriptions = await platform?.env.DB.prepare("SELECT * FROM prescriptions").all();
             // console.log(prescriptions);
             return {success: "Prescription submitted successfully!"};
