@@ -97,4 +97,5 @@ export type Product = {
 
 export type Searchable = {
     name: string;
+    id: number;
 };

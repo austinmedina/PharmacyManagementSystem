@@ -3,9 +3,11 @@
 
     export let items: T[];
     export let placeholder: string;
-    let displayed: typeof items;
+    export let name: string;
+    let displayed: T[];
     let dropdownVisible = false;
     let inputValue = "";
+    let resultID: number;
 
     const search = (items: T[], inputValue: string) => {
         displayed = items;
@@ -23,7 +25,6 @@
 
 <div id="search" class="w-full">
     <input
-        type="text"
         class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1"
         {placeholder}
         autocomplete="off"
@@ -33,15 +34,19 @@
         }}
         on:blur={() => {
             dropdownVisible = false;
-        }} />
+        }}
+        required />
+    <input hidden name={name + "ID"} bind:value={resultID} />
     {#if dropdownVisible && displayed.length > 0}
         <div class="dropdown visible mt-2 max-h-48 overflow-y-auto">
             <ul class="p-4 space-y-2">
                 {#each displayed as item}
                     <button
                         class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1 mb-1"
-                        on:mousedown={() => (inputValue = item.name)}
-                        >{item.name}</button>
+                        on:mousedown={() => {
+                            inputValue = item.name;
+                            resultID = item.id;
+                        }}>{item.name}</button>
                 {/each}
             </ul>
         </div>

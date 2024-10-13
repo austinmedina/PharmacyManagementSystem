@@ -1,33 +1,71 @@
 <script lang="ts">
-    import type {PageData} from "./$types";
-    import Search from "$lib/components/Search.svelte";
+    import type {PageData, ActionData} from "./$types";
+    import SearchableInput from "$lib/components/SearchableInput.svelte";
+
     export let data: PageData;
-    console.log(data);
+    export let form: ActionData;
 </script>
 
 <main class="flex justify-center mt-10">
     <div class="w-full max-w-md text-center flex flex-col gap-4">
         <h1 class="text-xl mb-4">Enter A New Prescription</h1>
 
+        {#if form?.success}
+            <p class="success text-green-500 mb-4">{form.success}</p>
+        {:else if form?.errors}
+            <p class="error text-red-500 mt-2">Please Fix The Errors Below:</p>
+        {/if}
+
         <form method="POST" class="flex flex-col items-center gap-4">
-            <!-- <Search items={ data.people } placeholder="Search Person By Name"/> -->
+            {#if form?.errors?.patientID}
+                <p class="error text-red-500 mt-2">{form?.errors.patientID}</p>
+            {/if}
+            <SearchableInput
+                items={data.patients.map((patient) => {
+                    let p = {
+                        ...patient,
+                        name: patient.firstName + " " + patient.lastName
+                    };
+                    return p;
+                })}
+                placeholder="Search Person By Name"
+                name="patient" />
 
-            <Search items={data.products} placeholder="Search Drug By Name" />
+            {#if form?.errors?.productID}
+                <p class="error text-red-500 mt-2">{form.errors.productID}</p>
+            {/if}
+            <SearchableInput
+                items={data.products}
+                placeholder="Search Drug By Name"
+                name="product" />
 
+            {#if form?.errors?.quantity}
+                <p class="error text-red-500 mt-2">{form.errors.quantity}</p>
+            {/if}
             <div class="w-full">
                 <div class="flex flex-col mb-4">
-                    <label for="numPills">Number of Pills</label>
+                    <label for="quantity">Number of Pills</label>
                     <input
                         class="border-2 border-neutral-300 rounded-lg px-2 py-1"
-                        id="numPills"
-                        autocomplete="off" />
+                        id="quantity"
+                        name="quantity"
+                        autocomplete="off"
+                        type="number"
+                        required />
                 </div>
+
+                {#if form?.errors?.period}
+                    <p class="error text-red-500 mb-2">{form.errors.period}</p>
+                {/if}
                 <div class="flex flex-col mb-4">
-                    <label for="oftenPills">Prescription Period</label>
+                    <label for="period">Prescription Period (# of Weeks)</label>
                     <input
                         class="border-2 border-neutral-300 rounded-lg px-2 py-1"
-                        id="oftenPills"
-                        autocomplete="off" />
+                        id="period"
+                        name="period"
+                        autocomplete="off"
+                        type="number"
+                        required />
                 </div>
             </div>
 
