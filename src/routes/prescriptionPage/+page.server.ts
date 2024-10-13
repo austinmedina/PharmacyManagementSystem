@@ -1,6 +1,12 @@
 import {fail} from "@sveltejs/kit";
 import type {PageServerLoad, Actions} from "./$types";
-import {loadProducts, loadPatients, insertPrescription, checkPatientID, checkProductID} from "$lib/util";
+import {
+    loadProducts,
+    loadPatients,
+    insertPrescription,
+    checkPatientID,
+    checkProductID
+} from "$lib/util";
 
 export const load: PageServerLoad = async ({platform}) => {
     const products = await loadProducts(
@@ -30,22 +36,28 @@ export const actions: Actions = {
         // Validate patientId
         if (isNaN(patientID) || patientID <= 0) {
             console.log(typeof patientID);
-            errors.patientID = 'Invalid or Missing Patient';
+            errors.patientID = "Invalid or Missing Patient";
         } else {
-            const patientIDValid = await checkPatientID(platform?.env.DB as unknown as D1Database, patientID);
+            const patientIDValid = await checkPatientID(
+                platform?.env.DB as unknown as D1Database,
+                patientID
+            );
             console.log("Made is to patientCheck");
             if (!patientIDValid) {
-                errors.patientID = 'Patient ID not found or invalid';
+                errors.patientID = "Patient ID not found or invalid";
             }
         }
 
         // Validate productId
         if (isNaN(productID) || productID <= 0) {
-            errors.productID = 'Invalid or Missing Product';
+            errors.productID = "Invalid or Missing Product";
         } else {
-            const productIDValid = await checkProductID(platform?.env.DB as unknown as D1Database, productID);
+            const productIDValid = await checkProductID(
+                platform?.env.DB as unknown as D1Database,
+                productID
+            );
             if (!productIDValid) {
-                errors.productID = 'Product ID not found or invalid';
+                errors.productID = "Product ID not found or invalid";
             }
         }
 

@@ -23,17 +23,28 @@ export async function insertPrescription(
         .run();
 }
 
-export async function checkPatientID(db: D1Database, patientId: number): Promise<boolean> {
-   const result = await db.prepare("SELECT COUNT(*) as count FROM Patients WHERE patientId = ?")
-                          .bind(patientId)
-                          .first(); // Use .first() to get the first row of the result
-   return result.count > 0; // Check if count is greater than 0
+export async function checkPatientID(
+    db: D1Database,
+    patientId: number
+): Promise<boolean> {
+    const result = await db
+        .prepare("SELECT COUNT(*) as count FROM Patients WHERE patientId = ?")
+        .bind(patientId)
+        .first<{count: number}>(); // Specify result is expected to have a 'count' property of type 'number'
+
+    // Explicitly check if result is not null or undefined and check if count is greater than 0
+    return result !== null && result !== undefined && result.count > 0;
 }
 
+export async function checkProductID(
+    db: D1Database,
+    productId: number
+): Promise<boolean> {
+    const result = await db
+        .prepare("SELECT COUNT(*) as count FROM Products WHERE productId = ?")
+        .bind(productId)
+        .first<{count: number}>(); // Specify result is expected to have a 'count' property of type 'number'
 
-export async function checkProductID(db: D1Database, productId: number): Promise<boolean> {
-   const result = await db.prepare("SELECT COUNT(*) as count FROM Products WHERE product = ?")
-                          .bind(productId)
-                          .first();
-   return result.count > 0; // Changed to > 0 for the same reason
+    // Explicitly check if result is not null or undefined and check if count is greater than 0
+    return result !== null && result !== undefined && result.count > 0;
 }
