@@ -1,12 +1,12 @@
 export type UserID = number;
 export type ProductID = number;
 export type PatientID = number;
+export type PrescriptionID = number;
 export type InventoryID = number;
 export type LogID = number;
 export type PurchaseLogID = number;
 export type InventoryLogID = number;
 export type ItemID = number;
-export type quantity = number;
 
 export enum UserType {
     Manager,
@@ -46,22 +46,31 @@ export type Patient = {
     dateOfBirth: Date;
     email: string;
     phone: string;
-    insurance: string;
+    insurance: boolean;
+};
+
+export type MinimalPrescription = {
+    id: PrescriptionID;
+    productID: ProductID;
+    patientID: PatientID;
+    quantity: number;
+    period: number;
 };
 
 export type Prescription = {
-    id: UserID;
-    productID: ProductID;
-    patientID: PatientID;
-    quantity: quantity;
+    id: PrescriptionID;
+    product: Product;
+    patient: Patient;
+    quantity: number;
     period: number;
+    filled: boolean;
 };
 
 export type InventoryEntry = {
     id: InventoryID;
     productID: ProductID;
     expirationDate: Date;
-    quantity: quantity;
+    quantity: number;
 };
 
 export type LogLogLogEntry = {
@@ -76,7 +85,7 @@ export type PurchaseLogEntry = {
     time: Date;
     itemID: ItemID;
     totalPrice: number;
-    quantity: quantity;
+    quantity: number;
     cartID: string;
 };
 
