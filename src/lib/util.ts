@@ -17,8 +17,22 @@ export async function insertPrescription(
 ): Promise<void> {
     await db
         .prepare(
-            "INSERT INTO prescriptions (patientId, productId, quantity, period) VALUES (?, ?, ?, ?)"
+            "INSERT INTO prescriptions (patient, product, quantity, period) VALUES (?, ?, ?, ?)"
         )
         .bind(p.patientID, p.productID, p.quantity, p.period)
         .run();
+}
+
+export async function checkPatientID(db: D1Database, patientId: number): Promise<boolean> {
+   const result = await db.prepare("SELECT * FROM Patients WHERE patient = ?")
+                          .bind(patientId)
+                          .run();
+   return result.results.length > 0; // Changed to > 0, because you're checking if any record exists
+}
+
+export async function checkProductID(db: D1Database, productId: number): Promise<boolean> {
+   const result = await db.prepare("SELECT * FROM Products WHERE product = ?")
+                          .bind(productId)
+                          .run();
+   return result.results.length > 0; // Changed to > 0 for the same reason
 }
