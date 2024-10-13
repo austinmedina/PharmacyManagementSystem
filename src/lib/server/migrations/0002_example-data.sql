@@ -11,5 +11,6 @@ INSERT INTO products VALUES (null, "Advil", 1, 530);
 INSERT INTO products VALUES (null, "Band-Aid", 1, 1320);
 INSERT INTO products VALUES (null, "Aderall", 0, 5000);
 
-INSERT INTO prescriptions VALUES (null, 1, 1, 4, 2);
-INSERT INTO prescriptions VALUES (null, 2, 2, 1, 6);
+INSERT INTO prescriptions VALUES (null, 1, 1, 4, 2, FALSE);
+INSERT INTO prescriptions VALUES (null, 2, 2, 1, 6, FALSE);
+INSERT INTO prescriptions VALUES (null, 1, 2, 5, 6, FALSE);
