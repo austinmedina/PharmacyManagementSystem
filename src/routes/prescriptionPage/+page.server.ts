@@ -1,12 +1,12 @@
-import { fail } from '@sveltejs/kit';
+import {fail} from "@sveltejs/kit";
 import type {PageServerLoad, Actions} from "./$types";
 import {loadProducts, loadPatients, insertPrescription} from "$lib/util";
 
 export const load: PageServerLoad = async ({platform}) => {
-    let products = await loadProducts(
+    const products = await loadProducts(
         platform?.env.DB as unknown as D1Database
     );
-    let patients = await loadPatients(
+    const patients = await loadPatients(
         platform?.env.DB as unknown as D1Database
     );
 
@@ -28,7 +28,7 @@ export const actions: Actions = {
         const errors: {[key: string]: string} = {}; // Object to hold error messages
 
         // Validate patientID
-        if (isNaN(patientID)|| typeof patientID !== "number") {
+        if (isNaN(patientID) || typeof patientID !== "number") {
             errors.patientID = "Invalid or Missing Patient";
         }
 

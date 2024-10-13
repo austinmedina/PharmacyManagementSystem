@@ -7,12 +7,13 @@ export async function loadProducts(db: D1Database): Promise<types.Product[]> {
 }
 
 export async function loadPatients(db: D1Database): Promise<types.Patient[]> {
-    return (await db.prepare("SELECT * FROM patients").all<types.Patient>()).results;
+    return (await db.prepare("SELECT * FROM patients").all<types.Patient>())
+        .results;
 }
 
 export async function insertPrescription(
     db: D1Database,
-    p: Omit<types.Prescription, "id"> 
+    p: Omit<types.Prescription, "id">
 ): Promise<void> {
     await db
         .prepare(

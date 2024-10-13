@@ -1,7 +1,6 @@
 <script lang="ts">
     import type {PageData, ActionData} from "./$types";
     import SearchableInput from "$lib/components/SearchableInput.svelte";
-    import Patient from "$lib/components/patient.svelte";
 
     export let data: PageData;
     export let form: ActionData;
@@ -26,7 +25,7 @@
                     let p = {
                         ...patient,
                         name: patient.firstName + " " + patient.lastName
-                };
+                    };
                     return p;
                 })}
                 placeholder="Search Person By Name"
