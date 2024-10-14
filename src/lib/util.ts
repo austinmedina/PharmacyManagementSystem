@@ -108,6 +108,47 @@ export async function loadPrescriptions(
     });
 }
 
+export async function getPrescription(
+    db: D1Database,
+    id: types.PrescriptionID
+): Promise<types.Prescription | null> {
+    const row = await db
+        .prepare(
+            `SELECT prescriptions.id as prescriptionID, prescriptions.*, products.*, patients.* from prescriptions\
+                            INNER JOIN products ON prescriptions.productID = products.id\
+                            INNER JOIN patients on prescriptions.patientID = patients.id\
+                            WHERE prescriptionID = ?`
+        )
+        .bind(id)
+        .first();
+
+    if (row === null) {
+        return null;
+    }
+
+    return {
+        id: row["prescriptionID"] as number,
+        quantity: row["quantity"] as number,
+        period: row["period"] as number,
+        filled: row["filled"] as boolean,
+        product: {
+            id: row["productID"] as number,
+            name: row["name"] as string,
+            type: row["type"] as number as types.ProductType,
+            price: row["price"] as number
+        },
+        patient: {
+            id: row["patientID"] as number,
+            firstName: row["firstName"] as string,
+            lastName: row["lastName"] as string,
+            dateOfBirth: new Date(row["dateOfBirth"] as string),
+            email: row["email"] as string,
+            phone: row["phone"] as string,
+            insurance: row["insurance"] as boolean
+        }
+    };
+}
+
 export async function findInventory(
     db: D1Database,
     p: types.ProductID

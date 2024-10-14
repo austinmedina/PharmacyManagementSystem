@@ -7,6 +7,7 @@ export type LogID = number;
 export type PurchaseLogID = number;
 export type InventoryLogID = number;
 export type ItemID = number;
+export type FillLogID = number;
 
 export enum UserType {
     Manager,
@@ -103,6 +104,13 @@ export type Product = {
     name: string;
     type: ProductType;
     price: number;
+};
+
+export type FillLogEntry = {
+    id: FillLogID;
+    time: Date;
+    prescriptionID: PrescriptionID;
+    userID: UserID;
 };
 
 export type Searchable = {

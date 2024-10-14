@@ -70,3 +70,10 @@ CREATE TABLE IF NOT EXISTS products (
     type           INTEGER NOT NULL,
     price          INTEGER NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS fill_log (
+    id             INTEGER PRIMARY KEY NOT NULL,
+    time           TEXT NOT NULL,
+    prescriptionID INTEGER NOT NULL,
+    userID         INTEGER NOT NULL
+);
