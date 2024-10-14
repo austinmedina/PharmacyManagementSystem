@@ -1,6 +1,10 @@
 -- Migration number: 0002 	 2024-10-13T09:56:21.839Z
 
-DELETE FROM INVENTORY;
+DELETE FROM logloglog;
+DELETE FROM purchase_log;
+DELETE FROM inventory_log;
+DELETE FROM fill_log;
+DELETE FROM inventory;
 DELETE FROM prescriptions;
 DELETE FROM patients;
 DELETE FROM products;

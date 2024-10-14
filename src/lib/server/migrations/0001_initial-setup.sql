@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS prescriptions (
     filled        BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY(productID) REFERENCES products(id),
     FOREIGN KEY(patientID) REFERENCES patients(id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS inventory (
@@ -75,5 +76,7 @@ CREATE TABLE IF NOT EXISTS fill_log (
     id             INTEGER PRIMARY KEY NOT NULL,
     time           TEXT NOT NULL,
     prescriptionID INTEGER NOT NULL,
-    userID         INTEGER NOT NULL
+    userID         INTEGER NOT NULL,
+    FOREIGN KEY(prescriptionID) REFERENCES prescriptions(id),
+    FOREIGN KEY(userID) REFERENCES users(id)
 );
