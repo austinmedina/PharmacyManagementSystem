@@ -55,6 +55,7 @@ export type MinimalPrescription = {
     patientID: PatientID;
     quantity: number;
     period: number;
+    filled: boolean;
 };
 
 export type Prescription = {
@@ -92,7 +93,7 @@ export type PurchaseLogEntry = {
 export type InventoryLogEntry = {
     id: InventoryLogID;
     time: Date;
-    product: ProductID;
+    productID: ProductID;
     action: InventoryAction;
     quantity: number;
 };

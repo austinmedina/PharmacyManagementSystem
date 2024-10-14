@@ -4,7 +4,7 @@
     <h1>Insert LOGO HERE</h1>
     <div class="flex justify-evenly gap-8">
         <a href="/viewPatients" class="hover:font-bold">View Patients</a>
-        <h2>Fulfill Prescriptions</h2>
+        <a href="/fulfill" class="hover:font-bold">Fulfill Prescriptions</a>
         <a href="/inventory" class="hover:font-bold">Inventory</a>
         <h2>Reports</h2>
         <h2>Logs</h2>

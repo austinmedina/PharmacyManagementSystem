@@ -3,7 +3,7 @@ import {loadPrescriptions} from "$lib/util";
 
 export const load: PageServerLoad = async ({locals}) => {
     return {
-        prescriptions: await loadPrescriptions(locals.db, false)
+        prescriptions: await loadPrescriptions(locals.db, false, true)
     };
 };
 
@@ -14,10 +14,12 @@ export const actions: Actions = {
         console.log(`Filled prescription: ${prescriptionID}`);
 
         // TODO: Log fill, mark as filled (new db col?), update inventory, all in same db transaction
-        await locals.db.batch([
+
+        const statements = [
             locals.db
                 .prepare("UPDATE prescriptions SET filled = TRUE WHERE id = ?")
                 .bind(prescriptionID)
-        ]);
+        ];
+        await locals.db.batch(statements);
     }
 };
