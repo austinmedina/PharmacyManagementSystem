@@ -162,3 +162,130 @@ export async function findInventory(
             .all<types.InventoryEntry>()
     ).results;
 }
+
+export async function getAllInventory(db: D1Database) {
+    const today = new Date();
+    const soon = new Date();
+    soon.setDate(soon.getDate() + 7);
+
+    const result = await db
+        .prepare(
+            `
+         SELECT 
+         products.id, 
+         products.name, 
+         products.type, 
+         SUM(inventory.quantity) AS totalQuantity,
+         SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpired,
+         SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpiringSoon
+         FROM products
+         JOIN inventory ON products.id = inventory.productID
+         GROUP BY products.id
+         ORDER BY numExpired DESC
+         `
+        )
+        .bind(today.toISOString(), soon.toISOString())
+        .all();
+    return result.results;
+}
+
+export async function addInventory(
+    db: D1Database,
+    productID: number,
+    expirationDate: string,
+    quantity: number
+) {
+    db.prepare(
+        `INSERT INTO inventory
+      VALUES (null, ?, ?, ?)
+      `
+    )
+        .bind(productID, expirationDate, quantity)
+        .run();
+}
+
+export async function removeInventory(
+    db: D1Database,
+    product: types.ProductID,
+    quantity: number
+) {
+    await db.batch(await removeInventoryStatements(db, product, quantity));
+}
+
+export async function removeInventoryStatements(
+    db: D1Database,
+    product: types.ProductID,
+    quantity: number
+): Promise<D1PreparedStatement[]> {
+    // List of inventory we have for the product, already sorted by expiration date
+    const inventory = await findInventory(db, product);
+
+    const used_inventory = [];
+    let needed_quantity = quantity;
+
+    // Figuring out which/how many of our inventory batches we need to fill the order
+    for (const i of inventory) {
+        if (i.quantity >= needed_quantity) {
+            used_inventory.push({item: i, amount: needed_quantity});
+            break;
+        } else {
+            used_inventory.push({item: i, amount: i.quantity});
+            needed_quantity -= i.quantity;
+        }
+    }
+
+    // Creating a list of db statments to execute all in one transaction,
+    //  so that if anything fails, or the inventory amount changed since
+    //  we last checked, all of our db modifications get rolled back at
+    //  once and we don't end up with our db in an invalid state.
+    const statements = [
+        db
+            .prepare(
+                "INSERT INTO inventory_log (time, productID, action, quantity) VALUES (?, ?, ?, ?)"
+            )
+            .bind(
+                new Date().toISOString(),
+                product,
+                types.InventoryAction.Out,
+                quantity
+            )
+    ];
+
+    // Making reusable statments, because they could be reused in the loop.
+    const delete_statement = db.prepare("DELETE FROM inventory WHERE id = ?");
+    for (const i of used_inventory) {
+        if (i.item.quantity == i.amount) {
+            statements.push(delete_statement.bind(i.item.id));
+        } else {
+            // This branch will only be run once, so no reusable statment necessary.
+            statements.push(
+                db
+                    .prepare("UPDATE inventory SET quantity = ? WHERE id = ?")
+                    .bind(i.item.quantity - i.amount, i.item.id)
+            );
+        }
+    }
+    return statements;
+}
+
+export async function fillPrescription(
+    db: D1Database,
+    p: types.Prescription,
+    user: types.UserID
+): Promise<D1Result[]> {
+    const statements = [
+        db
+            .prepare("UPDATE prescriptions SET filled = TRUE WHERE id = ?")
+            .bind(p.id),
+
+        db
+            .prepare(
+                "INSERT INTO fill_log (time, prescriptionID, userID) VALUES (?, ?, ?)"
+            )
+            .bind(new Date().toISOString(), p.id, user)
+    ];
+    statements.concat(
+        await removeInventoryStatements(db, p.product.id, p.quantity)
+    );
+    return await db.batch(statements);
+}
