@@ -23,6 +23,25 @@ export async function insertPrescription(
         .run();
 }
 
+export async function insertPatient(
+    db: D1Database,
+    p: Omit<types.Patient, "id"> // Exclude id since it is auto-generated
+): Promise<void> {
+    await db
+        .prepare(
+            "INSERT INTO patients (firstName, lastName, dateOfBirth, email, phone, insurance) VALUES (?, ?, ?, ?, ?, ?)"
+        )
+        .bind(
+            p.firstName,
+            p.lastName,
+            p.dateOfBirth.toISOString(),
+            p.email,
+            p.phone,
+            p.insurance
+        )
+        .run();
+}
+
 export async function checkPatientID(
     db: D1Database,
     patientId: number
@@ -288,4 +307,10 @@ export async function fillPrescription(
         await removeInventoryStatements(db, p.product.id, p.quantity)
     );
     return await db.batch(statements);
+}
+export async function deletePatient(
+    db: D1Database,
+    patientId: number
+): Promise<void> {
+    await db.prepare("DELETE FROM patients WHERE id = ?").bind(patientId).run();
 }

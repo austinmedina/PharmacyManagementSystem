@@ -21,7 +21,6 @@ export const load: PageServerLoad = async ({locals}) => {
 export const actions: Actions = {
     default: async ({request, locals}) => {
         const data = await request.formData();
-        console.log(data);
         const patientID = parseInt(data.get("patientID") as string);
         const productID = parseInt(data.get("productID") as string);
         const quantity = parseInt(data.get("quantity") as string);
@@ -31,11 +30,9 @@ export const actions: Actions = {
 
         // Validate patientId
         if (isNaN(patientID) || patientID <= 0) {
-            console.log(typeof patientID);
             errors.patientID = "Invalid or Missing Patient";
         } else {
             const patientIDValid = await checkPatientID(locals.db, patientID);
-            console.log("Made is to patientCheck");
             if (!patientIDValid) {
                 errors.patientID = "Patient ID not found or invalid";
             }
@@ -70,8 +67,6 @@ export const actions: Actions = {
                 quantity,
                 period
             });
-            // const prescriptions = await platform?.env.DB.prepare("SELECT * FROM prescriptions").all();
-            // console.log(prescriptions);
             return {success: "Prescription submitted successfully!"};
         }
     }
