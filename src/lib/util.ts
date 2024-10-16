@@ -82,6 +82,8 @@ export async function loadPrescriptions(
         " RIGHT JOIN inventory ON prescriptions.productID = inventory.productID";
     const check_inventory_string = ` GROUP BY prescriptions.id, inventory.productID\
                                         HAVING SUM(inventory.quantity) >= prescriptions.quantity`;
+    const filled_string = " WHERE prescriptions.filled = ?";
+
     let query;
 
     if (typeof filled === "undefined") {
@@ -96,9 +98,9 @@ export async function loadPrescriptions(
 
         if (checkInventory) {
             query_string +=
-                join_inventory_string +
-                " WHERE prescriptions.filled = ?" +
-                check_inventory_string;
+                join_inventory_string + filled_string + check_inventory_string;
+        } else {
+            query_string += filled_string;
         }
         query = db.prepare(query_string).bind(filled);
     }
