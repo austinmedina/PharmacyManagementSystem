@@ -117,3 +117,14 @@ export type Searchable = {
     name: string;
     id: number;
 };
+
+export type CartEntry = {
+    id: number;
+    name: string;
+    type: ProductType;
+    price: number;
+    totalQuantity: number;
+    numExpired: number;
+    numExpiringSoon: number;
+    quantity: number;
+};

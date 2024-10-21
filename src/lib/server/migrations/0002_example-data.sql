@@ -29,7 +29,8 @@ INSERT INTO products VALUES (null, "Aderall", 0, 5000);
 
 INSERT INTO prescriptions VALUES (null, 1, 1, 4, 2, FALSE);
 INSERT INTO prescriptions VALUES (null, 2, 2, 1, 6, FALSE);
-INSERT INTO prescriptions VALUES (null, 1, 2, 5, 6, FALSE);
+INSERT INTO prescriptions VALUES (null, 1, 2, 5, 6, TRUE);
 
 INSERT INTO inventory VALUES (null, 1, "2024-10-21T00:00:00-07:00", 4);
 INSERT INTO inventory VALUES (null, 2, "2024-10-21T00:00:00-07:00", 9);
+INSERT INTO inventory VALUES (null, 3, "2024-10-21T00:00:00-07:00", 14);

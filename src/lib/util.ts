@@ -196,6 +196,7 @@ export async function getAllInventory(db: D1Database) {
          products.id, 
          products.name, 
          products.type, 
+         products.price,
          SUM(inventory.quantity) AS totalQuantity,
          SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpired,
          SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpiringSoon
@@ -206,8 +207,11 @@ export async function getAllInventory(db: D1Database) {
          `
         )
         .bind(today.toISOString(), soon.toISOString())
-        .all();
-    return result.results;
+        .all<types.CartEntry>();
+    return result.results.map((product) => ({
+        ...product,
+        quantity: 0
+    }));
 }
 
 export async function addInventory(

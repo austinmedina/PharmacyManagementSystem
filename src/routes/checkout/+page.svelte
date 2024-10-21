@@ -1,11 +1,35 @@
-<script>
+<script lang="ts">
     import Icon from "@iconify/svelte";
     import Item from "$lib/components/item.svelte";
-    import CartItem from "$lib/components/cartItem.svelte";
+    import type {CartEntry} from "$lib/types.js";
+    export let data;
+    let inventory: CartEntry[] = data.inventory;
+    let cart: Set<CartEntry> = new Set();
     let showCart = false;
+    let search = "";
 
     function toggleCart() {
         showCart = !showCart;
+    }
+
+    function clearCart() {
+        cart.clear();
+        cart = new Set(cart);
+        toggleCart();
+    }
+
+    function removeFromCart(item: CartEntry) {
+        cart.delete(item);
+        cart = new Set(cart);
+    }
+
+    function getTotalCost() {
+        let cartArr = Array.from(cart);
+        let sum = 0;
+        for (let i = 0; i < cartArr.length; ++i) {
+            sum += (cartArr[i].price / 100) * cartArr[i].quantity;
+        }
+        return sum.toFixed(2);
     }
 </script>
 
@@ -15,7 +39,9 @@
         <div>
             <h2 class="text-lg">Search</h2>
             <div class="flex">
-                <input class="border-neutral-300 border-2" />
+                <input
+                    class="border-neutral-300 border-2"
+                    bind:value={search} />
                 <button type="submit">
                     <Icon icon="material-symbols:search" class="text-2xl" />
                 </button>
@@ -34,15 +60,11 @@
     </form>
     <div
         class="flex flex-col gap-4 p-4 mb-4 max-h-80 border-2 border-neutral-500 overflow-auto">
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
-        <Item />
+        {#each inventory as product}
+            {#if product.name.toLowerCase().match(search.toLowerCase())}
+                <Item medication={product} bind:cart />
+            {/if}
+        {/each}
     </div>
     <div class="flex justify-center items-center">
         <button
@@ -65,19 +87,56 @@
                 <h1 class="text-center text-4xl mb-8">CART</h1>
                 <div
                     class="flex flex-col gap-4 p-4 mb-8 mx-12 max-h-80 border-2 border-neutral-500 overflow-auto">
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
+                    {#key cart}
+                        {#each cart as item}
+                            <div
+                                class="flex justify-between items-center bg-neutral-100 p-4 rounded-xl">
+                                <h1>{item.name}</h1>
+                                <div>
+                                    <input
+                                        type="number"
+                                        id="quanity"
+                                        bind:value={item.quantity}
+                                        min="0"
+                                        class="w-10 text-center rounded-lg border-gray-400 border-2" />
+                                    <label for="quantity"> in cart</label>
+                                </div>
+                                <span
+                                    >${(
+                                        (item.price / 100) *
+                                        item.quantity
+                                    ).toFixed(2)}</span>
+                                <button
+                                    class="bg-red-400 px-4 py-1 rounded-lg hover:bg-red-500 text-white"
+                                    on:click={() => removeFromCart(item)}
+                                    >Remove</button>
+                            </div>
+                        {/each}
+                    {/key}
+                </div>
+                <div>
+                    {#key cart}
+                        <h2 class="text-center text-xl mb-8">
+                            Total Cost: ${getTotalCost()}
+                        </h2>
+                    {/key}
                 </div>
                 <div class="flex justify-center gap-8">
-                    <button
-                        class="py-2 px-6 text-xl bg-green-500 hover:bg-green-400 rounded-xl"
-                        >Purchase</button>
+                    {#key cart}
+                        <form method="POST">
+                            <input
+                                name="cart"
+                                value={JSON.stringify(Array.from(cart))}
+                                class="hidden" />
+                            <button
+                                type="submit"
+                                class="py-2 px-6 text-xl bg-green-500 hover:bg-green-400 rounded-xl"
+                                >Purchase</button>
+                        </form>
+                    {/key}
                     <button
                         class="py-2 px-6 text-xl bg-blue-500 hover:bg-blue-400 rounded-xl"
-                        >Clear Cart</button>
+                        on:click={clearCart}>Clear Cart</button>
                 </div>
             </div>
         </div>
