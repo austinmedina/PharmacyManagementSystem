@@ -4,8 +4,6 @@
 
     export let data: PageData;
     export let form: ActionData;
-
-    console.log(data);
 </script>
 
 <main class="flex justify-center mt-10">

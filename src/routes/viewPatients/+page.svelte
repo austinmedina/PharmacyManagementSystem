@@ -10,8 +10,9 @@
     export let placeholder;
     let displayed: PatientType[]; // Explicitly define the type for displayed
     let inputValue = "";
-    let message = "";
-    let formDisplayed = form?.errors ? true : false;
+    let message = form?.success;
+    let formDisplayed =
+        form?.errors && form?.errors.formKey == "createPatient" ? true : false;
 
     let firstName = form?.values?.firstName || "";
     let lastName = form?.values?.lastName || "";
@@ -61,7 +62,7 @@
         <h1 class="text-3xl my-8">View Patients</h1>
         <button
             class="mb-6 rounded-xl bg-blue-600 hover:bg-green-700 text-white py-1 px-4 text-xl"
-            on:click={() => (formDisplayed = !formDisplayed)}>
+            on:click|preventDefault={() => (formDisplayed = !formDisplayed)}>
             {formDisplayed ? "Return to Patient List" : "Create New Patient"}
         </button>
     </div>
@@ -69,13 +70,10 @@
     {#if message}
         <p class="success text-green-500 mb-4">{message}</p>
     {/if}
-    {#if form?.success}
-        <p class="success text-green-500 mb-4">{form.success}</p>
-    {/if}
 
     <div
         id="viewPatients"
-        class="w-full max-w-md flex flex-col flex-grow gap-4 {formDisplayed
+        class="w-full max-w-lg flex flex-col flex-grow gap-4 {formDisplayed
             ? 'hidden'
             : 'visible'}">
         <div id="allPatientSearch">
@@ -92,7 +90,7 @@
             {#if displayed.length > 0}
                 <ul class="p-4 space-y-2 w-full">
                     {#each displayed as item}
-                        <Patient patient={item} {onPatientRemoved} />
+                        <Patient patient={item} {onPatientRemoved} {form} />
                     {/each}
                 </ul>
             {:else}
@@ -109,7 +107,7 @@
         class="w-full max-w-md text-center flex flex-col gap-4 {formDisplayed
             ? 'visible'
             : 'hidden'}">
-        {#if form?.errors}
+        {#if form?.errors && form?.errors.formKey == "createPatient"}
             <p class="error text-red-500 mt-2">Please Fix The Errors Below:</p>
         {/if}
         <form method="POST" class="flex flex-col items-center gap-2">
@@ -126,7 +124,7 @@
                     type="text"
                     bind:value={firstName}
                     required />
-                {#if form?.errors?.firstName}
+                {#if form?.errors?.firstName && form?.errors.formKey == "createPatient"}
                     <p class="text-red-500 text-sm">{form.errors.firstName}</p>
                 {/if}
             </div>
@@ -143,7 +141,7 @@
                     type="text"
                     bind:value={lastName}
                     required />
-                {#if form?.errors?.lastName}
+                {#if form?.errors?.lastName && form?.errors.formKey == "createPatient"}
                     <p class="text-red-500 text-sm">{form.errors.lastName}</p>
                 {/if}
             </div>
@@ -160,7 +158,7 @@
                     type="date"
                     bind:value={dateOfBirth}
                     required />
-                {#if form?.errors?.dateOfBirth}
+                {#if form?.errors?.dateOfBirth && form?.errors.formKey == "createPatient"}
                     <p class="text-red-500 text-sm">
                         {form.errors.dateOfBirth}
                     </p>
@@ -179,7 +177,7 @@
                     type="email"
                     bind:value={email}
                     required />
-                {#if form?.errors?.email}
+                {#if form?.errors?.email && form?.errors.formKey == "createPatient"}
                     <p class="text-red-500 text-sm">{form.errors.email}</p>
                 {/if}
             </div>
@@ -196,7 +194,7 @@
                     type="tel"
                     bind:value={phone}
                     required />
-                {#if form?.errors?.phone}
+                {#if form?.errors?.phone && form?.errors.formKey == "createPatient"}
                     <p class="text-red-500 text-sm">{form.errors.phone}</p>
                 {/if}
             </div>
@@ -211,7 +209,7 @@
                     type="checkbox"
                     bind:checked={insurance} />
 
-                {#if form?.errors?.insurance}
+                {#if form?.errors?.insurance && form?.errors.formKey == "createPatient"}
                     <p class="text-red-500 text-sm">{form.errors.insurance}</p>
                 {/if}
             </div>

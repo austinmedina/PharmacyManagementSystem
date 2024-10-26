@@ -1,5 +1,5 @@
 import type {PageServerLoad} from "../prescriptionPage/$types";
-import {loadPatients, insertPatient} from "$lib/util";
+import {loadPatients, insertPatient, updatePatient} from "$lib/util";
 
 export const load: PageServerLoad = async ({locals}) => {
     const patients = await loadPatients(locals.db as D1Database);
@@ -11,6 +11,7 @@ export const load: PageServerLoad = async ({locals}) => {
 export const actions = {
     default: async ({request, locals}) => {
         const data = await request.formData();
+        const stringId = data.get("id") as string;
         const firstName = data.get("firstName") as string;
         const lastName = data.get("lastName") as string;
         const dateOfBirth = data.get("dateOfBirth") as string; // Use appropriate type based on your needs
@@ -20,6 +21,7 @@ export const actions = {
 
         const errors: {[key: string]: string} = {}; // Object to hold error messages
 
+        const id = parseInt(stringId);
         // First Name validation
         if (!firstName) {
             errors.firstName = "Missing First Name";
@@ -70,6 +72,11 @@ export const actions = {
         }
 
         if (Object.keys(errors).length > 0) {
+            if (id) {
+                errors.formKey = "editPatient";
+            } else {
+                errors.formKey = "newPatient";
+            }
             return {
                 errors,
                 values: {
@@ -78,7 +85,8 @@ export const actions = {
                     dateOfBirth,
                     email,
                     phone,
-                    insurance
+                    insurance,
+                    id
                 }
             };
         } else {
@@ -90,15 +98,41 @@ export const actions = {
                     phone.substring(4, 7) +
                     phone.substring(8);
             }
-            await insertPatient(locals.db as D1Database, {
-                firstName,
-                lastName,
-                dateOfBirth: dateOfBirthParsed,
-                email,
-                phone: updatedPhone,
-                insurance
-            });
-            return {success: `${firstName} ${lastName} successfully added!`};
+            if (id) {
+                await updatePatient(locals.db as D1Database, {
+                    firstName,
+                    lastName,
+                    dateOfBirth: dateOfBirthParsed,
+                    email,
+                    phone: updatedPhone,
+                    insurance,
+                    id
+                });
+
+                const updatedPatient = await locals.db
+                    .prepare("SELECT * FROM patients WHERE id = ?")
+                    .bind(id)
+                    .first();
+
+                return {
+                    success: `${firstName} ${lastName} successfully updated!`,
+                    formKey: "editPatient"
+                };
+            } else {
+                await insertPatient(locals.db as D1Database, {
+                    firstName,
+                    lastName,
+                    dateOfBirth: dateOfBirthParsed,
+                    email,
+                    phone: updatedPhone,
+                    insurance
+                });
+
+                return {
+                    success: `${firstName} ${lastName} successfully added!`,
+                    formKey: "createPatient"
+                };
+            }
         }
     }
 };

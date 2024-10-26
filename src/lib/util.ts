@@ -320,3 +320,23 @@ export async function deletePatient(
 ): Promise<void> {
     await db.prepare("DELETE FROM patients WHERE id = ?").bind(patientId).run();
 }
+
+export async function updatePatient(
+    db: D1Database,
+    p: types.Patient
+): Promise<void> {
+    await db
+        .prepare(
+            "UPDATE patients SET firstName = ?, lastName = ?, dateOfBirth = ?, email = ?, phone = ?, insurance = ? WHERE id = ?"
+        )
+        .bind(
+            p.firstName,
+            p.lastName,
+            p.dateOfBirth.toISOString(),
+            p.email,
+            p.phone,
+            p.insurance,
+            p.id // Assuming p has an id property
+        )
+        .run();
+}
