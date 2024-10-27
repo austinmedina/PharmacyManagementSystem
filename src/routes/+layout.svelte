@@ -6,9 +6,14 @@
     import TechNavbar from "$lib/components/navbars/techNavbar.svelte";
 </script>
 
-<ManagerNavbar />
-<CashierNavbar />
-<PharmacistNavbar />
-<TechNavbar />
+<main class="mb-8">
+    <div
+        class="fixed z-[-2] top-0 left-0 h-screen w-screen bg-gradient-to-tr from-cyan-400 to-indigo-500">
+    </div>
+    <ManagerNavbar />
+    <CashierNavbar />
+    <PharmacistNavbar />
+    <TechNavbar />
 
-<slot />
+    <slot />
+</main>

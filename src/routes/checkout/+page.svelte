@@ -34,32 +34,42 @@
 </script>
 
 <main class="mx-20 lg:mx-40">
-    <h1 class="text-center text-4xl my-8">Checkout</h1>
-    <form method="GET" class="flex justify-evenly items-end mb-4">
+    <h1 class="text-center text-4xl text-white my-8">Checkout</h1>
+    <div class="flex justify-evenly items-end mb-4">
         <div>
-            <h2 class="text-lg">Search</h2>
+            <h2 class="text-lg text-white">Search</h2>
             <div class="flex">
                 <input
                     class="border-neutral-300 border-2"
                     bind:value={search} />
                 <button type="submit">
-                    <Icon icon="material-symbols:search" class="text-2xl" />
+                    <Icon
+                        icon="material-symbols:search"
+                        class="text-2xl text-white hover:text-cyan-400" />
                 </button>
             </div>
         </div>
         <div>
             <div>
                 <input type="checkbox" id="prescription" />
-                <label for="prescription">Prescription</label>
+                <label for="prescription" class="text-white"
+                    >Prescription</label>
             </div>
             <div>
                 <input type="checkbox" id="non_prescription" />
-                <label for="non_prescription">Non-prescription</label>
+                <label for="non_prescription" class="text-white"
+                    >Non-prescription</label>
             </div>
         </div>
-    </form>
-    <div
-        class="flex flex-col gap-4 p-4 mb-4 max-h-80 border-2 border-neutral-500 overflow-auto">
+    </div>
+    <div class="flex justify-between text-lg px-4 text-white ml-4 mr-7 mb-2">
+        <span class="w-20 text-center">ID</span>
+        <h1 class="text-lg text-center w-60">Medication</h1>
+        <h2 class="w-24 text-center">In Stock</h2>
+        <span class="inline-block text-center w-32">Price</span>
+        <span class="inline-block items-center justify-between w-32"></span>
+    </div>
+    <div class="flex flex-col gap-4 px-4 mb-4 max-h-96 overflow-auto shadow-lg">
         {#each inventory as product}
             {#if product.name.toLowerCase().match(search.toLowerCase())}
                 <Item medication={product} bind:cart />
@@ -69,14 +79,15 @@
     <div class="flex justify-center items-center">
         <button
             on:click={toggleCart}
-            class="bg-orange-500 hover:bg-orange-400 py-2 px-6 text-white text-xl rounded-xl"
+            class="bg-blue-500 border-2 border-white hover:bg-cyan-400 py-2 px-6 text-white text-xl rounded-xl"
             >Checkout Cart</button>
     </div>
 
     {#if showCart}
         <div
             class="absolute top-0 left-0 w-full h-screen flex justify-center items-center">
-            <div class="bg-blue-200 w-1/2 h-2/3 rounded-3xl p-4">
+            <div
+                class="bg-cyan-50 w-1/2 h-2/3 rounded-3xl p-4 shadow-blue-400 shadow-2xl border-2 border-blue-300">
                 <div class="flex justify-end">
                     <button on:click={toggleCart}>
                         <Icon
@@ -86,22 +97,22 @@
                 </div>
                 <h1 class="text-center text-4xl mb-8">CART</h1>
                 <div
-                    class="flex flex-col gap-4 p-4 mb-8 mx-12 max-h-80 border-2 border-neutral-500 overflow-auto">
+                    class="flex flex-col gap-4 p-4 mb-8 mx-12 max-h-80 shadow-lg overflow-auto">
                     {#key cart}
                         {#each cart as item}
                             <div
-                                class="flex justify-between items-center bg-neutral-100 p-4 rounded-xl">
-                                <h1>{item.name}</h1>
-                                <div>
+                                class="flex justify-between items-center bg-blue-400 text-white p-4 rounded-xl">
+                                <h1 class="w-28">{item.name}</h1>
+                                <div class="w-28">
                                     <input
                                         type="number"
                                         id="quanity"
                                         bind:value={item.quantity}
                                         min="0"
-                                        class="w-10 text-center rounded-lg border-gray-400 border-2" />
+                                        class="w-14 text-center rounded-lg border-gray-200 bg-blue-400 border-2" />
                                     <label for="quantity"> in cart</label>
                                 </div>
-                                <span
+                                <span class="inline-block w-20"
                                     >${(
                                         (item.price / 100) *
                                         item.quantity
@@ -130,12 +141,12 @@
                                 class="hidden" />
                             <button
                                 type="submit"
-                                class="py-2 px-6 text-xl bg-green-500 hover:bg-green-400 rounded-xl"
+                                class="py-2 px-6 text-xl bg-green-500 hover:bg-green-400 rounded-xl text-white"
                                 >Purchase</button>
                         </form>
                     {/key}
                     <button
-                        class="py-2 px-6 text-xl bg-blue-500 hover:bg-blue-400 rounded-xl"
+                        class="py-2 px-6 text-xl bg-blue-500 hover:bg-blue-400 rounded-xl text-white"
                         on:click={clearCart}>Clear Cart</button>
                 </div>
             </div>

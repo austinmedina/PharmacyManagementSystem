@@ -26,6 +26,9 @@ INSERT INTO patients VALUES (null, "Patricia", "Jackson", "1991-05-17T00:00:00-0
 INSERT INTO products VALUES (null, "Advil", 1, 530);
 INSERT INTO products VALUES (null, "Band-Aid", 1, 1320);
 INSERT INTO products VALUES (null, "Aderall", 0, 5000);
+INSERT INTO products VALUES (null, "Tylenol", 1, 699);
+INSERT INTO products VALUES (null, "Melatonin", 1, 999);
+INSERT INTO products VALUES (null, "Oxycodone", 0, 12099);
 
 INSERT INTO prescriptions VALUES (null, 1, 1, 4, 2, FALSE);
 INSERT INTO prescriptions VALUES (null, 2, 2, 1, 6, FALSE);
@@ -34,3 +37,6 @@ INSERT INTO prescriptions VALUES (null, 1, 2, 5, 6, TRUE);
 INSERT INTO inventory VALUES (null, 1, "2024-10-21T00:00:00-07:00", 4);
 INSERT INTO inventory VALUES (null, 2, "2024-10-21T00:00:00-07:00", 9);
 INSERT INTO inventory VALUES (null, 3, "2024-10-21T00:00:00-07:00", 14);
+INSERT INTO inventory VALUES (null, 4, "2024-10-21T00:00:00-07:00", 20);
+INSERT INTO inventory VALUES (null, 5, "2024-10-21T00:00:00-07:00", 32);
+INSERT INTO inventory VALUES (null, 6, "2024-10-21T00:00:00-07:00", 5);

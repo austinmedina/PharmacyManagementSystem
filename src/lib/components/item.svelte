@@ -22,18 +22,20 @@
     }
 </script>
 
-<div class="flex justify-around items-center bg-neutral-200 p-4 rounded-xl">
-    <span>{medication.id}</span>
-    <h1>{medication.name}</h1>
-    <span>{medication.totalQuantity} in stock</span>
-    <span>${(medication.price / 100).toFixed(2)} each</span>
+<div class="flex justify-between items-center bg-cyan-50 p-4 rounded-xl">
+    <span class="w-20 text-center">{medication.id}</span>
+    <h1 class="w-60 text-center">{medication.name}</h1>
+    <span class="w-24 text-center inline-block"
+        >{medication.totalQuantity} in stock</span>
+    <span class="w-32 text-center inline-block"
+        >${(medication.price / 100).toFixed(2)} each</span>
     {#if !cart.has(medication)}
         <button
-            class="bg-orange-500 px-4 py-1 rounded-lg hover:bg-orange-400 text-white"
+            class="bg-blue-400 px-4 py-1 rounded-lg hover:bg-cyan-400 text-white w-32"
             on:click={addToCart}>Add to Cart</button>
     {:else if showRemove}
         <button
-            class="bg-red-500 flex justify-center items-center rounded-lg px-2"
+            class="bg-red-500 flex justify-center items-center rounded-lg px-2 w-32"
             on:click={removeFromCart}
             on:mouseleave={toggleRemove}>
             <Icon icon="carbon:close-filled" class="text-xl" />
@@ -41,7 +43,7 @@
         </button>
     {:else}
         <button
-            class="bg-green-400 flex justify-center items-center rounded-lg px-2"
+            class="bg-green-400 flex justify-center items-center rounded-lg px-2 w-32"
             on:mouseenter={toggleRemove}>
             <Icon
                 icon="fluent:checkmark-12-regular"

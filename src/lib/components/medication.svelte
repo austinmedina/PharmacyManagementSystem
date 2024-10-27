@@ -14,23 +14,25 @@
 </script>
 
 <div
-    class="flex justify-around items-center
-bg-neutral-100 rounded-xl py-2">
-    <span>{medication.id}</span>
-    <div class="flex flex-col">
-        <h1>{medication.name}</h1>
+    class="flex justify-between items-center
+bg-cyan-50 rounded-xl py-4 px-4">
+    <span class="w-20 text-center">{medication.id}</span>
+    <h1 class="text-lg text-center w-60">{medication.name}</h1>
+    <h2 class="w-24 text-center">{medication.totalQuantity} in stock</h2>
+    <div class="flex flex-col w-40">
         <span>{medication.numExpired} expired</span>
         <span>{medication.numExpiringSoon} expiring soon</span>
     </div>
-    <h2>{medication.totalQuantity}</h2>
-    <button
-        class="bg-green-400 px-4 py-1 rounded-xl
-    hover:bg-green-500 hover:text-white"
-        on:click={toggleAdd}>Add</button>
-    <button
-        class="bg-red-400 px-4 py-1 rounded-xl
-    hover:bg-red-500 hover:text-white"
-        on:click={toggleRemove}>Remove</button>
+    <div class="flex items-center justify-between w-48 text-white">
+        <button
+            class="bg-blue-400 px-6 py-1 rounded-xl
+        hover:bg-cyan-400"
+            on:click={toggleAdd}>Add</button>
+        <button
+            class="bg-red-400 px-4 py-1 rounded-xl
+        hover:bg-red-500"
+            on:click={toggleRemove}>Remove</button>
+    </div>
 </div>
 {#if showAdd}
     <form

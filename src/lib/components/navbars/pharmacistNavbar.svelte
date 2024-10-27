@@ -1,13 +1,27 @@
 <!-- Pharmacist -->
-<h1>Pharmacist</h1>
-<nav class="flex justify-between p-2 mb-2 bg-blue-300">
+<nav class="flex justify-between p-8 mt-6 bg-white shadow-2xl">
     <h1>Insert LOGO HERE</h1>
     <div class="flex justify-evenly gap-8">
-        <a href="/viewPatients" class="hover:font-bold">View Patients</a>
-        <a href="/fulfill" class="hover:font-bold">Fulfill Prescriptions</a>
-        <a href="/inventory" class="hover:font-bold">Inventory</a>
-        <h2>Reports</h2>
-        <h2>Logs</h2>
+        <a
+            href="/viewPatients"
+            class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
+            >View Patients</a>
+        <a
+            href="/fulfill"
+            class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
+            >Fulfill Prescriptions</a>
+        <a
+            href="/inventory"
+            class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
+            >Inventory</a>
+        <a
+            href="/"
+            class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
+            >Reports</a>
+        <a
+            href="/"
+            class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
+            >Logs</a>
     </div>
     <span class="text-sm">LOGOUT</span>
 </nav>
