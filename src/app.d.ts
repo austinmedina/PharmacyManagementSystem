@@ -7,6 +7,9 @@ declare global {
     namespace App {
         interface Locals {
             db: D1Database;
+            lucia: import("$lib/server/auth").Auth;
+            user: import("lucia").User | null;
+            session: import("lucia").Session | null;
         }
         interface Platform {
             env: {

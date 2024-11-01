@@ -1,11 +1,21 @@
 -- Migration number: 0001      2024-10-13T01:57:01.070Z
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS session;
+
 CREATE TABLE IF NOT EXISTS users (
-    id            INTEGER PRIMARY KEY NOT NULL,
+    id            TEXT PRIMARY KEY NOT NULL,
     firstName     TEXT NOT NULL,
     lastName      TEXT NOT NULL,
     username      TEXT NOT NULL UNIQUE,
     password      TEXT NOT NULL,
     type          INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS session (
+        id VARCHAR(255) PRIMARY KEY,
+        user_Id VARCHAR(255),
+        expires_at VARCHAR(255),
+        fresh BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS patients (

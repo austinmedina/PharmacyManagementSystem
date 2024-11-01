@@ -23,6 +23,6 @@ export const actions: Actions = {
         }
 
         // TODO: Change to locals.user.id once auth/users is set up
-        await fillPrescription(locals.db, p, 1);
+        await fillPrescription(locals.db, p, locals.user?.id ?? "NAN");
     }
 };

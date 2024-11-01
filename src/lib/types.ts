@@ -1,4 +1,4 @@
-export type UserID = number;
+export type UserID = string;
 export type ProductID = number;
 export type PatientID = number;
 export type PrescriptionID = number;

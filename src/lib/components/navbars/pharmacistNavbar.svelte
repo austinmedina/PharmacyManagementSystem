@@ -27,5 +27,7 @@
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Logs</a>
     </div>
-    <span class="text-sm">LOGOUT</span>
+    <form method="post" action="/logout?/logout">
+        <button>LOGOUT</button>
+    </form>
 </nav>

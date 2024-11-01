@@ -112,7 +112,7 @@ export const actions = {
                 const updatedPatient = await locals.db
                     .prepare("SELECT * FROM patients WHERE id = ?")
                     .bind(id)
-                    .first();
+                    .first(); //will this get used?
 
                 return {
                     success: `${firstName} ${lastName} successfully updated!`,

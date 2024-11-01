@@ -322,6 +322,22 @@ export async function deletePatient(
     await db.prepare("DELETE FROM patients WHERE id = ?").bind(patientId).run();
 }
 
+export async function loadUser_by_username(
+    db: D1Database,
+    username: string
+): Promise<types.User | null> {
+    const result = await db
+        .prepare("SELECT * FROM users WHERE username = ? LIMIT 1;")
+        .bind(username)
+        .all();
+
+    if (result.results.length > 0) {
+        const user: types.User = result.results[0] as unknown as types.User;
+        return user;
+    }
+
+    return null;
+}
 export async function updatePatient(
     db: D1Database,
     p: types.Patient
