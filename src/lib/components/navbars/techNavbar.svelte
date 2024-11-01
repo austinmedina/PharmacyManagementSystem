@@ -7,9 +7,9 @@
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Checkout</a>
         <a
-            href="/prescriptionPage"
+            href="/prescriptions"
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
-            >Enter Prescriptions</a>
+            >Prescriptions</a>
         <a
             href="/"
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"

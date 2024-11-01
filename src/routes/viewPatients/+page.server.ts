@@ -1,4 +1,4 @@
-import type {PageServerLoad} from "../prescriptionPage/$types";
+import type {PageServerLoad} from "./$types";
 import {loadPatients, insertPatient, updatePatient} from "$lib/util";
 
 export const load: PageServerLoad = async ({locals}) => {

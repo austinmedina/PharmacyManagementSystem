@@ -314,6 +314,7 @@ export async function fillPrescription(
     );
     return await db.batch(statements);
 }
+
 export async function deletePatient(
     db: D1Database,
     patientId: number
@@ -336,6 +337,34 @@ export async function updatePatient(
             p.email,
             p.phone,
             p.insurance,
+            p.id // Assuming p has an id property
+        )
+        .run();
+}
+
+export async function deletePrescription(
+    db: D1Database,
+    prescriptionId: number
+): Promise<void> {
+    await db
+        .prepare("DELETE FROM prescriptions WHERE id = ?")
+        .bind(prescriptionId)
+        .run();
+}
+
+export async function updatePrescription(
+    db: D1Database,
+    p: types.Prescription
+): Promise<void> {
+    await db
+        .prepare(
+            "UPDATE patients SET product = ?, patient = ?, quantity = ?, period = ?, filled = False WHERE id = ?"
+        )
+        .bind(
+            p.product,
+            p.patient,
+            p.quantity,
+            p.period,
             p.id // Assuming p has an id property
         )
         .run();

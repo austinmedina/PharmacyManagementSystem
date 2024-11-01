@@ -1,24 +1,27 @@
 import {fail} from "@sveltejs/kit";
-import type {PageServerLoad, Actions} from "./$types";
+import type {PageServerLoad} from "./$types";
 import {
-    loadProducts,
+    loadPrescriptions,
     loadPatients,
+    loadProducts,
     insertPrescription,
     checkPatientID,
     checkProductID
 } from "$lib/util";
 
 export const load: PageServerLoad = async ({locals}) => {
-    const products = await loadProducts(locals.db);
+    const prescriptions = await loadPrescriptions(locals.db);
     const patients = await loadPatients(locals.db);
+    const products = await loadProducts(locals.db);
 
     return {
         patients: patients,
+        prescriptions: prescriptions,
         products: products
     };
 };
 
-export const actions: Actions = {
+export const actions = {
     default: async ({request, locals}) => {
         const data = await request.formData();
         const patientID = parseInt(data.get("patientID") as string);
