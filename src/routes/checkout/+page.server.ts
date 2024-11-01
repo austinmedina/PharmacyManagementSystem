@@ -1,11 +1,23 @@
 import type {PageServerLoad} from "./$types.js";
-import {getAllInventory, removeInventory} from "$lib/util.js";
+import {
+    getAllInventory,
+    loadPrescriptions,
+    pickUpPrescription,
+    removeInventory
+} from "$lib/util.js";
+import {ProductType} from "$lib/types.js";
 
 export const load: PageServerLoad = async ({locals}) => {
     const db = locals.db;
-    const inventory = await getAllInventory(db);
+    let inventory = await getAllInventory(db);
+    inventory = inventory.filter(
+        (item) => item.type === ProductType.NonPrescription
+    );
+    const prescriptions = await loadPrescriptions(db, true, false, false);
+
     return {
-        inventory: inventory
+        inventory: inventory,
+        prescriptions: prescriptions
     };
 };
 
@@ -18,6 +30,9 @@ export const actions = {
             const cart = JSON.parse(cartData as string);
             for (let i = 0; i < cart.length; i++) {
                 await removeInventory(db, cart[i].id, cart[i].quantity);
+                if ("pickedUp" in cart[i]) {
+                    await pickUpPrescription(db, cart[i]);
+                }
             }
         }
     }

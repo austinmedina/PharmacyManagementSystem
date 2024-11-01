@@ -66,6 +66,7 @@ export type Prescription = {
     quantity: number;
     period: number;
     filled: boolean;
+    pickedUp: boolean;
 };
 
 export type InventoryEntry = {

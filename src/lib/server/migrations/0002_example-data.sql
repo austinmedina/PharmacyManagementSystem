@@ -1,5 +1,4 @@
 -- Migration number: 0002 	 2024-10-13T09:56:21.839Z
-
 DELETE FROM logloglog;
 DELETE FROM purchase_log;
 DELETE FROM inventory_log;
@@ -30,9 +29,10 @@ INSERT INTO products VALUES (null, "Tylenol", 1, 699);
 INSERT INTO products VALUES (null, "Melatonin", 1, 999);
 INSERT INTO products VALUES (null, "Oxycodone", 0, 12099);
 
-INSERT INTO prescriptions VALUES (null, 1, 1, 4, 2, FALSE);
-INSERT INTO prescriptions VALUES (null, 2, 2, 1, 6, FALSE);
-INSERT INTO prescriptions VALUES (null, 1, 2, 5, 6, TRUE);
+INSERT INTO prescriptions VALUES (null, 1, 1, 4, 2, FALSE, FALSE);
+INSERT INTO prescriptions VALUES (null, 2, 2, 1, 6, FALSE, FALSE);
+INSERT INTO prescriptions VALUES (null, 3, 2, 15, 6, TRUE, FALSE);
+INSERT INTO prescriptions VALUES (null, 6, 4, 12, 6, TRUE, FALSE);
 
 INSERT INTO inventory VALUES (null, 1, "2024-10-21T00:00:00-07:00", 4);
 INSERT INTO inventory VALUES (null, 2, "2024-10-21T00:00:00-07:00", 9);

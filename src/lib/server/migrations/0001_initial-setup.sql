@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS prescriptions (
     quantity      INTEGER NOT NULL,
     period        INTEGER NOT NULL,
     filled        BOOLEAN NOT NULL DEFAULT FALSE,
+    pickedUp      BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY(productID) REFERENCES products(id),
     FOREIGN KEY(patientID) REFERENCES patients(id)
         ON DELETE CASCADE

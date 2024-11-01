@@ -1,12 +1,14 @@
 <script lang="ts">
-    import type {CartEntry} from "$lib/types";
+    import type {CartEntry, Prescription} from "$lib/types";
     import Icon from "@iconify/svelte";
-    export let medication: CartEntry;
-    export let cart: Set<CartEntry>;
+    export let medication: CartEntry | Prescription;
+    export let cart: Set<CartEntry | Prescription>;
     let showRemove = false;
 
     function addToCart() {
-        medication.quantity = 1;
+        if ("type" in medication) {
+            medication.quantity = 1;
+        }
         cart.add(medication);
         cart = new Set(cart);
     }
@@ -23,12 +25,26 @@
 </script>
 
 <div class="flex justify-between items-center bg-cyan-50 p-4 rounded-xl">
-    <span class="w-20 text-center">{medication.id}</span>
-    <h1 class="w-60 text-center">{medication.name}</h1>
-    <span class="w-24 text-center inline-block"
-        >{medication.totalQuantity} in stock</span>
-    <span class="w-32 text-center inline-block"
-        >${(medication.price / 100).toFixed(2)} each</span>
+    {#if "type" in medication}
+        <span class="w-20 text-center">{medication.id}</span>
+        <h1 class="w-60 text-center text-lg">{medication.name}</h1>
+        <span class="w-24 text-center inline-block"
+            >{medication.totalQuantity} in stock</span>
+        <span class="w-32 text-center inline-block"
+            >${(medication.price / 100).toFixed(2)} each</span>
+    {:else}
+        <span class="w-20 text-center">{medication.id}</span>
+        <div class="w-60 text-center">
+            <h1 class="text-lg">{medication.product.name}</h1>
+            <span class="text-gray-700"
+                >{medication.patient.firstName}
+                {medication.patient.lastName}</span>
+        </div>
+        <span class="w-24 text-center inline-block"
+            >{medication.quantity} prescribed</span>
+        <span class="w-32 text-center inline-block"
+            >${(medication.product.price / 100).toFixed(2)} each</span>
+    {/if}
     {#if !cart.has(medication)}
         <button
             class="bg-blue-400 px-4 py-1 rounded-lg hover:bg-cyan-400 text-white w-32"

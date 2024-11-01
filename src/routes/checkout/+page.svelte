@@ -1,12 +1,15 @@
 <script lang="ts">
     import Icon from "@iconify/svelte";
     import Item from "$lib/components/item.svelte";
-    import type {CartEntry} from "$lib/types.js";
+    import {type CartEntry, type Prescription} from "$lib/types.js";
     export let data;
     let inventory: CartEntry[] = data.inventory;
-    let cart: Set<CartEntry> = new Set();
+    let prescriptions: Prescription[] = data.prescriptions;
+    let cart = new Set<CartEntry | Prescription>();
     let showCart = false;
     let search = "";
+    let show_prescription = false;
+    let show_non_prescription = false;
 
     function toggleCart() {
         showCart = !showCart;
@@ -18,7 +21,7 @@
         toggleCart();
     }
 
-    function removeFromCart(item: CartEntry) {
+    function removeFromCart(item: CartEntry | Prescription) {
         cart.delete(item);
         cart = new Set(cart);
     }
@@ -27,9 +30,25 @@
         let cartArr = Array.from(cart);
         let sum = 0;
         for (let i = 0; i < cartArr.length; ++i) {
-            sum += (cartArr[i].price / 100) * cartArr[i].quantity;
+            if ("price" in cartArr[i]) {
+                sum +=
+                    ((cartArr[i] as CartEntry).price / 100) *
+                    cartArr[i].quantity;
+            } else {
+                sum +=
+                    ((cartArr[i] as Prescription).product.price / 100) *
+                    cartArr[i].quantity;
+            }
         }
         return sum.toFixed(2);
+    }
+
+    function checkQuantity(item: CartEntry) {
+        if (item.quantity < 0) {
+            item.quantity = 0;
+        } else if (item.quantity > item.totalQuantity) {
+            item.quantity = item.totalQuantity;
+        }
     }
 </script>
 
@@ -51,12 +70,18 @@
         </div>
         <div>
             <div>
-                <input type="checkbox" id="prescription" />
+                <input
+                    type="checkbox"
+                    id="prescription"
+                    bind:checked={show_prescription} />
                 <label for="prescription" class="text-white"
                     >Prescription</label>
             </div>
             <div>
-                <input type="checkbox" id="non_prescription" />
+                <input
+                    type="checkbox"
+                    id="non_prescription"
+                    bind:checked={show_non_prescription} />
                 <label for="non_prescription" class="text-white"
                     >Non-prescription</label>
             </div>
@@ -70,11 +95,22 @@
         <span class="inline-block items-center justify-between w-32"></span>
     </div>
     <div class="flex flex-col gap-4 px-4 mb-4 max-h-96 overflow-auto shadow-lg">
-        {#each inventory as product}
-            {#if product.name.toLowerCase().match(search.toLowerCase())}
-                <Item medication={product} bind:cart />
-            {/if}
-        {/each}
+        {#key show_prescription || show_non_prescription}
+            {#each prescriptions as product}
+                {#if product.product.name
+                    .toLowerCase()
+                    .match(search.toLowerCase()) && (show_prescription || (!show_prescription && !show_non_prescription))}
+                    <Item medication={product} bind:cart />
+                {/if}
+            {/each}
+            {#each inventory as product}
+                {#if product.name
+                    .toLowerCase()
+                    .match(search.toLowerCase()) && (show_non_prescription || (!show_prescription && !show_non_prescription))}
+                    <Item medication={product} bind:cart />
+                {/if}
+            {/each}
+        {/key}
     </div>
     <div class="flex justify-center items-center">
         <button
@@ -100,28 +136,49 @@
                     class="flex flex-col gap-4 p-4 mb-8 mx-12 max-h-80 shadow-lg overflow-auto">
                     {#key cart}
                         {#each cart as item}
-                            <div
-                                class="flex justify-between items-center bg-blue-400 text-white p-4 rounded-xl">
-                                <h1 class="w-28">{item.name}</h1>
-                                <div class="w-28">
-                                    <input
-                                        type="number"
-                                        id="quanity"
-                                        bind:value={item.quantity}
-                                        min="0"
-                                        class="w-14 text-center rounded-lg border-gray-200 bg-blue-400 border-2" />
-                                    <label for="quantity"> in cart</label>
+                            {#if "type" in item}
+                                <div
+                                    class="flex justify-between items-center bg-blue-400 text-white p-4 rounded-xl">
+                                    <h1 class="w-28">{item.name}</h1>
+                                    <div class="w-28">
+                                        <input
+                                            type="number"
+                                            id="quanity"
+                                            bind:value={item.quantity}
+                                            on:change={() =>
+                                                checkQuantity(item)}
+                                            min="0"
+                                            max={item.totalQuantity}
+                                            class="w-14 text-center rounded-lg border-gray-200 bg-blue-400 border-2" />
+                                        <label for="quantity"> in cart</label>
+                                    </div>
+                                    <span class="inline-block w-20"
+                                        >${(
+                                            (item.price / 100) *
+                                            item.quantity
+                                        ).toFixed(2)}</span>
+                                    <button
+                                        class="bg-red-400 px-4 py-1 rounded-lg hover:bg-red-500 text-white"
+                                        on:click={() => removeFromCart(item)}
+                                        >Remove</button>
                                 </div>
-                                <span class="inline-block w-20"
-                                    >${(
-                                        (item.price / 100) *
-                                        item.quantity
-                                    ).toFixed(2)}</span>
-                                <button
-                                    class="bg-red-400 px-4 py-1 rounded-lg hover:bg-red-500 text-white"
-                                    on:click={() => removeFromCart(item)}
-                                    >Remove</button>
-                            </div>
+                            {:else}
+                                <div
+                                    class="flex justify-between items-center bg-blue-400 text-white p-4 rounded-xl">
+                                    <h1 class="w-28">{item.product.name}</h1>
+                                    <span class="inline-block w-28"
+                                        >{item.quantity} in cart</span>
+                                    <span class="inline-block w-20"
+                                        >${(
+                                            (item.product.price / 100) *
+                                            item.quantity
+                                        ).toFixed(2)}</span>
+                                    <button
+                                        class="bg-red-400 px-4 py-1 rounded-lg hover:bg-red-500 text-white"
+                                        on:click={() => removeFromCart(item)}
+                                        >Remove</button>
+                                </div>
+                            {/if}
                         {/each}
                     {/key}
                 </div>

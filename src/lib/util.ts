@@ -71,7 +71,8 @@ export async function checkProductID(
 export async function loadPrescriptions(
     db: D1Database,
     filled: boolean | undefined = undefined,
-    checkInventory: boolean = false
+    checkInventory: boolean = false,
+    pickedUp: boolean | undefined = undefined
 ): Promise<types.Prescription[]> {
     let query_string = `SELECT prescriptions.id as prescriptionID, prescriptions.*, products.*, patients.* from prescriptions\
                             INNER JOIN products ON prescriptions.productID = products.id\
@@ -83,6 +84,7 @@ export async function loadPrescriptions(
     const check_inventory_string = ` GROUP BY prescriptions.id, inventory.productID\
                                         HAVING SUM(inventory.quantity) >= prescriptions.quantity`;
     const filled_string = " WHERE prescriptions.filled = ?";
+    const pickedUp_string = "AND prescriptions.pickedUp = ?";
 
     let query;
 
@@ -98,11 +100,14 @@ export async function loadPrescriptions(
 
         if (checkInventory) {
             query_string +=
-                join_inventory_string + filled_string + check_inventory_string;
+                join_inventory_string +
+                filled_string +
+                pickedUp_string +
+                check_inventory_string;
         } else {
-            query_string += filled_string;
+            query_string += filled_string + pickedUp_string;
         }
-        query = db.prepare(query_string).bind(filled);
+        query = db.prepare(query_string).bind(filled, pickedUp);
     }
     return (await query.all()).results.map((row) => {
         return {
@@ -110,6 +115,7 @@ export async function loadPrescriptions(
             quantity: row["quantity"] as number,
             period: row["period"] as number,
             filled: row["filled"] as boolean,
+            pickedUp: row["pickedUp"] as boolean,
             product: {
                 id: row["productID"] as number,
                 name: row["name"] as string,
@@ -152,6 +158,7 @@ export async function getPrescription(
         quantity: row["quantity"] as number,
         period: row["period"] as number,
         filled: row["filled"] as boolean,
+        pickedUp: row["filledUp"] as boolean,
         product: {
             id: row["productID"] as number,
             name: row["name"] as string,
@@ -313,6 +320,16 @@ export async function fillPrescription(
         await removeInventoryStatements(db, p.product.id, p.quantity)
     );
     return await db.batch(statements);
+}
+
+export async function pickUpPrescription(
+    db: D1Database,
+    p: types.Prescription
+) {
+    await db
+        .prepare("UPDATE prescriptions SET pickedUp = TRUE WHERE id = ?")
+        .bind(p.id)
+        .run();
 }
 
 export async function deletePatient(

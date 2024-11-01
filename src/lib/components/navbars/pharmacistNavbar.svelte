@@ -28,6 +28,6 @@
             >Logs</a>
     </div>
     <form method="post" action="/logout?/logout">
-        <button>LOGOUT</button>
+        <button>Logout</button>
     </form>
 </nav>
