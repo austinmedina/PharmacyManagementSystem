@@ -16,6 +16,10 @@
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Create User</a>
         <a
+            href="/prescriptions"
+            class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
+            >Prescriptions</a>
+        <a
             href="/inventory"
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Inventory</a>
