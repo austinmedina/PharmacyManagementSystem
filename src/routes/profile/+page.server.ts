@@ -36,9 +36,6 @@ export const actions: Actions = {
             };
         }
 
-        console.log(newPass);
-        console.log(confirmPass);
-
         const hashedPassword = await Argon2id.hashEncoded(newPass);
 
         //get the user
@@ -88,8 +85,6 @@ export const actions: Actions = {
                     error instanceof Error
                         ? error.message
                         : "An unknown error occurred";
-
-                console.log(message);
 
                 return {
                     success: false,

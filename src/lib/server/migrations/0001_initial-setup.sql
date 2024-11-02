@@ -8,7 +8,9 @@ CREATE TABLE IF NOT EXISTS users (
     lastName      TEXT NOT NULL,
     username      TEXT NOT NULL UNIQUE,
     password      TEXT NOT NULL,
-    type          INTEGER NOT NULL
+    type          INTEGER NOT NULL,
+    lockout       BOOLEAN NOT NULL DEFAULT FALSE,
+    login_attempts INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS session (

@@ -30,10 +30,9 @@ export function initializeLucia(D1: D1Database) {
                 username: attributes.username,
                 firstName: attributes.firstName,
                 lastName: attributes.lastName,
-                netID: attributes.netID,
-                phone: attributes.phone,
-                email: attributes.email,
-                type: attributes.type
+                type: attributes.type,
+                lockout: attributes.lockout,
+                login_attempts: attributes.login_attempts
             };
         }
     });
@@ -55,8 +54,7 @@ interface DatabaseUserAttributes {
     username: string;
     firstName: string;
     lastName: string;
-    netID: string;
-    phone: string;
-    email: string;
     type: UserType;
+    lockout: boolean;
+    login_attempts: number;
 }

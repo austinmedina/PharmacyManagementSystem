@@ -38,6 +38,8 @@ export type User = {
     username: string;
     password: string;
     type: UserType;
+    lockout: boolean;
+    login_attempts: number;
 };
 
 export type Patient = {

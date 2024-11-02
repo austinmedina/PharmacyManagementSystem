@@ -37,10 +37,10 @@ INSERT INTO prescriptions VALUES (null, 6, 4, 12, 6, TRUE, FALSE);
 INSERT INTO inventory VALUES (null, 1, "2024-10-21T00:00:00-07:00", 4);
 INSERT INTO inventory VALUES (null, 2, "2024-10-21T00:00:00-07:00", 9);
 
-INSERT INTO users VALUES ("user1", "Who", "Cares1", "manager", "$argon2id$v=19$m=16,t=2,p=1$bWRGWEpaRkZGNkxjYjFxTw$dLRD+33vQmUnxn2m09+bjw",  0);
-INSERT INTO users VALUES ("user2", "Who", "Cares2", "pharmacist", "$argon2id$v=19$m=16,t=2,p=1$SUtFUVlHSE9pMm9WcDFKcQ$+Ctfy5R+I2zsQAAfToEGxA",  1);
-INSERT INTO users VALUES ("user3", "Who", "Cares3", "cashier", "$argon2id$v=19$m=16,t=2,p=1$aUJUUnNQT0pZTm5mcm8zVw$NH8RllIow31dmmXCmzlpBQ",  2);
-INSERT INTO users VALUES ("user4", "Who", "Cares4", "technician", "$argon2id$v=19$m=16,t=2,p=1$ZDlZNXRCTGFpSHNEczFpcw$tzqarahAEidtLa6hqVfzIg",  3);
+INSERT INTO users VALUES ("user1", "Who", "Cares1", "manager", "$argon2id$v=19$m=16,t=2,p=1$bWRGWEpaRkZGNkxjYjFxTw$dLRD+33vQmUnxn2m09+bjw",  0, FALSE, 0);
+INSERT INTO users VALUES ("user2", "Who", "Cares2", "pharmacist", "$argon2id$v=19$m=16,t=2,p=1$SUtFUVlHSE9pMm9WcDFKcQ$+Ctfy5R+I2zsQAAfToEGxA",  1, FALSE, 0);
+INSERT INTO users VALUES ("user3", "Who", "Cares3", "cashier", "$argon2id$v=19$m=16,t=2,p=1$aUJUUnNQT0pZTm5mcm8zVw$NH8RllIow31dmmXCmzlpBQ",  2, FALSE, 0);
+INSERT INTO users VALUES ("user4", "Who", "Cares4", "technician", "$argon2id$v=19$m=16,t=2,p=1$ZDlZNXRCTGFpSHNEczFpcw$tzqarahAEidtLa6hqVfzIg",  3, FALSE, 0);
 
 INSERT INTO inventory VALUES (null, 3, "2024-10-21T00:00:00-07:00", 14);
 INSERT INTO inventory VALUES (null, 4, "2024-10-21T00:00:00-07:00", 20);

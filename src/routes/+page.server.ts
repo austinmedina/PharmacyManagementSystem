@@ -6,6 +6,8 @@ import {loadUser_by_username} from "$lib/util";
 import type {Actions, PageServerLoad, RequestEvent} from "./$types";
 import {UserType, type User} from "$lib/types";
 
+const MAX_ATTEMPTS = 3;
+
 export async function _doesUsernameExist(db: D1Database, username: string) {
     const errors = [];
 
@@ -46,29 +48,6 @@ export const actions: Actions = {
         const password = formData.get("password") as string;
         let existingUser;
 
-        if (
-            typeof username !== "string" ||
-            username.length < 3 ||
-            username.length > 31 ||
-            !/^[a-zA-Z0-9+=!#$%^&*_-]/.test(username)
-        ) {
-            return fail(422, {
-                error: true,
-                message: "Invalid username"
-            });
-        }
-        if (
-            typeof password !== "string" ||
-            password.length < 6 ||
-            password.length > 255 ||
-            !/^[a-zA-Z0-9+=!#$%^&*_-]/.test(username)
-        ) {
-            return fail(422, {
-                error: true,
-                message: "Invalid password"
-            });
-        }
-
         try {
             if (!event.platform?.env.DB) {
                 const message = "DB IS NULL";
@@ -85,12 +64,41 @@ export const actions: Actions = {
                 username
             )) as User;
 
+            // Check if user is locked out
+            if (existingUser.lockout) {
+                return fail(403, {
+                    error: true,
+                    message:
+                        "Account locked. Please contact your manager to unlock it."
+                });
+            }
+
             const validPassword = await Argon2id.verify(
                 existingUser?.password,
                 password
             );
 
             if (!validPassword) {
+                await event.platform?.env.DB.prepare(
+                    "UPDATE users SET login_attempts = login_attempts + 1 WHERE username = ?1"
+                )
+                    .bind(username)
+                    .run();
+
+                if (existingUser.login_attempts + 1 >= MAX_ATTEMPTS) {
+                    await event.platform?.env.DB.prepare(
+                        "UPDATE users SET lockout = TRUE WHERE username = ?"
+                    )
+                        .bind(username)
+                        .run();
+
+                    return fail(403, {
+                        error: true,
+                        message:
+                            "Account locked. Please contact your manager to unlock it."
+                    });
+                }
+
                 throw new Error("Incorrect username or password");
             }
         } catch (error: unknown) {
@@ -104,6 +112,13 @@ export const actions: Actions = {
                 message
             });
         }
+
+        //Reset attempts on successful login
+        await event.platform?.env.DB.prepare(
+            "UPDATE users SET login_attempts = ?, lockout = ? WHERE username = ?;"
+        )
+            .bind(0, false, username)
+            .run();
 
         const session = await event.locals.lucia.createSession(
             existingUser?.id,

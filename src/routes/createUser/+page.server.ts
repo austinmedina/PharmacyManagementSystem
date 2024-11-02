@@ -8,7 +8,6 @@ import {UserType} from "$lib/types";
 
 export const _validateInput = (user: User, password: string) => {
     const errors = [];
-    console.log("validateInput");
 
     if (
         typeof user.username !== "string" ||
@@ -23,7 +22,9 @@ export const _validateInput = (user: User, password: string) => {
         typeof password !== "string" ||
         password.length < 6 ||
         password.length > 255 ||
-        !/^[a-zA-Z0-9+=!@#$%^&*_-]+$/.test(password)
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[+=!@#$%^&*_-]).{6,255}$/.test(
+            password
+        )
     ) {
         errors.push("Invalid password");
     }
@@ -67,7 +68,6 @@ export async function _checkUsers(
         if (total === 0) {
             return true;
         } else {
-            console.log(total);
             errors.push("Username already taken. Please make a new username");
         }
     } catch (error: unknown) {
@@ -103,7 +103,6 @@ export function _getUserTypeFromValue(
 
 export const actions: Actions = {
     default: async ({request, locals}) => {
-        console.log("createUser");
         const formData = await request.formData();
         const id: UserID = generateId(15);
         const tempPass = formData.get("password") as string;
@@ -119,7 +118,9 @@ export const actions: Actions = {
                 username: formData.get("username") as string,
                 firstName: formData.get("firstName") as string,
                 lastName: formData.get("lastName") as string,
-                type: userType as UserType
+                type: userType as UserType,
+                lockout: false,
+                login_attempts: 0
             };
 
             _validateInput(user, tempPass);
@@ -136,14 +137,18 @@ export const actions: Actions = {
 
             if (await _checkUsers(locals.db, user.username)) {
                 isCreated = await locals.db
-                    .prepare("INSERT INTO users VALUES (?, ?, ?, ?, ?, ?);")
+                    .prepare(
+                        "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+                    )
                     .bind(
                         user.username,
                         user.firstName,
                         user.lastName,
                         user.username,
                         user.password,
-                        user.type
+                        user.type,
+                        user.lockout,
+                        user.login_attempts
                     )
                     .run();
             }
@@ -160,8 +165,6 @@ export const actions: Actions = {
                 error instanceof Error
                     ? error.message
                     : "An unknown error occurred";
-
-            console.log(message);
 
             return {
                 success: false,

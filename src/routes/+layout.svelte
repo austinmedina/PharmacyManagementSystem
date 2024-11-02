@@ -7,7 +7,6 @@
 
     import {UserType} from "$lib/types";
     export let data;
-    console.log(data.userType);
 </script>
 
 <main class="mb-8">
