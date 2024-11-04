@@ -31,6 +31,13 @@ export enum Log {
     Out
 }
 
+export enum LogType {
+    LogLog,
+    Purchase,
+    Inventory,
+    Fill
+}
+
 export type User = {
     id: UserID;
     firstName: string;
@@ -131,3 +138,9 @@ export type CartEntry = {
     numExpiringSoon: number;
     quantity: number;
 };
+
+export type LogEntry =
+    | LogLogLogEntry
+    | PurchaseLogEntry
+    | InventoryLogEntry
+    | FillLogEntry;

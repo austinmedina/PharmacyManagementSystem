@@ -109,7 +109,7 @@ export const actions = {
                     id
                 });
 
-                const updatedPatient = await locals.db
+                const _updatedPatient = await locals.db
                     .prepare("SELECT * FROM patients WHERE id = ?")
                     .bind(id)
                     .first(); //will this get used?

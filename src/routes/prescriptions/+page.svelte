@@ -158,7 +158,7 @@
             class="flex flex-col items-center gap-4 mb-4 w-full overflow-y-auto flex-grow max-h-[calc(70vh-200px)]">
             {#if Object.keys(displayed).length > 0}
                 <ul class="p-4 space-y-2 w-full">
-                    {#each Object.entries(displayed) as [key, value]}
+                    {#each Object.entries(displayed) as [_key, value]}
                         <div class="bg-neutral-200 p-4 rounded-3xl space-y-4">
                             <h2 class="text-xl font-semibold">
                                 {value[0].patient.firstName +
@@ -166,7 +166,7 @@
                                     value[0].patient.lastName}
                             </h2>
 
-                            {#each value as prescription, index}
+                            {#each value as prescription}
                                 <div class="border-b pb-2">
                                     <div
                                         class="flex justify-between items-center">

@@ -56,6 +56,8 @@ export const handle: Handle = async ({event, resolve}) => {
         };
     }
 
+    event.locals.db = event.platform?.env.DB as D1Database;
+
     //function returns a lucia type for authentication purposes.
     // try {
     event.locals.lucia = initializeLucia(event.platform?.env.DB as D1Database);
@@ -95,7 +97,5 @@ export const handle: Handle = async ({event, resolve}) => {
 
     event.locals.user = user as User;
     event.locals.session = session;
-    event.locals.db = event.platform?.env.DB as D1Database;
-
     return resolve(event);
 };

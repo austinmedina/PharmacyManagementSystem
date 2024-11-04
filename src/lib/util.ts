@@ -102,12 +102,17 @@ export async function loadPrescriptions(
             query_string +=
                 join_inventory_string +
                 filled_string +
-                pickedUp_string +
+                (typeof pickedUp === "undefined" ? "" : pickedUp_string) +
                 check_inventory_string;
         } else {
-            query_string += filled_string + pickedUp_string;
+            query_string +=
+                filled_string +
+                (typeof pickedUp === "undefined" ? "" : pickedUp_string);
         }
-        query = db.prepare(query_string).bind(filled, pickedUp);
+        query = db.prepare(query_string).bind(filled);
+        if (typeof pickedUp !== "undefined") {
+            query = query.bind(pickedUp);
+        }
     }
     return (await query.all()).results.map((row) => {
         return {
@@ -402,6 +407,7 @@ export async function updatePrescription(
         )
         .run();
 }
+
 export async function loadUsers(db: D1Database): Promise<types.User[]> {
     const result = await db.prepare("SELECT * FROM users").all<types.User>();
     return result.results;
@@ -442,4 +448,32 @@ export async function deleteUser(
     userId: number
 ): Promise<void> {
     await db.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
+}
+
+function logTableName(t: types.LogType): string {
+    if (t === types.LogType.Fill) {
+        return "fill_log";
+    } else if (t === types.LogType.Inventory) {
+        return "inventory_log";
+    } else if (t === types.LogType.LogLog) {
+        return "logloglog";
+    } else if (t === types.LogType.Purchase) {
+        return "purchase_log";
+    } else {
+        return "";
+    }
+}
+
+export async function loadLogs(
+    db: D1Database,
+    t: types.LogType,
+    _i: number = 0,
+    _n: number | undefined = undefined
+): Promise<types.LogEntry[]> {
+    console.debug(logTableName(t));
+    return (
+        await db
+            .prepare("SELECT * FROM " + logTableName(t))
+            .all<types.LogEntry>()
+    ).results;
 }
