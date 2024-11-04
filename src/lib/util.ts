@@ -87,6 +87,7 @@ export async function loadPrescriptions(
     const pickedUp_string = "AND prescriptions.pickedUp = ?";
 
     let query;
+    const bindings: boolean[] = [];
 
     if (typeof filled === "undefined") {
         // Get all prescriptions, regardless whether they are filled or not
@@ -109,10 +110,12 @@ export async function loadPrescriptions(
                 filled_string +
                 (typeof pickedUp === "undefined" ? "" : pickedUp_string);
         }
-        query = db.prepare(query_string).bind(filled);
+        bindings.push(filled);
         if (typeof pickedUp !== "undefined") {
-            query = query.bind(pickedUp);
+            bindings.push(pickedUp);
         }
+
+        query = db.prepare(query_string).bind(...bindings);
     }
     return (await query.all()).results.map((row) => {
         return {

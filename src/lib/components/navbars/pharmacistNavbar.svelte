@@ -23,11 +23,11 @@
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Inventory</a>
         <a
-            href="/"
+            href="/reports"
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Reports</a>
         <a
-            href="/"
+            href="/logs"
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Logs</a>
     </div>
