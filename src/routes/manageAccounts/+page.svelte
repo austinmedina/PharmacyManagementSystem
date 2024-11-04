@@ -1,34 +1,77 @@
-<script>
-    import Icon from "@iconify/svelte";
+<script lang="ts">
     import Account from "$lib/components/accounts.svelte";
+    export let data;
+    let users = data.user;
+
+    const deleteUser = async (userId: string) => {
+        const response = await fetch("/api/user", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({userId})
+        });
+
+        if (response.ok) {
+            users = users.filter((user) => user.id !== userId);
+            console.log("User deleted successfully");
+        } else {
+            const errorMessage = await response.text();
+            console.error("Error deleting user:", errorMessage);
+        }
+    };
+
+    const recoverUser = async (userId: string) => {
+        const response = await fetch("/api/user", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({userId})
+        });
+    };
 </script>
 
-<main>
-    <h1 class="text-center text-3xl my-8">Manage Accounts</h1>
-    <a
-        href="/createUser"
-        class="block mb-4 bg-blue-700 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl text-center w-1/6 mx-auto">
-        Create Account
-    </a>
-    <form method="GET" class="flex justify-center items-center gap-4 mb-4">
-        <h2 class="text-2xl">Search</h2>
-        <div class="flex">
-            <input placeholder="Username" class="border-neutral-300 border-2" />
-            <button type="submit">
-                <Icon
-                    icon="material-symbols:search"
-                    class="text-2xl hover:text-blue-700" />
+<main
+    class="flex flex-col mx-auto w-3/4 border-2 border-black rounded-lg shadow-lg p-4 bg-gray-50">
+    <h1 class="text-center text-4xl font-bold text-gray-800 mb-6">
+        Manage Accounts
+    </h1>
+
+    <!-- Button to create a new user -->
+    <div class="mb-4 text-center">
+        <a href="/createUser">
+            <button
+                class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-50">
+                Create User
             </button>
-        </div>
-    </form>
-    <div class="flex flex-col gap-4 mx-20 my-8 lg:mx-60">
-        <Account />
-        <Account />
-        <Account />
-        <Account />
-        <Account />
-        <Account />
-        <Account />
-        <Account />
+        </a>
     </div>
+
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-black text-white">
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    >First Name</th>
+                <th
+                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    >Last Name</th>
+                <th
+                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    >Username</th>
+                <th
+                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    >User Type</th>
+                <th
+                    class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+                    >Actions</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {#each users as user}
+                <Account {user} {deleteUser} {recoverUser} />
+            {/each}
+        </tbody>
+    </table>
 </main>

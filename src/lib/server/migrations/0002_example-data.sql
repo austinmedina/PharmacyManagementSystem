@@ -7,6 +7,7 @@ DELETE FROM inventory;
 DELETE FROM prescriptions;
 DELETE FROM patients;
 DELETE FROM products;
+DELETE FROM users;
 
 INSERT INTO patients VALUES (null, "John", "Doe", "1983-08-05T00:00:00-07:00", "jdoe@gmail.com", "1111111111", TRUE);
 INSERT INTO patients VALUES (null, "Jane", "Doe", "1982-04-05T00:00:00-07:00", "jadoe@gmail.com", "1111111111", FALSE);

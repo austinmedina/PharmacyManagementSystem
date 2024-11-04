@@ -402,3 +402,44 @@ export async function updatePrescription(
         )
         .run();
 }
+export async function loadUsers(db: D1Database): Promise<types.User[]> {
+    const result = await db.prepare("SELECT * FROM users").all<types.User>();
+    return result.results;
+}
+
+export async function insertUser(
+    db: D1Database,
+    user: Omit<types.User, "id">
+): Promise<void> {
+    await db
+        .prepare(
+            "INSERT INTO users (firstName, lastName, username, password, type) VALUES (?, ?, ?, ?, ?)"
+        )
+        .bind(
+            user.firstName,
+            user.lastName,
+            user.username,
+            user.password,
+            user.type
+        )
+        .run();
+}
+
+export async function checkUsernameExists(
+    db: D1Database,
+    username: string
+): Promise<boolean> {
+    const result = await db
+        .prepare("SELECT COUNT(*) as count FROM users WHERE username = ?")
+        .bind(username)
+        .first<{count: number}>();
+
+    return result !== null && result !== undefined && result.count > 0;
+}
+
+export async function deleteUser(
+    db: D1Database,
+    userId: number
+): Promise<void> {
+    await db.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
+}

@@ -1,16 +1,31 @@
 <script>
-    // Get each users info here
+    import {UserType} from "$lib/types";
+
+    export let user;
+    export let deleteUser;
+    export let recoverUser;
 </script>
 
-<div
-    class="flex justify-center bg-neutral-200 p-4 rounded-3xl mx-auto w-[600px] space-x-6">
-    <span>ID#</span>
-    <h1>Username</h1>
-    <h1>Last Name, First Name</h1>
-    <button
-        class="bg-blue-700 hover:bg-purple-700 text-white py-1 px-4 rounded-xl"
-        >Recover</button>
-    <button
-        class="bg-blue-700 hover:bg-purple-700 text-white py-1 px-4 rounded-xl"
-        >Delete</button>
-</div>
+<tr>
+    {#if user}
+        <td class="px-6 py-4 whitespace-nowrap">{user.firstName}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{user.lastName}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{user.username}</td>
+        <td class="px-6 py-4 whitespace-nowrap">{UserType[user.type]}</td>
+        <td class="px-6 py-4 whitespace-nowrap">
+            <button
+                on:click={() => recoverUser(user.id)}
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 mr-2">
+                Recover
+            </button>
+            <button
+                on:click={() => deleteUser(user.id)}
+                class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50">
+                Delete
+            </button>
+        </td>
+    {:else}
+        <td class="px-6 py-4 whitespace-nowrap" colspan="5"
+            >No user data available</td>
+    {/if}
+</tr>
