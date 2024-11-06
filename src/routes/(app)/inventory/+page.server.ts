@@ -1,8 +1,8 @@
 import type {PageServerLoad, Actions} from "./$types.js";
 import {addInventory, getAllInventory, removeInventory} from "$lib/util.js";
 
-export const load: PageServerLoad = async ({platform}) => {
-    const db = platform?.env.DB as D1Database;
+export const load: PageServerLoad = async ({locals}) => {
+    const db = locals.db as D1Database;
     const inventory = await getAllInventory(db);
     return {
         inventory: inventory

@@ -202,7 +202,7 @@ export async function findInventory(
 export async function getAllInventory(db: D1Database) {
     const today = new Date();
     const soon = new Date();
-    soon.setDate(soon.getDate() + 7);
+    soon.setDate(soon.getDate() + 30);
 
     const result = await db
         .prepare(
@@ -214,14 +214,14 @@ export async function getAllInventory(db: D1Database) {
          products.price,
          SUM(inventory.quantity) AS totalQuantity,
          SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpired,
-         SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpiringSoon
+         SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) AND DATE(inventory.expiration) > DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpiringSoon
          FROM products
          JOIN inventory ON products.id = inventory.productID
          GROUP BY products.id
          ORDER BY numExpired DESC
          `
         )
-        .bind(today.toISOString(), soon.toISOString())
+        .bind(today.toISOString(), soon.toISOString(), today.toISOString())
         .all<types.CartEntry>();
     return result.results.map((product) => ({
         ...product,

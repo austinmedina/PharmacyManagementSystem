@@ -29,9 +29,10 @@ export const actions = {
         if (cartData != null) {
             const cart = JSON.parse(cartData as string);
             for (let i = 0; i < cart.length; i++) {
-                await removeInventory(db, cart[i].id, cart[i].quantity);
                 if ("pickedUp" in cart[i]) {
                     await pickUpPrescription(db, cart[i]);
+                } else {
+                    await removeInventory(db, cart[i].id, cart[i].quantity);
                 }
             }
         }

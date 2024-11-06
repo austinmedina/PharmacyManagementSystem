@@ -1,15 +1,33 @@
-<script>
+<script lang="ts">
+    import type {CartEntry} from "$lib/types";
     import Icon from "@iconify/svelte";
-    export let medication;
+    export let medication: CartEntry;
     let showAdd = false;
     let showRemove = false;
+    let numChange: number;
 
     function toggleAdd() {
         showAdd = !showAdd;
+        numChange = 0;
     }
 
     function toggleRemove() {
         showRemove = !showRemove;
+        numChange = 0;
+    }
+
+    function checkRemoveQuantity() {
+        if (numChange < 0) {
+            numChange = 0;
+        } else if (numChange > medication.totalQuantity) {
+            numChange = medication.totalQuantity;
+        }
+    }
+
+    function checkAddQuantity() {
+        if (numChange < 0) {
+            numChange = 0;
+        }
     }
 </script>
 
@@ -40,7 +58,7 @@ bg-cyan-50 rounded-xl py-4 px-4">
         action="/inventory?/add"
         class="absolute top-0 left-0 w-full h-screen flex justify-center items-center">
         <div
-            class="flex flex-col gap-4 bg-blue-200 w-1/2 h-2/3 rounded-3xl p-4">
+            class="flex flex-col gap-4 bg-cyan-50 w-1/2 h-1/2 rounded-3xl p-4 shadow-lg">
             <div class="flex justify-end">
                 <button on:click={toggleAdd}>
                     <Icon
@@ -48,27 +66,47 @@ bg-cyan-50 rounded-xl py-4 px-4">
                         class="text-3xl hover:text-red-500" />
                 </button>
             </div>
-            <h1 class="text-center text-4xl mb-8">
+            <h1 class="text-center text-4xl mb-4">
                 Add {medication.name} to Inventory
             </h1>
             <div class="flex flex-col justify-center items-center">
-                <h2>{medication.totalQuantity} in stock</h2>
-                <span>{medication.numExpired} expired</span>
-                <span>{medication.numExpiringSoon} expiring soon</span>
+                <h2 class="text-xl mb-2">
+                    {medication.totalQuantity} in stock
+                </h2>
+                <span class="text-sm text-red-500"
+                    >{medication.numExpired} expired</span>
+                <span class="text-sm text-gray-800"
+                    >{medication.numExpiringSoon} expiring soon</span>
             </div>
             <input name="productID" value={medication.id} class="hidden" />
-            <div>
-                <label for="quantity"># To add</label>
-                <input id="quantity" name="quantity" type="number" />
+            <div class="flex justify-center gap-2">
+                <label for="quantity">Amount To add:</label>
+                <input
+                    id="quantity"
+                    name="quantity"
+                    type="number"
+                    class="border-2 border-gray-400 w-20 px-2"
+                    bind:value={numChange}
+                    on:change={checkAddQuantity} />
             </div>
-            <div>
-                <label for="expirationDate">Expiration Date</label>
-                <input id="expirationDate" name="expirationDate" type="date" />
+            <div class="flex justify-center gap-2 mb-4">
+                <label for="expirationDate">Expiration Date:</label>
+                <input
+                    id="expirationDate"
+                    name="expirationDate"
+                    type="date"
+                    class="border-2 border-gray-400" />
             </div>
-            <button type="submit" class="bg-blue-400 hover:bg-purple-400"
-                >Add</button>
-            <button on:click={toggleAdd} class="bg-red-500 hover:bg-red-300"
-                >Cancel</button>
+            <div class="flex flex-col items-center gap-2">
+                <button
+                    type="submit"
+                    class="w-28 py-1 rounded-xl bg-blue-400 hover:bg-cyan-400"
+                    >Add</button>
+                <button
+                    on:click={toggleAdd}
+                    class="w-28 py-1 rounded-xl bg-red-500 hover:bg-red-400"
+                    >Cancel</button>
+            </div>
         </div>
     </form>
 {/if}
@@ -78,7 +116,7 @@ bg-cyan-50 rounded-xl py-4 px-4">
         action="/inventory?/remove"
         class="absolute top-0 left-0 w-full h-screen flex justify-center items-center">
         <div
-            class="flex flex-col gap-4 bg-blue-200 w-1/2 h-2/3 rounded-3xl p-4">
+            class="flex flex-col gap-4 bg-cyan-50 w-1/2 h-1/2 rounded-3xl p-4 shadow-lg">
             <div class="flex justify-end">
                 <button on:click={toggleRemove}>
                     <Icon
@@ -86,24 +124,39 @@ bg-cyan-50 rounded-xl py-4 px-4">
                         class="text-3xl hover:text-red-500" />
                 </button>
             </div>
-            <h1 class="text-center text-4xl mb-8">
-                Add {medication.name} to Inventory
+            <h1 class="text-center text-4xl mb-4">
+                Remove {medication.name} from Inventory
             </h1>
             <div class="flex flex-col justify-center items-center">
-                <h2>{medication.totalQuantity} in stock</h2>
-                <span>{medication.numExpired} expired</span>
-                <span>{medication.numExpiringSoon} expiring soon</span>
+                <h2 class="text-xl mb-2">
+                    {medication.totalQuantity} in stock
+                </h2>
+                <span class="text-sm text-red-500"
+                    >{medication.numExpired} expired</span>
+                <span class="text-sm text-gray-800"
+                    >{medication.numExpiringSoon} expiring soon</span>
             </div>
             <input name="productID" value={medication.id} class="hidden" />
-            <div>
-                <label for="quantity"># To Remove</label>
-                <input id="quantity" name="quantity" type="number" />
+            <div class="flex justify-center gap-2 mb-4">
+                <label for="quantity">Amount To Remove:</label>
+                <input
+                    id="quantity"
+                    name="quantity"
+                    type="number"
+                    class="border-2 border-gray-400 px-2 w-20"
+                    bind:value={numChange}
+                    on:change={checkRemoveQuantity} />
             </div>
-
-            <button type="submit" class="bg-blue-400 hover:bg-purple-400"
-                >Remove</button>
-            <button on:click={toggleRemove} class="bg-red-500 hover:bg-red-300"
-                >Cancel</button>
+            <div class="flex flex-col items-center gap-2">
+                <button
+                    type="submit"
+                    class="w-28 py-1 rounded-xl bg-blue-400 hover:bg-cyan-400"
+                    >Remove</button>
+                <button
+                    on:click={toggleRemove}
+                    class="w-28 py-1 rounded-xl bg-red-500 hover:bg-red-400"
+                    >Cancel</button>
+            </div>
         </div>
     </form>
 {/if}

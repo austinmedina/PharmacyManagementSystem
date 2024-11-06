@@ -7,6 +7,7 @@
 
     import {UserType} from "$lib/types";
     export let data;
+    let inventory = data.inventory;
 </script>
 
 <main class="mb-8">
@@ -15,11 +16,11 @@
     </div>
 
     {#if data.userType === UserType.Manager}
-        <ManagerNavbar />
+        <ManagerNavbar {inventory} />
     {:else if data.userType === UserType.Cashier}
         <CashierNavbar />
     {:else if data.userType === UserType.Pharmacist}
-        <PharmacistNavbar />
+        <PharmacistNavbar {inventory} />
     {:else if data.userType === UserType.Technician}
         <TechNavbar />
     {/if}

@@ -54,18 +54,13 @@
 
 <main class="mx-20 lg:mx-40">
     <h1 class="text-center text-4xl text-white my-8">Checkout</h1>
-    <div class="flex justify-evenly items-end mb-4">
+    <div class="flex justify-center gap-10 items-end mb-4">
         <div>
-            <h2 class="text-lg text-white">Search</h2>
+            <h2 class="text-lg text-white ml-2">Search</h2>
             <div class="flex">
                 <input
-                    class="border-neutral-300 border-2"
+                    class="border-neutral-300 border-2 mr-4 px-4 rounded-2xl"
                     bind:value={search} />
-                <button type="submit">
-                    <Icon
-                        icon="material-symbols:search"
-                        class="text-2xl text-white hover:text-cyan-400" />
-                </button>
             </div>
         </div>
         <div>
@@ -133,7 +128,7 @@
                 </div>
                 <h1 class="text-center text-4xl mb-8">CART</h1>
                 <div
-                    class="flex flex-col gap-4 p-4 mb-8 mx-12 max-h-80 shadow-lg overflow-auto">
+                    class="flex flex-col gap-4 p-4 mb-8 mx-12 max-h-64 shadow-lg overflow-auto">
                     {#key cart}
                         {#each cart as item}
                             {#if "type" in item}
@@ -188,6 +183,33 @@
                             Total Cost: ${getTotalCost()}
                         </h2>
                     {/key}
+                </div>
+                <div class="flex justify-center gap-8 mb-8">
+                    <div>
+                        <input
+                            type="radio"
+                            id="credit"
+                            name="payment"
+                            value="Credit"
+                            checked />
+                        <label for="credit">Credit</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="debit"
+                            name="payment"
+                            value="Debit" />
+                        <label for="debit">Debit</label>
+                    </div>
+                    <div>
+                        <input
+                            type="radio"
+                            id="cash"
+                            name="payment"
+                            value="Cash" />
+                        <label for="cash">Cash</label>
+                    </div>
                 </div>
                 <div class="flex justify-center gap-8">
                     {#key cart}

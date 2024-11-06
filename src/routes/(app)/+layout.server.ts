@@ -1,4 +1,5 @@
 import type {UserType} from "$lib/types";
+import {getAllInventory} from "$lib/util";
 import type {LayoutServerLoad} from "./$types";
 
 export const load: LayoutServerLoad = async ({locals}) => {
@@ -22,7 +23,10 @@ export const load: LayoutServerLoad = async ({locals}) => {
         };
     }
 
+    const inventory = await getAllInventory(db);
+
     return {
-        userType: result.type as UserType
+        userType: result.type as UserType,
+        inventory: inventory
     };
 };
