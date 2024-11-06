@@ -120,7 +120,8 @@ export const actions: Actions = {
                 lastName: formData.get("lastName") as string,
                 type: userType as UserType,
                 lockout: false,
-                login_attempts: 0
+                login_attempts: 0,
+                is_first_login: true
             };
 
             _validateInput(user, tempPass);
@@ -138,7 +139,7 @@ export const actions: Actions = {
             if (await _checkUsers(locals.db, user.username)) {
                 isCreated = await locals.db
                     .prepare(
-                        "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+                        "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
                     )
                     .bind(
                         user.username,
@@ -148,7 +149,8 @@ export const actions: Actions = {
                         user.password,
                         user.type,
                         user.lockout,
-                        user.login_attempts
+                        user.login_attempts,
+                        user.is_first_login
                     )
                     .run();
             }

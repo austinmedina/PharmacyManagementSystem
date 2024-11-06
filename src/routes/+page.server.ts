@@ -132,7 +132,9 @@ export const actions: Actions = {
             ...sessionCookie.attributes
         });
 
-        if (existingUser.type === UserType.Manager) {
+        if (existingUser.is_first_login) {
+            redirect(302, "/profile");
+        } else if (existingUser.type === UserType.Manager) {
             redirect(302, "/createUser");
         } else if (
             existingUser.type === UserType.Cashier ||

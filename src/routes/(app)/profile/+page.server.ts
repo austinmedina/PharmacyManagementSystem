@@ -2,6 +2,7 @@ import {Argon2id} from "$lib/server/Argon2id.min";
 import type {D1Database} from "@cloudflare/workers-types";
 import type {Actions} from "@sveltejs/kit";
 import type {User} from "$lib/types";
+import type {PageServerLoad} from "./$types";
 
 async function loadUser_by_id(
     db: D1Database,
@@ -20,6 +21,16 @@ async function loadUser_by_id(
 
     return null;
 }
+
+export const load: PageServerLoad = async ({locals}) => {
+    const user = await loadUser_by_id(locals.db, locals.user?.id as string);
+
+    const firstTimeLogin = user?.is_first_login ?? true;
+
+    return {
+        firstTimeLogin
+    };
+};
 
 export const actions: Actions = {
     default: async ({request, locals}) => {
@@ -69,8 +80,10 @@ export const actions: Actions = {
 
                 //update pass
                 isSaved = await locals.db
-                    .prepare("UPDATE users SET password = ? WHERE id = ?;")
-                    .bind(hashedPassword, user.id)
+                    .prepare(
+                        "UPDATE users SET password = ?, is_first_login = ? WHERE id = ?;"
+                    )
+                    .bind(hashedPassword, false, user.id)
                     .run();
 
                 if (isSaved) {

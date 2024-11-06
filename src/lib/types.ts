@@ -47,6 +47,7 @@ export type User = {
     type: UserType;
     lockout: boolean;
     login_attempts: number;
+    is_first_login: boolean;
 };
 
 export type Patient = {

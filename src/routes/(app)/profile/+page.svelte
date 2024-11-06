@@ -1,12 +1,54 @@
-<script>
+<script lang="ts">
+    import type {PageData} from "./$types";
+
     let password = "";
     let newPassword = "";
     let confirmNewPassword = "";
     export let form;
+
+    export let data: PageData;
+    let firstTimeLogin = data.firstTimeLogin;
+    let formSubmitted = false;
+    let showExitWarning = false;
+
+    import {beforeNavigate} from "$app/navigation";
+
+    // Prevents leaving page for first-time users until form is submitted
+    if (firstTimeLogin) {
+        beforeNavigate((event) => {
+            if (!formSubmitted) {
+                event.cancel();
+                alert("You must submit the form before leaving this page.");
+                showExitWarning = true;
+            } else {
+                showExitWarning = false;
+            }
+        });
+    }
+
+    // Watch for form submission success or failure
+    if (form?.success) {
+        formSubmitted = true;
+        showExitWarning = false;
+    } else if (form?.error) {
+        formSubmitted = false;
+    }
 </script>
 
 <main>
     <h1>Profile</h1>
+    {#if firstTimeLogin}
+        <div class="alert alert-info">
+            First-time users must change their password.
+        </div>
+    {/if}
+
+    {#if showExitWarning}
+        <div class="exit-warning">
+            You must submit the form before leaving this page.
+        </div>
+    {/if}
+
     <form method="POST" action="/profile">
         <div>
             <label for="password">Current Password:</label>
