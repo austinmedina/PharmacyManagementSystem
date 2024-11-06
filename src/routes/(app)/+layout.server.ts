@@ -1,5 +1,5 @@
 import type {UserType} from "$lib/types";
-import type {LayoutServerLoad} from "../../../.svelte-kit/types/src/routes/(app)/$types.d.ts";
+import type {LayoutServerLoad} from "./$types";
 
 export const load: LayoutServerLoad = async ({locals}) => {
     if (!locals.user) {
