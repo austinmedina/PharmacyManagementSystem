@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "../app.css";
+    import "../../app.css";
     import ManagerNavbar from "$lib/components/navbars/managerNavbar.svelte";
     import CashierNavbar from "$lib/components/navbars/cashierNavbar.svelte";
     import PharmacistNavbar from "$lib/components/navbars/pharmacistNavbar.svelte";
@@ -22,8 +22,6 @@
         <PharmacistNavbar />
     {:else if data.userType === UserType.Technician}
         <TechNavbar />
-    {:else}
-        <p>Please log in to see your dashboard.</p>
     {/if}
 
     <slot />

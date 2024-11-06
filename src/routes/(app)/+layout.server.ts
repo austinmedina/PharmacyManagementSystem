@@ -1,11 +1,8 @@
 import type {UserType} from "$lib/types";
-import type {LayoutServerLoad} from "./$types";
+import type {LayoutServerLoad} from "../../../.svelte-kit/types/src/routes/(app)/$types.d.ts";
 
 export const load: LayoutServerLoad = async ({locals}) => {
-    console.log("Locals:", locals);
-
     if (!locals.user) {
-        console.log(`User not found`);
         return {
             userType: null
         };
@@ -20,13 +17,11 @@ export const load: LayoutServerLoad = async ({locals}) => {
         .first();
 
     if (!result) {
-        console.log(`User not found: ${userId}`);
         return {
             userType: null
         };
     }
 
-    console.log(`User found: ${userId} (${result.type})`);
     return {
         userType: result.type as UserType
     };
