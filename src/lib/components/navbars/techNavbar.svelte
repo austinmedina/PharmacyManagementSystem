@@ -1,10 +1,11 @@
 <!-- Pharmacy Tech -->
 <script>
     let showMenu = false;
+    import Icon from "@iconify/svelte";
 </script>
 
 <nav class="flex justify-between p-8 mt-6 bg-white shadow-2xl">
-    <h1>Insert LOGO HERE</h1>
+    <Icon icon="mdi:pill" class="text-green-600 w-10 h-10" />
     <div class="flex justify-evenly gap-8">
         <a
             href="/checkout"

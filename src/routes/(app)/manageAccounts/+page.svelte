@@ -22,7 +22,7 @@
     };
 
     const recoverUser = async (userId: string) => {
-        const response = await fetch("/api/user", {
+        const _response = await fetch("/api/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

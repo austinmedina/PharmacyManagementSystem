@@ -4,6 +4,7 @@
     import CashierNavbar from "$lib/components/navbars/cashierNavbar.svelte";
     import PharmacistNavbar from "$lib/components/navbars/pharmacistNavbar.svelte";
     import TechNavbar from "$lib/components/navbars/techNavbar.svelte";
+    import Footer from "$lib/components/footer.svelte";
 
     import {UserType} from "$lib/types";
     export let data;
@@ -26,4 +27,6 @@
     {/if}
 
     <slot />
+
+    <Footer />
 </main>

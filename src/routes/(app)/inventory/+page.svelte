@@ -1,5 +1,4 @@
 <script lang="ts">
-    import Icon from "@iconify/svelte";
     import Medication from "$lib/components/medication.svelte";
     export let data;
     let inventory = data.inventory;

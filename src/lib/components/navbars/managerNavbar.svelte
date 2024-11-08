@@ -22,7 +22,7 @@
 
 <nav class="flex justify-between items-center p-8 mt-6 bg-white shadow-2xl">
     <!-- <nav class="flex justify-between p-8 text-white bg-blue-400 shadow-2xl "> -->
-    <h1>Insert LOGO HERE</h1>
+    <Icon icon="mdi:pill" class="text-green-600 w-10 h-10" />
     <div class="flex justify-evenly items-center gap-8">
         <a
             href="/viewPatients"
