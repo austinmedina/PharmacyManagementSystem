@@ -6,8 +6,7 @@
     export let data: PageData;
     export let form;
 
-    export let items: PatientType[] = data.patients; // Ensure items has a defined type
-    export let placeholder;
+    export let items: PatientType[] = data.patients; // Ensure items has a defined typeS
     let displayed: PatientType[]; // Explicitly define the type for displayed
     let inputValue = "";
     let message = form?.success;
@@ -19,6 +18,7 @@
     let dateOfBirth = form?.values?.dateOfBirth || "";
     let email = form?.values?.email || "";
     let phone = form?.values?.phone || "";
+    let address = form?.values?.address || "";
     let insurance = form?.values?.insurance || false;
 
     const search = (
@@ -80,7 +80,7 @@
             <input
                 type="text"
                 class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1"
-                {placeholder}
+                placeholder="Search By Paitent Name"
                 autocomplete="off"
                 bind:value={inputValue} />
         </div>
@@ -119,7 +119,7 @@
                     class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
                     id="fname"
                     name="firstName"
-                    placeholder="Enter first name"
+                    placeholder="Enter First Name"
                     autocomplete="off"
                     type="text"
                     bind:value={firstName}
@@ -136,7 +136,7 @@
                     class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
                     id="lname"
                     name="lastName"
-                    placeholder="Enter last name"
+                    placeholder="Enter Last Name"
                     autocomplete="off"
                     type="text"
                     bind:value={lastName}
@@ -153,7 +153,7 @@
                     class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
                     id="dob"
                     name="dateOfBirth"
-                    placeholder="Select date of birth"
+                    placeholder="Select Date of Birth"
                     autocomplete="off"
                     type="date"
                     bind:value={dateOfBirth}
@@ -172,7 +172,7 @@
                     class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
                     id="email"
                     name="email"
-                    placeholder="Enter email address"
+                    placeholder="Enter Email Address"
                     autocomplete="off"
                     type="email"
                     bind:value={email}
@@ -189,13 +189,30 @@
                     class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
                     id="phone"
                     name="phone"
-                    placeholder="Enter phone number"
+                    placeholder="Enter Phone Number"
                     autocomplete="off"
                     type="tel"
                     bind:value={phone}
                     required />
                 {#if form?.errors?.phone && form?.errors.formKey == "createPatient"}
                     <p class="text-red-500 text-sm">{form.errors.phone}</p>
+                {/if}
+            </div>
+            <div
+                class="flex flex-col mb-2 w-full bg-green-200 border-black border rounded-xl p-2">
+                <label for="address" class="text-left text-md font-bold"
+                    >Address</label>
+                <input
+                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
+                    id="address"
+                    name="address"
+                    placeholder="Enter Address"
+                    autocomplete="off"
+                    type="text"
+                    bind:value={address}
+                    required />
+                {#if form?.errors?.address && form?.errors.formKey == "createPatient"}
+                    <p class="text-red-500 text-sm">{form.errors.address}</p>
                 {/if}
             </div>
             <div

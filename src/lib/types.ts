@@ -57,6 +57,7 @@ export type Patient = {
     dateOfBirth: Date;
     email: string;
     phone: string;
+    address: string;
     insurance: boolean;
 };
 

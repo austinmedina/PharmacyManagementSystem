@@ -29,7 +29,7 @@ export async function insertPatient(
 ): Promise<void> {
     await db
         .prepare(
-            "INSERT INTO patients (firstName, lastName, dateOfBirth, email, phone, insurance) VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO patients (firstName, lastName, dateOfBirth, email, phone, address, insurance) VALUES (?, ?, ?, ?, ?, ?, ?)"
         )
         .bind(
             p.firstName,
@@ -37,6 +37,7 @@ export async function insertPatient(
             p.dateOfBirth.toISOString(),
             p.email,
             p.phone,
+            p.address,
             p.insurance
         )
         .run();
@@ -137,6 +138,7 @@ export async function loadPrescriptions(
                 dateOfBirth: new Date(row["dateOfBirth"] as string),
                 email: row["email"] as string,
                 phone: row["phone"] as string,
+                address: row["address"] as string,
                 insurance: row["insurance"] as boolean
             }
         };
@@ -180,6 +182,7 @@ export async function getPrescription(
             dateOfBirth: new Date(row["dateOfBirth"] as string),
             email: row["email"] as string,
             phone: row["phone"] as string,
+            address: row["address"] as string,
             insurance: row["insurance"] as boolean
         }
     };

@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS patients (
     dateOfBirth   TEXT NOT NULL,
     email         TEXT NOT NULL,
     phone         TEXT NOT NULL,
+    address       TEXT NOT NULL,
     insurance     BOOLEAN NOT NULL
 );
 

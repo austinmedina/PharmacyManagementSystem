@@ -18,6 +18,7 @@
                 throw new Error("Failed to delete patient");
             } else {
                 console.log(`Patient with ID ${patientID} has been deleted.`);
+                expanded = false;
                 onPatientRemoved(patientName);
             }
         } catch (error) {
@@ -35,6 +36,7 @@
     let dateOfBirth: string;
     let email: string;
     let phone: string;
+    let address: string;
     let insurance: boolean;
 
     if (form?.values?.id === patient.id) {
@@ -57,6 +59,7 @@
             /(\d{3})(\d{3})(\d{4})/,
             "$1-$2-$3"
         );
+        address = form?.values?.address || patient.address;
         insurance = form?.values?.insurance || patient.insurance;
     } else {
         edit = false;
@@ -66,12 +69,12 @@
         dateOfBirth = new Date(patient.dateOfBirth).toISOString().split("T")[0];
         email = patient.email;
         phone = patient.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+        address = patient.address;
         insurance = patient.insurance;
     }
 
     const resetPatient = (): void => {
         edit = false;
-        expanded = false;
         firstName = patient.firstName;
         lastName = patient.lastName;
         dateOfBirth = new Date(patient.dateOfBirth).toISOString().split("T")[0];
@@ -79,6 +82,51 @@
         phone = patient.phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
         insurance = patient.insurance;
     };
+
+    //I did not come up with this. I found this on sveltes playground website: https://svelte.dev/playground/cb0b845fce1a43aabf4421989acaca39?version=3.55.1
+    function resizeInputOnDynamicContent(node: HTMLInputElement) {
+        const measuringElement = document.createElement("div");
+        document.body.appendChild(measuringElement);
+
+        /** duplicate the styles of the existing node, but
+		remove the measuring element from the viewport. */
+        function duplicateAndSet() {
+            const styles = window.getComputedStyle(node);
+            measuringElement.innerHTML = node.value;
+            measuringElement.style.fontSize = styles.fontSize;
+            measuringElement.style.fontFamily = styles.fontFamily;
+            measuringElement.style.paddingLeft = styles.paddingLeft;
+            measuringElement.style.paddingRight = styles.paddingRight;
+            measuringElement.style.boxSizing = "border-box";
+            measuringElement.style.border = styles.border;
+            measuringElement.style.width = "max-content";
+            measuringElement.style.position = "absolute";
+            measuringElement.style.top = "0";
+            measuringElement.style.left = "-9999px";
+            measuringElement.style.overflow = "hidden";
+            measuringElement.style.visibility = "hidden";
+            measuringElement.style.whiteSpace = "pre";
+            measuringElement.style.height = "0";
+            node.style.width = `${measuringElement.offsetWidth + 5}px`;
+        }
+
+        duplicateAndSet();
+        /** listen to any style changes */
+        const observer = new MutationObserver(duplicateAndSet);
+        observer.observe(node, {
+            attributes: true,
+            childList: true,
+            subtree: true
+        });
+
+        node.addEventListener("input", duplicateAndSet);
+        return {
+            destroy() {
+                observer.disconnect();
+                node.removeEventListener("input", duplicateAndSet);
+            }
+        };
+    }
 </script>
 
 <div class="flex-col bg-neutral-200 p-4 rounded-3xl">
@@ -89,7 +137,10 @@
             {#if !edit}
                 <button
                     class="text-left flex-1"
-                    on:click|preventDefault={() => (expanded = !expanded)}>
+                    on:click|preventDefault={() => {
+                        expanded = !expanded;
+                        resetPatient();
+                    }}>
                     <strong
                         >{patient.firstName + " " + patient.lastName}</strong>
                 </button>
@@ -179,7 +230,8 @@
                         name="email"
                         type="email"
                         bind:value={email}
-                        class={`text-left flex-1 bg-neutral-200 ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                        use:resizeInputOnDynamicContent
+                        class={`text-left flex-1 bg-neutral-200 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
                         disabled={!edit} />
                 </p>
                 <p>
@@ -192,7 +244,24 @@
                         name="phone"
                         type="tel"
                         bind:value={phone}
-                        class={`text-left flex-1 bg-neutral-200 ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                        use:resizeInputOnDynamicContent
+                        class={`text-left flex-1 bg-neutral-200 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                        disabled={!edit} />
+                </p>
+                <p>
+                    {#if form?.errors?.address && form?.errors.formKey == "editPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.address}
+                        </p>
+                    {/if}
+                    <strong>Address:</strong>
+                    <input
+                        id="address"
+                        name="address"
+                        type="text"
+                        bind:value={address}
+                        use:resizeInputOnDynamicContent
+                        class={`text-left flex-1 bg-neutral-200 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
                         disabled={!edit} />
                 </p>
                 <p>

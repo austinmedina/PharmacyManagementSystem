@@ -17,6 +17,7 @@ export const actions = {
         const dateOfBirth = data.get("dateOfBirth") as string; // Use appropriate type based on your needs
         const email = data.get("email") as string;
         const phone = data.get("phone") as string;
+        let address = data.get("address") as string;
         const insurance = data.get("insurance") === "on"; // Check if checkbox is checked
 
         const errors: {[key: string]: string} = {}; // Object to hold error messages
@@ -56,6 +57,45 @@ export const actions = {
             errors.email = "Invalid Email";
         }
 
+        //Address validation, checks each portion of the address. Should be in the format Street, City, State Abr., Zip Code (5 or 9 digit)
+        if (!address) {
+            errors.address = "Missing Address";
+        } else if (typeof address !== "string") {
+            errors.address = "Invalid Address";
+        } else {
+            const addressList = address.split(",").map((add) => add.trim());
+            if (addressList.length == 4) {
+                const streetAddressRegex = /^\d+\s+[a-zA-Z.\-' ]+$/;
+                if (streetAddressRegex.test(addressList[0])) {
+                    const cityRegex = /^[a-zA-Z]+$/;
+                    if (cityRegex.test(addressList[1])) {
+                        const stateRegex = /^[A-Z]{2}$/;
+                        if (stateRegex.test(addressList[2])) {
+                            const zipRegex = /^\d{5}(-\d{4})?$/;
+                            if (zipRegex.test(addressList[3])) {
+                                address = addressList.join(", ");
+                            } else {
+                                errors.address =
+                                    "Invalid Zip Code. Must Be a 5-digit or 9-digit zip code (e.g., 12345 or 12345-6789).";
+                            }
+                        } else {
+                            errors.address =
+                                "Invalid State Abbreviation. Must Be a 2-letter uppercase state abbreviation (e.g., IL, CA).";
+                        }
+                    } else {
+                        errors.address =
+                            "Invalid City. City must contain only alphabetic characters.";
+                    }
+                } else {
+                    errors.address =
+                        "Invalid Street Address. Must include a number followed by the street name (e.g., 123 Main St).";
+                }
+            } else {
+                errors.address =
+                    "Invalid Address. Must Be Comma Separated In The Following Format: Street Name and Number, City, State Abbreviation, Zip Code";
+            }
+        }
+
         // Phone validation
         const validPhone = /^(?:\d{10}|\d{3}-\d{3}-\d{4})$/;
         if (!phone) {
@@ -85,6 +125,7 @@ export const actions = {
                     dateOfBirth,
                     email,
                     phone,
+                    address,
                     insurance,
                     id
                 }
@@ -105,6 +146,7 @@ export const actions = {
                     dateOfBirth: dateOfBirthParsed,
                     email,
                     phone: updatedPhone,
+                    address,
                     insurance,
                     id
                 });
@@ -125,6 +167,7 @@ export const actions = {
                     dateOfBirth: dateOfBirthParsed,
                     email,
                     phone: updatedPhone,
+                    address,
                     insurance
                 });
 
