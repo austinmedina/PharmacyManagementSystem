@@ -2,7 +2,9 @@
     import Icon from "@iconify/svelte";
     import Item from "$lib/components/item.svelte";
     import {type CartEntry, type Prescription} from "$lib/types.js";
+    import Signature from "$lib/components/Signature.svelte";
     export let data;
+    export let signatureForm: HTMLDialogElement;
     let inventory: CartEntry[] = data.inventory;
     let prescriptions: Prescription[] = data.prescriptions;
     let cart = new Set<CartEntry | Prescription>();
@@ -10,8 +12,10 @@
     let search = "";
     let show_prescription = false;
     let show_non_prescription = false;
+    let cartPurchaseForm: HTMLFormElement;
 
     function toggleCart() {
+        console.log(showCart);
         showCart = !showCart;
     }
 
@@ -49,6 +53,11 @@
         } else if (item.quantity > item.totalQuantity) {
             item.quantity = item.totalQuantity;
         }
+    }
+
+    function onSign() {
+        signatureForm.close();
+        cartPurchaseForm?.submit();
     }
 </script>
 
@@ -213,7 +222,7 @@
                 </div>
                 <div class="flex justify-center gap-8">
                     {#key cart}
-                        <form method="POST">
+                        <form method="POST" bind:this={cartPurchaseForm}>
                             <input
                                 name="cart"
                                 value={JSON.stringify(Array.from(cart))}
@@ -221,7 +230,9 @@
                             <button
                                 type="submit"
                                 class="py-2 px-6 text-xl bg-green-500 hover:bg-green-400 rounded-xl text-white"
-                                >Purchase</button>
+                                on:click|preventDefault={() => {
+                                    signatureForm?.showModal();
+                                }}>Purchase</button>
                         </form>
                     {/key}
                     <button
@@ -229,6 +240,7 @@
                         on:click={clearCart}>Clear Cart</button>
                 </div>
             </div>
+            <Signature bind:signatureForm {onSign} />
         </div>
     {/if}
 </main>
