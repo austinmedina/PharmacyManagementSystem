@@ -215,11 +215,11 @@ export async function getAllInventory(db: D1Database) {
          products.name, 
          products.type, 
          products.price,
-         SUM(inventory.quantity) AS totalQuantity,
-         SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpired,
-         SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) AND DATE(inventory.expiration) > DATE(?) THEN inventory.quantity ELSE 0 END) AS numExpiringSoon
+         COALESCE(SUM(inventory.quantity), 0) AS totalQuantity,
+         COALESCE(SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) THEN inventory.quantity ELSE 0 END), 0) AS numExpired,
+         COALESCE(SUM(CASE WHEN DATE(inventory.expiration) < DATE(?) AND DATE(inventory.expiration) > DATE(?) THEN inventory.quantity ELSE 0 END), 0) AS numExpiringSoon
          FROM products
-         JOIN inventory ON products.id = inventory.productID
+         LEFT JOIN inventory ON products.id = inventory.productID
          GROUP BY products.id
          ORDER BY numExpired DESC
          `
@@ -244,6 +244,17 @@ export async function addInventory(
       `
     )
         .bind(productID, expirationDate, quantity)
+        .run();
+
+    db.prepare(
+        "INSERT INTO inventory_log (time, productID, action, quantity) VALUES (?, ?, ?, ?)"
+    )
+        .bind(
+            new Date().toISOString(),
+            productID,
+            types.InventoryAction.In,
+            quantity
+        )
         .run();
 }
 
@@ -482,4 +493,22 @@ export async function loadLogs(
             .prepare("SELECT * FROM " + logTableName(t))
             .all<types.LogEntry>()
     ).results;
+}
+
+export async function logPurchase(
+    db: D1Database,
+    time: string,
+    productID: number,
+    totalPrice: number,
+    quantity: number,
+    cartID: string
+) {
+    await db
+        .prepare(
+            `INSERT INTO purchase_log
+        (time, itemID, totalPrice, quantity, cartID)
+        VALUES (?, ?, ?, ?, ?)`
+        )
+        .bind(time, productID, totalPrice, quantity, cartID)
+        .run();
 }

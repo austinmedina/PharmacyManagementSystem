@@ -50,8 +50,8 @@
     function checkQuantity(item: CartEntry) {
         if (item.quantity < 0) {
             item.quantity = 0;
-        } else if (item.quantity > item.totalQuantity) {
-            item.quantity = item.totalQuantity;
+        } else if (item.quantity > item.totalQuantity - item.numExpired) {
+            item.quantity = item.totalQuantity - item.numExpired;
         }
     }
 

@@ -7,7 +7,10 @@
 
     function addToCart() {
         if ("type" in medication) {
-            medication.quantity = 1;
+            medication.quantity = Math.min(
+                1,
+                medication.totalQuantity - medication.numExpired
+            );
         }
         cart.add(medication);
         cart = new Set(cart);
@@ -29,7 +32,7 @@
         <span class="w-20 text-center">{medication.id}</span>
         <h1 class="w-60 text-center text-lg">{medication.name}</h1>
         <span class="w-24 text-center inline-block"
-            >{medication.totalQuantity} in stock</span>
+            >{medication.totalQuantity - medication.numExpired} available</span>
         <span class="w-32 text-center inline-block"
             >${(medication.price / 100).toFixed(2)} each</span>
     {:else}

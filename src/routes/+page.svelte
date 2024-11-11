@@ -32,7 +32,7 @@
             left: `${getRandomInt(0, 100)}%`,
             animationDelay: `${getRandomInt(0, 10)}s`,
             animationDuration: `${getRandomInt(5, 10)}s`,
-            index: "10",
+            index: "-2",
             width: `${getRandomInt(20, 100)}px`,
             height: `${getRandomInt(20, 100)}px`,
             rotationDirection:
@@ -147,7 +147,7 @@
             transform: translateY(-10%) rotate(0deg);
         }
         100% {
-            transform: translateY(100vh) rotate(360deg);
+            transform: translateY(110vh) rotate(360deg);
         }
     }
 
@@ -156,7 +156,7 @@
             transform: translateY(-10%) rotate(0deg);
         }
         100% {
-            transform: translateY(100vh) rotate(-360deg);
+            transform: translateY(110vh) rotate(-360deg);
         }
     }
 
