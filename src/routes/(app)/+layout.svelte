@@ -13,7 +13,7 @@
 
 <main class="mb-8">
     <div
-        class="fixed z-[-2] top-0 left-0 h-screen w-screen bg-gradient-to-tr from-cyan-400 to-indigo-500">
+        class="fixed z-[-2] top-0 left-0 h-screen w-screen bg-gradient-to-b from-cyan-400 to-indigo-300">
     </div>
 
     {#if data.userType === UserType.Manager}

@@ -129,7 +129,8 @@
     }
 </script>
 
-<div class="flex-col bg-neutral-200 p-4 rounded-3xl">
+<div
+    class="flex-col bg-neutral-200 border-2 border-neutral-400 p-4 rounded-3xl">
     <form method="POST" bind:this={editFormRef}>
         <div
             id="patientHeader"
@@ -145,7 +146,7 @@
                         >{patient.firstName + " " + patient.lastName}</strong>
                 </button>
                 <button
-                    class="text-right bg-purple-500 hover:bg-red-700 text-white py-1 px-4 rounded-xl"
+                    class="text-right bg-red-500 hover:bg-red-700 text-white py-1 px-4 rounded-xl"
                     on:click|preventDefault={() =>
                         removePatient(
                             patient.id,

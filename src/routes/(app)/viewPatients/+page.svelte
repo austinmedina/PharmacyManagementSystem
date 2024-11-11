@@ -59,9 +59,9 @@
 
 <main class="flex flex-col items-center text-center">
     <div id="pageHeader">
-        <h1 class="text-3xl my-8">View Patients</h1>
+        <h1 class="text-4xl my-4"><strong>View Patients</strong></h1>
         <button
-            class="mb-6 rounded-xl bg-blue-600 hover:bg-green-700 text-white py-1 px-4 text-xl"
+            class="mb-6 rounded-xl bg-green-600 hover:bg-green-700 border-2 border-green-800 text-white py-1 px-4 text-xl"
             on:click|preventDefault={() => (formDisplayed = !formDisplayed)}>
             {formDisplayed ? "Return to Patient List" : "Create New Patient"}
         </button>
@@ -73,20 +73,20 @@
 
     <div
         id="viewPatients"
-        class="w-full max-w-lg flex flex-col flex-grow gap-4 {formDisplayed
+        class="w-full max-w-xl flex flex-col flex-grow gap-4 {formDisplayed
             ? 'hidden'
             : 'visible'}">
         <div id="allPatientSearch">
             <input
                 type="text"
-                class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1"
+                class="w-full border-2 border-neutral-400 rounded-lg px-2 py-1"
                 placeholder="Search By Paitent Name"
                 autocomplete="off"
                 bind:value={inputValue} />
         </div>
         <div
             id="patientDisplay"
-            class="flex flex-col items-center gap-4 mb-4 w-full overflow-y-auto flex-grow max-h-[calc(70vh-200px)]">
+            class="flex flex-col items-center gap-4 mb-4 w-full overflow-y-auto flex-grow max-h-[calc(70vh-150px)]">
             {#if displayed.length > 0}
                 <ul class="p-4 space-y-2 w-full">
                     {#each displayed as item}
@@ -95,7 +95,7 @@
                 </ul>
             {:else}
                 <p
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full text-center">
+                    class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full text-center">
                     No results found
                 </p>
             {/if}
@@ -104,123 +104,131 @@
 
     <div
         id="newPatient"
-        class="w-full max-w-md text-center flex flex-col gap-4 {formDisplayed
+        class="w-full max-w-2xl text-center flex flex-col gap-2 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed
             ? 'visible'
             : 'hidden'}">
         {#if form?.errors && form?.errors.formKey == "createPatient"}
             <p class="error text-red-500 mt-2">Please Fix The Errors Below:</p>
         {/if}
         <form method="POST" class="flex flex-col items-center gap-2">
-            <div
-                class="flex flex-col mb-2 w-full bg-green-200 border-black border rounded-xl p-2">
-                <label for="fname" class="text-left text-md font-bold"
-                    >First Name</label>
-                <input
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
-                    id="fname"
-                    name="firstName"
-                    placeholder="Enter First Name"
-                    autocomplete="off"
-                    type="text"
-                    bind:value={firstName}
-                    required />
-                {#if form?.errors?.firstName && form?.errors.formKey == "createPatient"}
-                    <p class="text-red-500 text-sm">{form.errors.firstName}</p>
-                {/if}
+            <div class="flex flex-wrap w-full gap-y-4 gap-x-4">
+                <div
+                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label for="fname" class="text-left text-md font-bold"
+                        >First Name</label>
+                    <input
+                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        id="fname"
+                        name="firstName"
+                        placeholder="Enter First Name"
+                        autocomplete="off"
+                        type="text"
+                        bind:value={firstName}
+                        required />
+                    {#if form?.errors?.firstName && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.firstName}
+                        </p>
+                    {/if}
+                </div>
+                <div
+                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label for="lname" class="text-left text-md font-bold"
+                        >Last Name</label>
+                    <input
+                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        id="lname"
+                        name="lastName"
+                        placeholder="Enter Last Name"
+                        autocomplete="off"
+                        type="text"
+                        bind:value={lastName}
+                        required />
+                    {#if form?.errors?.lastName && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.lastName}
+                        </p>
+                    {/if}
+                </div>
+                <div
+                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label for="dob" class="text-left text-md font-bold"
+                        >Date of Birth</label>
+                    <input
+                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        id="dob"
+                        name="dateOfBirth"
+                        placeholder="Select Date of Birth"
+                        autocomplete="off"
+                        type="date"
+                        bind:value={dateOfBirth}
+                        required />
+                    {#if form?.errors?.dateOfBirth && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.dateOfBirth}
+                        </p>
+                    {/if}
+                </div>
+                <div
+                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label for="email" class="text-left text-md font-bold"
+                        >Email</label>
+                    <input
+                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        id="email"
+                        name="email"
+                        placeholder="Enter Email Address"
+                        autocomplete="off"
+                        type="email"
+                        bind:value={email}
+                        required />
+                    {#if form?.errors?.email && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">{form.errors.email}</p>
+                    {/if}
+                </div>
+                <div
+                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label for="phone" class="text-left text-md font-bold"
+                        >Phone</label>
+                    <input
+                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        id="phone"
+                        name="phone"
+                        placeholder="Enter Phone Number"
+                        autocomplete="off"
+                        type="tel"
+                        bind:value={phone}
+                        required />
+                    {#if form?.errors?.phone && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">{form.errors.phone}</p>
+                    {/if}
+                </div>
+                <div
+                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label for="address" class="text-left text-md font-bold"
+                        >Address</label>
+                    <input
+                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        id="address"
+                        name="address"
+                        placeholder="Enter Address"
+                        autocomplete="off"
+                        type="text"
+                        bind:value={address}
+                        required />
+                    {#if form?.errors?.address && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.address}
+                        </p>
+                    {/if}
+                </div>
             </div>
             <div
-                class="flex flex-col mb-2 w-full bg-green-200 border-black border rounded-xl p-2">
-                <label for="lname" class="text-left text-md font-bold"
-                    >Last Name</label>
-                <input
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
-                    id="lname"
-                    name="lastName"
-                    placeholder="Enter Last Name"
-                    autocomplete="off"
-                    type="text"
-                    bind:value={lastName}
-                    required />
-                {#if form?.errors?.lastName && form?.errors.formKey == "createPatient"}
-                    <p class="text-red-500 text-sm">{form.errors.lastName}</p>
-                {/if}
-            </div>
-            <div
-                class="flex flex-col mb-2 w-full bg-green-200 border-black border rounded-xl p-2">
-                <label for="dob" class="text-left text-md font-bold"
-                    >Date of Birth</label>
-                <input
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
-                    id="dob"
-                    name="dateOfBirth"
-                    placeholder="Select Date of Birth"
-                    autocomplete="off"
-                    type="date"
-                    bind:value={dateOfBirth}
-                    required />
-                {#if form?.errors?.dateOfBirth && form?.errors.formKey == "createPatient"}
-                    <p class="text-red-500 text-sm">
-                        {form.errors.dateOfBirth}
-                    </p>
-                {/if}
-            </div>
-            <div
-                class="flex flex-col mb-2 w-full bg-green-200 border-black border rounded-xl p-2">
-                <label for="email" class="text-left text-md font-bold"
-                    >Email</label>
-                <input
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
-                    id="email"
-                    name="email"
-                    placeholder="Enter Email Address"
-                    autocomplete="off"
-                    type="email"
-                    bind:value={email}
-                    required />
-                {#if form?.errors?.email && form?.errors.formKey == "createPatient"}
-                    <p class="text-red-500 text-sm">{form.errors.email}</p>
-                {/if}
-            </div>
-            <div
-                class="flex flex-col mb-2 w-full bg-green-200 border-black border rounded-xl p-2">
-                <label for="phone" class="text-left text-md font-bold"
-                    >Phone</label>
-                <input
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
-                    id="phone"
-                    name="phone"
-                    placeholder="Enter Phone Number"
-                    autocomplete="off"
-                    type="tel"
-                    bind:value={phone}
-                    required />
-                {#if form?.errors?.phone && form?.errors.formKey == "createPatient"}
-                    <p class="text-red-500 text-sm">{form.errors.phone}</p>
-                {/if}
-            </div>
-            <div
-                class="flex flex-col mb-2 w-full bg-green-200 border-black border rounded-xl p-2">
-                <label for="address" class="text-left text-md font-bold"
-                    >Address</label>
-                <input
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full mt-2"
-                    id="address"
-                    name="address"
-                    placeholder="Enter Address"
-                    autocomplete="off"
-                    type="text"
-                    bind:value={address}
-                    required />
-                {#if form?.errors?.address && form?.errors.formKey == "createPatient"}
-                    <p class="text-red-500 text-sm">{form.errors.address}</p>
-                {/if}
-            </div>
-            <div
-                class="flex mb-2 w-full bg-green-200 border-black border rounded-xl p-2 gap-3 items-center">
+                class="flex mb-2 bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl gap-3 items-center">
                 <label for="insurance" class="text-left text-md font-bold"
                     >Insurance</label>
                 <input
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1"
+                    class="border-2 border-neutral-400 rounded-lg px-2 py-1"
                     id="insurance"
                     name="insurance"
                     type="checkbox"
@@ -232,7 +240,7 @@
             </div>
             <button
                 type="submit"
-                class="bg-blue-500 hover:bg-green-500 text-white px-4 py-2 rounded-lg">
+                class=" w-1/2 bg-green-600 hover:bg-green-700 border-2 border-green-800 rounded-xl px-4 py-2 text-white">
                 Submit
             </button>
         </form>

@@ -25,7 +25,7 @@
 
 <div id="search" class="w-full">
     <input
-        class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1"
+        class="w-full max-w-lg border-2 border-neutral-400 rounded-xl px-2 py-1 mt-2"
         {placeholder}
         autocomplete="off"
         bind:value={inputValue}
@@ -42,7 +42,7 @@
             <ul class="p-4 space-y-2">
                 {#each displayed as item}
                     <button
-                        class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1 mb-1"
+                        class="w-full border-2 border-neutral-400 rounded-xl px-2 py-1 mb-1"
                         on:mousedown={() => {
                             inputValue = item.name;
                             resultID = item.id;
@@ -52,7 +52,7 @@
         </div>
     {:else if dropdownVisible}
         <div class="dropdown visible mt-2">
-            <p class="border-2 border-neutral-300 rounded-lg px-2 py-1">
+            <p class="border-2 border-neutral-400 rounded-xl px-2 py-1">
                 No results found
             </p>
         </div>

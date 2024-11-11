@@ -27,7 +27,6 @@
     );
     export let serverPatients: PatientType[] = data.patients;
     export let serverProducts: ProductType[] = data.products;
-    export let placeholder;
     let displayed: {[key: number]: PrescriptionType[]} = {}; // Explicitly define the type for displayed
     let inputValue = "";
     let message = form?.success;
@@ -126,9 +125,9 @@
 
 <main class="flex flex-col items-center text-center">
     <div id="pageHeader">
-        <h1 class="text-3xl my-8">View Prescriptions</h1>
+        <h1 class="text-4xl my-4"><strong>View Prescriptions</strong></h1>
         <button
-            class="mb-6 rounded-xl bg-blue-600 hover:bg-green-700 text-white py-1 px-4 text-xl"
+            class="mb-6 rounded-xl bg-green-600 hover:bg-green-700 border-2 border-green-800 text-white py-1 px-4 text-xl"
             on:click|preventDefault={() => (formDisplayed = !formDisplayed)}>
             {formDisplayed
                 ? "Return to Prescription List"
@@ -142,32 +141,33 @@
 
     <div
         id="viewPrescriptions"
-        class="w-full max-w-lg flex flex-col flex-grow gap-4 {formDisplayed
+        class="w-full max-w-xl flex flex-col flex-grow gap-4 {formDisplayed
             ? 'hidden'
             : 'visible'}">
         <div id="allPrescriptionSearch">
             <input
                 type="text"
-                class="w-full border-2 border-neutral-300 rounded-lg px-2 py-1"
-                {placeholder}
+                class="w-full border-2 border-neutral-400 rounded-lg px-2 py-1"
+                placeholder="Search By Patient Name"
                 autocomplete="off"
                 bind:value={inputValue} />
         </div>
         <div
             id="prescriptionDisplay"
-            class="flex flex-col items-center gap-4 mb-4 w-full overflow-y-auto flex-grow max-h-[calc(70vh-200px)]">
+            class="flex flex-col items-center gap-2 mb-2 w-full overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)]">
             {#if Object.keys(displayed).length > 0}
-                <ul class="p-4 space-y-2 w-full">
+                <ul class="p-4 space-y-1 w-full">
                     {#each Object.entries(displayed) as [_key, value]}
-                        <div class="bg-neutral-200 p-4 rounded-3xl space-y-4">
+                        <div
+                            class="bg-neutral-200 border-2 border-neutral-400 p-4 rounded-3xl space-y-2">
                             <h2 class="text-xl font-semibold">
                                 {value[0].patient.firstName +
                                     " " +
                                     value[0].patient.lastName}
                             </h2>
-
+                            <hr />
                             {#each value as prescription}
-                                <div class="border-b pb-2">
+                                <div>
                                     <div
                                         class="flex justify-between items-center">
                                         <button
@@ -184,7 +184,7 @@
                                                 : "Non-Rx"})
                                         </button>
                                         <button
-                                            class="bg-purple-500 hover:bg-red-700 text-white py-1 px-4 rounded-xl"
+                                            class="bg-red-500 hover:bg-red-700 text-white py-1 px-4 rounded-xl"
                                             type="submit"
                                             on:click|preventDefault={() =>
                                                 removePrescription(
@@ -199,7 +199,7 @@
                                         </button>
                                     </div>
                                     {#if expandedPrescriptionIds.has(prescription.id)}
-                                        <div class="mt-2 ml-4 space-y-1">
+                                        <div class="text-left ml-4 space-y-1">
                                             <p>
                                                 <strong>Quantity:</strong>
                                                 {prescription.quantity}
@@ -230,7 +230,7 @@
                 </ul>
             {:else}
                 <p
-                    class="border-2 border-neutral-300 rounded-lg px-2 py-1 w-full text-center">
+                    class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full text-center">
                     No results found
                 </p>
             {/if}
@@ -238,44 +238,61 @@
     </div>
     <div
         id="newPrescription"
-        class="w-full max-w-md text-center flex flex-col gap-4 {formDisplayed
+        class="w-full max-w-md text-center flex flex-col gap-4 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed
             ? 'visible'
             : 'hidden'}">
         {#if form?.errors && form?.errors.formKey == "createPrescription"}
             <p class="error text-red-500 mt-2">Please Fix The Errors Below:</p>
         {/if}
 
-        <form method="POST" class="flex flex-col items-center gap-4">
-            {#if form?.errors?.patientID && form?.errors.formKey == "createPrescription"}
-                <p class="error text-red-500 mt-2">{form?.errors.patientID}</p>
-            {/if}
-            <SearchableInput
-                items={serverPatients.map((patient) => {
-                    let p = {
-                        ...patient,
-                        name: patient.firstName + " " + patient.lastName
-                    };
-                    return p;
-                })}
-                placeholder="Search Person By Name"
-                name="patient" />
+        <form method="POST" class="flex flex-col text-left items-center gap-4">
+            <div
+                class="w-full bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                {#if form?.errors?.patientID && form?.errors.formKey == "createPrescription"}
+                    <p class="error text-red-500 mt-2">
+                        {form?.errors.patientID}
+                    </p>
+                {/if}
 
-            {#if form?.errors?.productID && form?.errors.formKey == "createPrescription"}
-                <p class="error text-red-500 mt-2">{form.errors.productID}</p>
-            {/if}
-            <SearchableInput
-                items={serverProducts}
-                placeholder="Search Drug By Name"
-                name="product" />
-
+                <label for="patient" class="text-left text-md font-bold"
+                    >Patient</label>
+                <SearchableInput
+                    items={serverPatients.map((patient) => {
+                        let p = {
+                            ...patient,
+                            name: patient.firstName + " " + patient.lastName
+                        };
+                        return p;
+                    })}
+                    placeholder="Search Person By Name"
+                    name="patient" />
+            </div>
+            <div
+                class="w-full bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                {#if form?.errors?.productID && form?.errors.formKey == "createPrescription"}
+                    <p class="error text-red-500 mt-2">
+                        {form.errors.productID}
+                    </p>
+                {/if}
+                <label for="product" class="text-left text-md font-bold"
+                    >Product</label>
+                <SearchableInput
+                    items={serverProducts}
+                    placeholder="Search Drug By Name"
+                    name="product" />
+            </div>
             {#if form?.errors?.quantity && form?.errors.formKey == "createPrescription"}
                 <p class="error text-red-500 mt-2">{form.errors.quantity}</p>
             {/if}
             <div class="w-full">
-                <div class="flex flex-col mb-4">
-                    <label for="quantity">Number of Pills</label>
+                <div
+                    class="flex flex-col mb-4 bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label
+                        for="quantity"
+                        class="text-left text-md font-bold mb-2"
+                        >Number of Pills</label>
                     <input
-                        class="border-2 border-neutral-300 rounded-lg px-2 py-1"
+                        class="border-2 border-neutral-400 rounded-xl px-2 py-1"
                         id="quantity"
                         name="quantity"
                         autocomplete="off"
@@ -287,10 +304,12 @@
                 {#if form?.errors?.period && form?.errors.formKey == "createPrescription"}
                     <p class="error text-red-500 mb-2">{form.errors.period}</p>
                 {/if}
-                <div class="flex flex-col mb-4">
-                    <label for="period">Prescription Period (# of Weeks)</label>
+                <div
+                    class="flex flex-col mb-4 bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                    <label for="period" class="text-left text-md font-bold mb-2"
+                        >Prescription Period (# of Weeks)</label>
                     <input
-                        class="border-2 border-neutral-300 rounded-lg px-2 py-1"
+                        class="border-2 border-neutral-400 rounded-xl px-2 py-1"
                         id="period"
                         name="period"
                         autocomplete="off"
@@ -300,9 +319,9 @@
                 </div>
             </div>
 
-            <div class="w-full">
+            <div class=" w-3/4">
                 <button
-                    class="w-full bg-black text-white rounded-lg px-4 py-2"
+                    class="w-full bg-green-600 hover:bg-green-700 border-2 border-green-800 rounded-xl px-4 py-2 text-white"
                     type="submit">Submit</button>
             </div>
         </form>
