@@ -154,7 +154,7 @@
         </div>
         <div
             id="prescriptionDisplay"
-            class="flex flex-col items-center gap-2 mb-2 w-full overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)]">
+            class="flex flex-col items-center gap-2 mb-2 w-full overflow-y-auto scroll flex-grow max-h-[calc(80vh)]">
             {#if Object.keys(displayed).length > 0}
                 <ul class="p-4 space-y-1 w-full">
                     {#each Object.entries(displayed) as [_key, value]}

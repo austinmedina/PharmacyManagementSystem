@@ -11,7 +11,7 @@
     let inventory = data.inventory;
 </script>
 
-<main class="mb-8">
+<main class="flex flex-col min-h-screen">
     <div
         class="fixed z-[-2] top-0 left-0 h-screen w-screen bg-gradient-to-b from-cyan-400 to-indigo-300">
     </div>
@@ -26,7 +26,9 @@
         <TechNavbar />
     {/if}
 
-    <slot />
+    <div class="flex-1 mb-8">
+        <slot />
+    </div>
 
     <Footer />
 </main>

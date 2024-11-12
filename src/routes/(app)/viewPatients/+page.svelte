@@ -86,7 +86,7 @@
         </div>
         <div
             id="patientDisplay"
-            class="flex flex-col items-center gap-4 mb-4 w-full overflow-y-auto flex-grow max-h-[calc(70vh-150px)]">
+            class="flex flex-col items-center gap-4 mb-4 w-full overflow-y-auto flex-grow max-h-[calc(70vh-200px)]">
             {#if displayed.length > 0}
                 <ul class="p-4 space-y-2 w-full">
                     {#each displayed as item}
