@@ -512,3 +512,21 @@ export async function logPurchase(
         .bind(time, productID, totalPrice, quantity, cartID)
         .run();
 }
+
+export async function loadInventoryReport(
+    db: D1Database
+): Promise<types.InventoryLogEntry[]> {
+    const result = await db
+        .prepare("SELECT * FROM inventory_log")
+        .all<types.InventoryLogEntry>();
+    return result.results;
+}
+
+export async function loadFinancialReport(
+    db: D1Database
+): Promise<types.PurchaseLogEntry[]> {
+    const result = await db
+        .prepare("SELECT * FROM purchase_log")
+        .all<types.PurchaseLogEntry>();
+    return result.results;
+}
