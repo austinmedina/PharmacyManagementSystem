@@ -17,7 +17,7 @@
             if (!response.ok) {
                 throw new Error("Failed to delete patient");
             } else {
-                console.log(`Patient with ID ${patientID} has been deleted.`);
+                // console.log(`Patient with ID ${patientID} has been deleted.`);
                 expanded = false;
                 onPatientRemoved(patientName);
             }

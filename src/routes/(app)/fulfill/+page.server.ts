@@ -12,7 +12,7 @@ export const actions: Actions = {
     fill: async ({request, locals}) => {
         const data = await request.formData();
         const prescriptionID = parseInt(data.get("prescriptionID") as string);
-        console.log(`Filled prescription: ${prescriptionID}`);
+        // console.log(`Filled prescription: ${prescriptionID}`);
 
         // Load prescription from db, don't pass it from the client.
         // Never trust client-side data.

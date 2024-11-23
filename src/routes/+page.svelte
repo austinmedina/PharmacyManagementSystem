@@ -46,7 +46,7 @@
     //DOES NOT WORK
     function resetPillStyle(index: number) {
         // reset the pill style to a new random style when animation finishes
-        console.log("resetting pill style", index);
+        // console.log("resetting pill style", index);
         pillStyles[index] = generateRandomPillStyle();
     }
 </script>

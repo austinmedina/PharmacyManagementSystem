@@ -5,7 +5,7 @@
     export let data: PageData;
     let form: HTMLFormElement | null;
     let selected: number | null;
-    console.log(data);
+    // console.log(data);
 </script>
 
 <main class="container mx-auto px-4 py-4">

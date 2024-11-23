@@ -14,7 +14,7 @@
 
         if (response.ok) {
             users = users.filter((user) => user.id !== userId);
-            console.log("User deleted successfully");
+            // console.log("User deleted successfully");
         } else {
             const errorMessage = await response.text();
             console.error("Error deleting user:", errorMessage);

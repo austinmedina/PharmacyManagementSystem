@@ -530,3 +530,18 @@ export async function loadFinancialReport(
         .all<types.PurchaseLogEntry>();
     return result.results;
 }
+
+export async function addProduct(
+    db: D1Database,
+    name: string,
+    price: number,
+    type: types.ProductType
+) {
+    db.prepare(
+        `INSERT INTO products
+      VALUES (null, ?, ?, ?)
+      `
+    )
+        .bind(name, price, type)
+        .run();
+}

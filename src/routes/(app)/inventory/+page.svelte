@@ -2,10 +2,22 @@
     import Medication from "$lib/components/medication.svelte";
     export let data;
     let inventory = data.inventory;
+    let search: string = "";
 </script>
 
 <main>
     <h1 class="text-center text-white text-5xl my-10">Inventory</h1>
+    <div class="flex flex-col items-center">
+        <a href="/addProduct">
+            <button
+                class="text-white text-lg rounded-lg px-4 py-1 bg-green-600 hover:bg-green-700"
+                >Add New Product</button>
+        </a>
+        <input
+            bind:value={search}
+            placeholder="Search for Inventory"
+            class="rounded-xl py-2 px-4 mt-4 mb-8 w-1/4 border-2 border-neutral-300 shadow-2xl" />
+    </div>
     <div class="flex flex-col gap-4 mx-8 lg:mx-40">
         <div class="flex justify-between text-lg px-4 text-white">
             <span class="w-20 text-center">ID</span>
@@ -16,7 +28,9 @@
         </div>
         <!-- These will eventually be looped through -->
         {#each inventory as product}
-            <Medication medication={product} />
+            {#if product.name.toLowerCase().match(search.toLowerCase())}
+                <Medication medication={product} />
+            {/if}
         {/each}
     </div>
 </main>

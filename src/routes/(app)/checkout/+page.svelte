@@ -15,7 +15,6 @@
     let cartPurchaseForm: HTMLFormElement;
 
     function toggleCart() {
-        console.log(showCart);
         showCart = !showCart;
     }
 

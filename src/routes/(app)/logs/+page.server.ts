@@ -4,7 +4,7 @@ import {loadLogs} from "$lib/util";
 import {redirect} from "@sveltejs/kit";
 
 export const load: PageServerLoad = async ({locals, url}) => {
-    console.log(url.searchParams.get("type"));
+    // console.log(url.searchParams.get("type"));
     try {
         const type: LogType = parseInt(url.searchParams.get("type") ?? "0");
         return {
