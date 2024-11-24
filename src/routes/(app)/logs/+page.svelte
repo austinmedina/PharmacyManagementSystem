@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {PageData} from "./$types";
     import {LogType} from "$lib/types";
+    import {fade} from "svelte/transition";
 
     export let data: PageData;
     let form: HTMLFormElement | null;
@@ -8,7 +9,7 @@
     // console.log(data);
 </script>
 
-<main class="container mx-auto px-4 py-4">
+<main class="container mx-auto px-4 py-4" in:fade={{delay: 400}} out:fade>
     <h3 class="text-2xl text-center">Logs</h3>
     <div class="flex justify-center py-2">
         <form bind:this={form} action="/logs">

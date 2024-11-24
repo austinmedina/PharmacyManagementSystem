@@ -2,6 +2,7 @@
 <script lang="ts">
     import type {CartEntry} from "$lib/types";
     import Icon from "@iconify/svelte";
+    import {slide} from "svelte/transition";
 
     export let inventory: CartEntry[] | undefined;
     let showMenu = false;
@@ -21,8 +22,8 @@
     }
 </script>
 
-<nav class="flex justify-between p-8 mt-6 bg-white shadow-2xl">
-    <Icon icon="mdi:pill" class="text-green-600 w-10 h-10" />
+<nav class="flex justify-between p-8 mt-6 bg-white shadow-2xl" transition:slide>
+    <Icon icon="mdi:pill" class="text-blue-400 w-10 h-10" />
     <div class="flex justify-evenly gap-8">
         <a
             href="/viewPatients"
@@ -67,6 +68,7 @@
             </button>
             {#if showNotification}
                 <div
+                    transition:slide
                     class="absolute top-24 right-0 bg-white w-96 max-h-60 overflow-auto py-2 mt-2 rounded-lg shadow-xl">
                     <div class="flex flex-col text-center">
                         {#each expired as item}
@@ -101,6 +103,7 @@
         </button>
         {#if showMenu}
             <div
+                transition:slide
                 class="absolute top-24 right-0 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
                 <a
                     href="/profile"

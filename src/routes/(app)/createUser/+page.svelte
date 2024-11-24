@@ -1,4 +1,6 @@
 <script lang="ts">
+    import {fade} from "svelte/transition";
+
     let firstName = "";
     let lastName = "";
     let username = "";
@@ -8,6 +10,8 @@
 </script>
 
 <main
+    in:fade={{delay: 400}}
+    out:fade
     class="flex flex-col mx-auto w-1/2 border-2 border-green-500 rounded-lg px-2 py-1">
     <h1 class="text-center text-4xl my-8">Create an Account</h1>
 

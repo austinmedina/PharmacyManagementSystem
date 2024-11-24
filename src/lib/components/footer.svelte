@@ -5,7 +5,7 @@
 <div
     class="footer w-full bg-gray-100 text-gray-800 py-6 px-8 border-t border-gray-300 flex justify-between items-center text-sm">
     <div class="flex items-center space-x-4">
-        <Icon icon="mdi:pill" class="text-green-600 w-10 h-10" />
+        <Icon icon="mdi:pill" class="text-blue-400 w-10 h-10" />
         <div class="flex flex-col justify-center">
             <h1 class="text-lg font-semibold">Legacy Pharmacy</h1>
             <a

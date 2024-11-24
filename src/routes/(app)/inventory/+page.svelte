@@ -1,11 +1,12 @@
 <script lang="ts">
+    import {fade} from "svelte/transition";
     import Medication from "$lib/components/medication.svelte";
     export let data;
     let inventory = data.inventory;
     let search: string = "";
 </script>
 
-<main>
+<main in:fade={{delay: 400}} out:fade>
     <h1 class="text-center text-white text-5xl my-10">Inventory</h1>
     <div class="flex flex-col items-center">
         <a href="/addProduct">

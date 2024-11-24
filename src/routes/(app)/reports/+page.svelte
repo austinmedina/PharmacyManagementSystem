@@ -1,4 +1,5 @@
 <script lang="ts">
+    import {fade} from "svelte/transition";
     import {utils, writeFileXLSX} from "xlsx";
 
     export let data;
@@ -78,7 +79,7 @@
     }
 </script>
 
-<div class="max-w-7xl mx-auto p-4">
+<div class="max-w-7xl mx-auto p-4" in:fade={{delay: 400}} out:fade>
     <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
             Filter Reports by Date

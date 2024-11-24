@@ -1,5 +1,6 @@
 <script lang="ts">
     import Prescription from "$lib/components/prescription.svelte";
+    import {fade} from "svelte/transition";
     import type {PageData} from "./$types";
 
     export let data: PageData;
@@ -7,7 +8,7 @@
     let selected: number | null;
 </script>
 
-<main class="container mx-auto px-4">
+<main class="container mx-auto px-4" in:fade={{delay: 400}} out:fade>
     {#each data.prescriptions as prescription}
         <form method="POST" action="?/fill">
             <div

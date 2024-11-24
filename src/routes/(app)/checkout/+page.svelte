@@ -3,6 +3,7 @@
     import Item from "$lib/components/item.svelte";
     import {type CartEntry, type Prescription} from "$lib/types.js";
     import Signature from "$lib/components/Signature.svelte";
+    import {fade, scale} from "svelte/transition";
     export let data;
     export let signatureForm: HTMLDialogElement;
     let inventory: CartEntry[] = data.inventory;
@@ -60,7 +61,7 @@
     }
 </script>
 
-<main class="mx-20 lg:mx-40">
+<main class="mx-20 lg:mx-40" in:fade={{delay: 400}} out:fade>
     <h1 class="text-center text-4xl text-white my-8">Checkout</h1>
     <div class="flex justify-center gap-10 items-end mb-4">
         <div>
@@ -100,9 +101,13 @@
     <div class="flex flex-col gap-4 px-4 mb-4 max-h-96 overflow-auto shadow-lg">
         {#key show_prescription || show_non_prescription}
             {#each prescriptions as product}
-                {#if product.product.name
+                {#if (product.product.name
                     .toLowerCase()
-                    .match(search.toLowerCase()) && (show_prescription || (!show_prescription && !show_non_prescription))}
+                    .match(search.toLowerCase()) || product.patient.firstName
+                        .toLowerCase()
+                        .match(search.toLowerCase()) || product.patient.lastName
+                        .toLowerCase()
+                        .match(search.toLowerCase())) && (show_prescription || (!show_prescription && !show_non_prescription))}
                     <Item medication={product} bind:cart />
                 {/if}
             {/each}
@@ -124,6 +129,7 @@
 
     {#if showCart}
         <div
+            transition:scale
             class="absolute top-0 left-0 w-full h-screen flex justify-center items-center">
             <div
                 class="bg-cyan-50 w-1/2 h-2/3 rounded-3xl p-4 shadow-blue-400 shadow-2xl border-2 border-blue-300">

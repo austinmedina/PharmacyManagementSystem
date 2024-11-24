@@ -1,5 +1,6 @@
 <script lang="ts">
     import Account from "$lib/components/accounts.svelte";
+    import {fade} from "svelte/transition";
     export let data;
     let users = data.user;
 
@@ -33,6 +34,8 @@
 </script>
 
 <main
+    in:fade={{delay: 400}}
+    out:fade
     class="flex flex-col mx-auto w-3/4 border-2 border-black rounded-lg shadow-lg p-4 bg-gray-50">
     <h1 class="text-center text-4xl font-bold text-gray-800 mb-6">
         Manage Accounts

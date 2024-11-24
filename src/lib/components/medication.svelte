@@ -1,6 +1,7 @@
 <script lang="ts">
     import type {CartEntry} from "$lib/types";
     import Icon from "@iconify/svelte";
+    import {scale} from "svelte/transition";
     export let medication: CartEntry;
     let showAdd = false;
     let showRemove = false;
@@ -32,6 +33,7 @@
 </script>
 
 <div
+    transition:scale
     class="flex justify-between items-center
 bg-cyan-50 rounded-xl py-4 px-4">
     <span class="w-20 text-center">{medication.id}</span>
@@ -54,6 +56,7 @@ bg-cyan-50 rounded-xl py-4 px-4">
 </div>
 {#if showAdd}
     <form
+        transition:scale
         method="POST"
         action="/inventory?/add"
         class="absolute top-0 left-0 w-full h-screen flex justify-center items-center">
@@ -112,6 +115,7 @@ bg-cyan-50 rounded-xl py-4 px-4">
 {/if}
 {#if showRemove}
     <form
+        transition:scale
         method="POST"
         action="/inventory?/remove"
         class="absolute top-0 left-0 w-full h-screen flex justify-center items-center">

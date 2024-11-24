@@ -2,6 +2,7 @@
     import Patient from "$lib/components/patient.svelte";
     import type {PageData} from "./$types";
     import type {Patient as PatientType} from "$lib/types"; // Import the Patient type
+    import {fade} from "svelte/transition";
 
     export let data: PageData;
     export let form;
@@ -57,7 +58,10 @@
     $: displayed = search(items, inputValue);
 </script>
 
-<main class="flex flex-col items-center text-center">
+<main
+    class="flex flex-col items-center text-center"
+    in:fade={{delay: 400}}
+    out:fade>
     <div id="pageHeader">
         <h1 class="text-4xl my-4"><strong>View Patients</strong></h1>
         <button

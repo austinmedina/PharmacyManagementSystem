@@ -9,6 +9,7 @@
         Patient as PatientType,
         Product as ProductType
     } from "$lib/types";
+    import {fade} from "svelte/transition";
     export let form;
 
     export let serverPrescriptions = data.prescriptions.reduce(
@@ -123,7 +124,10 @@
     $: displayed = search(serverPrescriptions, inputValue);
 </script>
 
-<main class="flex flex-col items-center text-center">
+<main
+    class="flex flex-col items-center text-center"
+    in:fade={{delay: 400}}
+    out:fade>
     <div id="pageHeader">
         <h1 class="text-4xl my-4"><strong>View Prescriptions</strong></h1>
         <button

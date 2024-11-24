@@ -1,5 +1,6 @@
 <script lang="ts">
     import {ProductType} from "$lib/types";
+    import {fade} from "svelte/transition";
     let price: number = 0;
 
     function checkPrice() {
@@ -9,7 +10,7 @@
     }
 </script>
 
-<main>
+<main in:fade={{delay: 400}} out:fade>
     <h1 class="text-center mt-12 text-white text-3xl">Add New Product</h1>
     <div class="flex justify-center mt-8">
         <form
