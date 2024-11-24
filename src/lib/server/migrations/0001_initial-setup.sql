@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS inventory (
 CREATE TABLE IF NOT EXISTS logloglog (
     id            INTEGER PRIMARY KEY NOT NULL,
     time          TEXT NOT NULL,
-    userID        INTEGER NOT NULL,
+    userID        TEXT NOT NULL,
     action        INTEGER NOT NULL,
     FOREIGN KEY(userID) REFERENCES users(id)
 );
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS fill_log (
     id             INTEGER PRIMARY KEY NOT NULL,
     time           TEXT NOT NULL,
     prescriptionID INTEGER NOT NULL,
-    userID         INTEGER NOT NULL,
+    userID         TEXT NOT NULL,
     FOREIGN KEY(prescriptionID) REFERENCES prescriptions(id),
     FOREIGN KEY(userID) REFERENCES users(id)
 );

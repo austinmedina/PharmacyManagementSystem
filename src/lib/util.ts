@@ -467,32 +467,80 @@ export async function deleteUser(
     await db.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
 }
 
-function logTableName(t: types.LogType): string {
-    if (t === types.LogType.Fill) {
-        return "fill_log";
-    } else if (t === types.LogType.Inventory) {
-        return "inventory_log";
-    } else if (t === types.LogType.LogLog) {
-        return "logloglog";
-    } else if (t === types.LogType.Purchase) {
-        return "purchase_log";
-    } else {
-        return "";
-    }
-}
-
-export async function loadLogs(
-    db: D1Database,
-    t: types.LogType,
-    _i: number = 0,
-    _n: number | undefined = undefined
-): Promise<types.LogEntry[]> {
-    console.debug(logTableName(t));
+export async function loadLogLogLogs(
+    db: D1Database
+): Promise<(types.LogLogLogEntry & {name: string; username: string})[]> {
     return (
         await db
-            .prepare("SELECT * FROM " + logTableName(t))
-            .all<types.LogEntry>()
-    ).results;
+            .prepare(
+                "SELECT logloglog.*, users.firstName || ' ' || users.lastName AS name, users.username FROM logloglog JOIN users ON logloglog.userID = users.id;"
+            )
+            .all<types.LogLogLogEntry & {name: string; username: string}>()
+    ).results.map((entry) => {
+        entry.type = types.LogType.LogLog;
+        entry.time = new Date(entry.time);
+        return entry;
+    });
+}
+
+export async function loadPurchaseLogs(
+    db: D1Database
+): Promise<(types.PurchaseLogEntry & {name: string})[]> {
+    return (
+        await db
+            .prepare(
+                "SELECT purchase_log.*, products.name FROM purchase_log JOIN products ON purchase_log.itemID = products.id;"
+            )
+            .all<types.PurchaseLogEntry & {name: string}>()
+    ).results.map((entry) => {
+        entry.type = types.LogType.Purchase;
+        entry.time = new Date(entry.time);
+        return entry;
+    });
+}
+
+export async function loadInventoryLogs(
+    db: D1Database
+): Promise<(types.InventoryLogEntry & {name: string})[]> {
+    return (
+        await db
+            .prepare(
+                "SELECT inventory_log.*, products.name FROM inventory_log JOIN products ON inventory_log.productID = products.id;"
+            )
+            .all<types.InventoryLogEntry & {name: string}>()
+    ).results.map((entry) => {
+        entry.type = types.LogType.Inventory;
+        entry.time = new Date(entry.time);
+        return entry;
+    });
+}
+
+export async function loadFillLogs(db: D1Database): Promise<
+    (types.FillLogEntry & {
+        name: string;
+        username: string;
+        patientID: number;
+        patient: string;
+    })[]
+> {
+    return (
+        await db
+            .prepare(
+                "SELECT fill_log.*, users.firstName || ' ' || users.lastName as name, users.username, prescriptions.patientID, patients.firstName || ' ' || patients.lastName as patient FROM fill_log JOIN users ON fill_log.userID = users.id JOIN prescriptions on fill_log.prescriptionID = prescriptions.id JOIN patients on prescriptions.patientID = patients.id"
+            )
+            .all<
+                types.FillLogEntry & {
+                    name: string;
+                    username: string;
+                    patientID: number;
+                    patient: string;
+                }
+            >()
+    ).results.map((entry) => {
+        entry.type = types.LogType.Fill;
+        entry.time = new Date(entry.time);
+        return entry;
+    });
 }
 
 export async function logPurchase(

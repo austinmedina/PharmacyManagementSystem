@@ -120,3 +120,7 @@ INSERT INTO inventory_log VALUES (null, "2024-11-17T09:00:00-07:00", 1, 1, 12);
 INSERT INTO inventory_log VALUES (null, "2024-11-17T11:30:00-07:00", 2, 2, 6);
 INSERT INTO inventory_log VALUES (null, "2024-11-17T14:00:00-07:00", 3, 1, 10);
 
+INSERT INTO logloglog VALUES (null, "2024-10-21T00:00:00-07:00", "user1", 0);
+INSERT INTO logloglog VALUES (null, "2024-10-21T00:50:00-07:00", "user1", 1);
+
+INSERT INTO fill_log VALUES (null, "2024-10-21T00:00:00-07:00", 2, "user2");

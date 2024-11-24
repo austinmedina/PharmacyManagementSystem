@@ -88,6 +88,7 @@ export type InventoryEntry = {
 };
 
 export type LogLogLogEntry = {
+    type: LogType.LogLog;
     id: LogID;
     time: Date;
     userID: UserID;
@@ -95,6 +96,7 @@ export type LogLogLogEntry = {
 };
 
 export type PurchaseLogEntry = {
+    type: LogType.Purchase;
     id: PurchaseLogID;
     time: Date;
     itemID: ItemID;
@@ -104,6 +106,7 @@ export type PurchaseLogEntry = {
 };
 
 export type InventoryLogEntry = {
+    type: LogType.Inventory;
     id: InventoryLogID;
     time: Date;
     productID: ProductID;
@@ -119,6 +122,7 @@ export type Product = {
 };
 
 export type FillLogEntry = {
+    type: LogType.Fill;
     id: FillLogID;
     time: Date;
     prescriptionID: PrescriptionID;
@@ -142,7 +146,12 @@ export type CartEntry = {
 };
 
 export type LogEntry =
-    | LogLogLogEntry
-    | PurchaseLogEntry
-    | InventoryLogEntry
-    | FillLogEntry;
+    | (LogLogLogEntry & {name: string; username: string})
+    | (PurchaseLogEntry & {name: string})
+    | (InventoryLogEntry & {name: string})
+    | (FillLogEntry & {
+          name: string;
+          username: string;
+          patientID: number;
+          patient: string;
+      });

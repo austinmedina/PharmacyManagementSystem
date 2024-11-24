@@ -1,20 +1,25 @@
 <script lang="ts">
     import type {PageData} from "./$types";
-    import {LogType} from "$lib/types";
     import {fade} from "svelte/transition";
+    import {InventoryAction, Log, LogType} from "$lib/types";
 
     export let data: PageData;
     let form: HTMLFormElement | null;
     let selected: number | null;
-    // console.log(data);
 </script>
 
 <main class="container mx-auto px-4 py-4" in:fade={{delay: 400}} out:fade>
     <h3 class="text-2xl text-center">Logs</h3>
-    <div class="flex justify-center py-2">
+    <div class="flex mx-auto my-2 w-60 justify-center py-2 rounded-xl bg-white">
         <form bind:this={form} action="/logs">
             <label for="type">Log type:</label>
-            <select name="type" on:change={() => form?.requestSubmit()}>
+            <select
+                class="rounded-xl w-28 text-center bg-cyan-300"
+                name="type"
+                on:change={() => {
+                    form?.requestSubmit();
+                    selected = null;
+                }}>
                 {#each [...Array(Object.keys(LogType).length / 2).keys()] as type}
                     <option value={type}>{LogType[type]}</option>
                 {/each}
@@ -23,36 +28,82 @@
     </div>
     <div>
         <ul>
-            {#each data.logs as log, i}
+            {#each data.logs.reverse() as log, i}
                 <li>
-                    {#if selected !== null && selected == i}
-                        <button
-                            on:click={() => (selected = null)}
-                            class="w-8/12 mx-auto flex flex-col bg-neutral-100 p-4 mb-2 rounded-3xl">
-                            <div class="flex flex-row">
-                                {log.time}
-                                {#if data.type == LogType.Fill}
-                                    <!-- TODO: fill in actual data -->
-                                    <div class="mx-4">Filled Prescription</div>
-                                {/if}
-                            </div>
-                            <div>
-                                ID: 0 <br />
-                                PharmacistID: 1 <br />
-                                PrescriptionID: 6 <br />
-                            </div>
-                        </button>
-                    {:else}
-                        <button
-                            on:click={() => (selected = i)}
-                            class="w-8/12 mx-auto flex flex-row bg-neutral-100 p-4 mb-2 rounded-3xl">
-                            {log.time}
-                            {#if data.type == LogType.Fill}
-                                <!-- TODO: fill in actual data -->
-                                <div class="mx-4">Filled Prescription</div>
+                    <button
+                        on:click={() => (selected = selected === i ? null : i)}
+                        class="w-8/12 mx-auto flex flex-col bg-neutral-100 p-4 mb-2 rounded-xl">
+                        <div class="flex flex-row mx-4">
+                            {#if log.type == LogType.Fill}
+                                <div class="mr-4">
+                                    {log.name} filled prescription for {log.patient}
+                                </div>
+                            {:else if log.type == LogType.LogLog}
+                                <div class="mr-4">
+                                    {log.name} logged {log.action == Log.In
+                                        ? "in"
+                                        : "out"}
+                                </div>
+                            {:else if log.type == LogType.Purchase}
+                                <div class="mr-4">
+                                    {log.quantity}x {log.name} purchased for ${log.totalPrice}
+                                </div>
+                            {:else if log.type == LogType.Inventory}
+                                <div class="mr-4">
+                                    {log.quantity}x {log.name}
+                                    {log.action == InventoryAction.In
+                                        ? "entered"
+                                        : "left"} inventory
+                                </div>
                             {/if}
-                        </button>
-                    {/if}
+                            <div class="text-right grow">
+                                {log.time.toLocaleString("en-US")}
+                            </div>
+                        </div>
+                        {#if selected !== null && selected == i}
+                            {#if log.type == LogType.Fill}
+                                <div class="flex flex-row">
+                                    <div class="mx-4 my-2 grow">
+                                        <h5>Employee ID</h5>
+                                        <p>{log.userID}</p>
+                                    </div>
+                                    <div class="mx-4 my-2 grow">
+                                        <h5>Prescription ID</h5>
+                                        <p>{log.prescriptionID}</p>
+                                    </div>
+                                    <div class="mx-4 my-2 grow">
+                                        <h5>Patient ID</h5>
+                                        <p>{log.patientID}</p>
+                                    </div>
+                                </div>
+                            {:else if log.type == LogType.LogLog}
+                                <div class="flex flex-row">
+                                    <div class="mx-4 my-2 grow">
+                                        <h5>Employee ID</h5>
+                                        <p>{log.userID}</p>
+                                    </div>
+                                </div>
+                            {:else if log.type == LogType.Purchase}
+                                <div class="flex flex-row">
+                                    <div class="mx-4 my-2 grow">
+                                        <h5>Item ID</h5>
+                                        <p>{log.itemID}</p>
+                                    </div>
+                                    <div class="mx-4 my-2 grow">
+                                        <h5>Cart ID</h5>
+                                        <p>{log.cartID}</p>
+                                    </div>
+                                </div>
+                            {:else if log.type == LogType.Inventory}
+                                <div class="flex flex-row">
+                                    <div class="mx-4 my-2 grow">
+                                        <h5>Product ID</h5>
+                                        <p>{log.productID}</p>
+                                    </div>
+                                </div>
+                            {/if}
+                        {/if}
+                    </button>
                 </li>
             {/each}
         </ul>
