@@ -9,6 +9,7 @@
 </script>
 
 <main class="container mx-auto px-4" in:fade={{delay: 400}} out:fade>
+    <h2 class="m-4 text-center text-3xl font-bold">Prescriptions</h2>
     {#each data.prescriptions as prescription}
         <form method="POST" action="?/fill">
             <div
@@ -44,4 +45,7 @@
             </div>
         </form>
     {/each}
+    {#if data.prescriptions.length == 0}
+        <p class="text-center">No unfilled prescriptions remaining</p>
+    {/if}
 </main>

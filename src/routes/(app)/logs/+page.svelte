@@ -9,7 +9,7 @@
 </script>
 
 <main class="container mx-auto px-4 py-4" in:fade={{delay: 400}} out:fade>
-    <h3 class="text-2xl text-center">Logs</h3>
+    <h2 class="text-3xl text-center font-bold">Logs</h2>
     <div class="flex mx-auto my-2 w-60 justify-center py-2 rounded-xl bg-white">
         <form bind:this={form} action="/logs">
             <label for="type">Log type:</label>
@@ -107,5 +107,8 @@
                 </li>
             {/each}
         </ul>
+        {#if data.logs.length == 0}
+            <p class="text-center">No logs of this type available</p>
+        {/if}
     </div>
 </main>
