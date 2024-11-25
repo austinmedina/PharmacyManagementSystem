@@ -2,6 +2,7 @@
 <script lang="ts">
     import type {CartEntry} from "$lib/types";
     import Icon from "@iconify/svelte";
+    import {createEventDispatcher} from "svelte";
     import {slide} from "svelte/transition";
 
     export let inventory: CartEntry[] | undefined;
@@ -9,6 +10,7 @@
     let showNotification = false;
     let expired = [];
     let lowStock = [];
+    const dispatchProfile = createEventDispatcher();
 
     if (inventory != undefined) {
         for (let i = 0; i < inventory.length; i++) {
@@ -20,6 +22,10 @@
             }
         }
     }
+
+    const handleProfileClick = () => {
+        dispatchProfile("profileSelected");
+    };
 </script>
 
 <nav class="flex justify-between p-8 mt-6 bg-white shadow-2xl" transition:slide>
@@ -104,11 +110,11 @@
         {#if showMenu}
             <div
                 transition:slide
-                class="absolute top-24 right-0 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
+                class="absolute top-24 right-0 w-48 py-2 mt-2 bg-white rounded-md shadow-xl z-[3]">
                 <a
                     href="/profile"
                     class="block px-4 py-2 text-gray-800 hover:bg-blue-400 hover:text-white"
-                    >Profile</a>
+                    on:click={handleProfileClick}>Profile</a>
                 <form
                     method="post"
                     action="/logout?/logout"

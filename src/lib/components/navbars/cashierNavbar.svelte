@@ -3,6 +3,12 @@
 <script>
     let showMenu = false;
     import Icon from "@iconify/svelte";
+    import {createEventDispatcher} from "svelte";
+    const dispatchProfile = createEventDispatcher();
+
+    const handleProfileClick = () => {
+        dispatchProfile("profileSelected");
+    };
     import {slide} from "svelte/transition";
 </script>
 
@@ -43,11 +49,11 @@
         {#if showMenu}
             <div
                 transition:slide
-                class="absolute right-0 w-48 py-2 mt-2 bg-white rounded-md shadow-xl">
+                class="absolute right-0 w-48 py-2 mt-2 bg-white rounded-md shadow-xl z-[3]">
                 <a
                     href="/profile"
                     class="block px-4 py-2 text-gray-800 hover:bg-blue-400 hover:text-white"
-                    >Profile</a>
+                    on:click={handleProfileClick}>Profile</a>
                 <form
                     method="post"
                     action="/logout?/logout"

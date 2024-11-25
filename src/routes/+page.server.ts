@@ -134,15 +134,8 @@ export const actions: Actions = {
 
         if (existingUser.is_first_login) {
             redirect(302, "/profile");
-        } else if (existingUser.type === UserType.Manager) {
-            redirect(302, "/createUser");
-        } else if (
-            existingUser.type === UserType.Cashier ||
-            existingUser.type === UserType.Technician
-        ) {
-            redirect(302, "/checkout");
-        } else if (existingUser.type === UserType.Pharmacist) {
-            redirect(302, "/inventory");
+        } else {
+            redirect(302, "/home");
         }
     }
 };
