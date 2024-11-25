@@ -1,4 +1,12 @@
 -- Migration number: 0001      2024-10-13T01:57:01.070Z
+DROP TABLE IF EXISTS fill_log;
+DROP TABLE IF EXISTS inventory_log;
+DROP TABLE IF EXISTS purchase_log;
+DROP TABLE IF EXISTS logloglog;
+DROP TABLE IF EXISTS inventory;
+DROP TABLE IF EXISTS prescriptions;
+DROP TABLE IF EXISTS patients;
+DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS session;
 

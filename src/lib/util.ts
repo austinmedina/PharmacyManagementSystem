@@ -554,6 +554,22 @@ export async function loadFillLogs(db: D1Database): Promise<
     });
 }
 
+export async function logLogLogLog(
+    db: D1Database,
+    time: string,
+    username: string,
+    action: number
+) {
+    await db
+        .prepare(
+            `INSERT INTO logloglog
+        (time, userID, action)
+        VALUES (?, ?, ?)`
+        )
+        .bind(time, username, action)
+        .run();
+}
+
 export async function logPurchase(
     db: D1Database,
     time: string,

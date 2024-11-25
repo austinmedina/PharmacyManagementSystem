@@ -1,9 +1,16 @@
 import {redirect} from "@sveltejs/kit";
 import type {Actions} from "./$types";
+import {logLogLogLog} from "$lib/util";
 
 export const actions: Actions = {
     logout: async (event) => {
+        const date = new Date().toISOString();
+        const userID = String(event.locals.user?.id);
+
         if (event.locals.session?.id) {
+            // Log the logout
+            await logLogLogLog(event.locals.db, date, userID, 1);
+
             await event.locals.lucia.invalidateSession(event.locals.session.id);
 
             event.locals.session = null;

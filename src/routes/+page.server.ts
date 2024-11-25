@@ -1,7 +1,7 @@
 import type {D1Database} from "@cloudflare/workers-types";
 import {fail, redirect, error} from "@sveltejs/kit";
 import {Argon2id} from "$lib/server/Argon2id.min";
-import {loadUser_by_username} from "$lib/util";
+import {loadUser_by_username, logLogLogLog} from "$lib/util";
 
 import type {Actions, PageServerLoad, RequestEvent} from "./$types";
 import {UserType, type User} from "$lib/types";
@@ -47,6 +47,7 @@ export const actions: Actions = {
         const username = formData.get("username") as string;
         const password = formData.get("password") as string;
         let existingUser;
+        const date = new Date().toISOString();
 
         try {
             if (!event.platform?.env.DB) {
@@ -131,6 +132,9 @@ export const actions: Actions = {
             path: ".",
             ...sessionCookie.attributes
         });
+
+        // Log the login
+        await logLogLogLog(event.locals.db, date, existingUser.id, 0);
 
         if (existingUser.is_first_login) {
             redirect(302, "/profile");
