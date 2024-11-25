@@ -83,7 +83,7 @@ export type Prescription = {
 export type InventoryEntry = {
     id: InventoryID;
     productID: ProductID;
-    expirationDate: Date;
+    expiration: Date;
     quantity: number;
 };
 

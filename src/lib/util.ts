@@ -199,7 +199,10 @@ export async function findInventory(
             )
             .bind(p)
             .all<types.InventoryEntry>()
-    ).results;
+    ).results.map((item) => {
+        item.expiration = new Date(item.expiration);
+        return item;
+    });
 }
 
 export async function getAllInventory(db: D1Database) {
@@ -269,7 +272,8 @@ export async function removeInventory(
 export async function removeInventoryStatements(
     db: D1Database,
     product: types.ProductID,
-    quantity: number
+    quantity: number,
+    expiresAfter: Date | null = null
 ): Promise<D1PreparedStatement[]> {
     // List of inventory we have for the product, already sorted by expiration date
     const inventory = await findInventory(db, product);
@@ -279,12 +283,14 @@ export async function removeInventoryStatements(
 
     // Figuring out which/how many of our inventory batches we need to fill the order
     for (const i of inventory) {
-        if (i.quantity >= needed_quantity) {
-            used_inventory.push({item: i, amount: needed_quantity});
-            break;
-        } else {
-            used_inventory.push({item: i, amount: i.quantity});
-            needed_quantity -= i.quantity;
+        if (expiresAfter == null || expiresAfter > i.expiration) {
+            if (i.quantity >= needed_quantity) {
+                used_inventory.push({item: i, amount: needed_quantity});
+                break;
+            } else {
+                used_inventory.push({item: i, amount: i.quantity});
+                needed_quantity -= i.quantity;
+            }
         }
     }
 
@@ -339,7 +345,12 @@ export async function fillPrescription(
             .bind(new Date().toISOString(), p.id, user)
     ];
     statements.concat(
-        await removeInventoryStatements(db, p.product.id, p.quantity)
+        await removeInventoryStatements(
+            db,
+            p.product.id,
+            p.quantity,
+            new Date()
+        )
     );
     return await db.batch(statements);
 }
