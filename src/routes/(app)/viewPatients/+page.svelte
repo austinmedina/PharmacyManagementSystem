@@ -63,9 +63,9 @@
     in:fade={{delay: 400}}
     out:fade>
     <div id="pageHeader">
-        <h1 class="text-4xl my-4"><strong>View Patients</strong></h1>
+        <h1 class="text-4xl my-4 text-white"><strong>View Patients</strong></h1>
         <button
-            class="mb-6 rounded-xl bg-green-600 hover:bg-green-700 border-2 border-green-800 text-white py-1 px-4 text-xl"
+            class="mb-6 rounded-xl bg-green-600 hover:bg-green-700 text-white py-1 px-4 text-xl"
             on:click|preventDefault={() => (formDisplayed = !formDisplayed)}>
             {formDisplayed ? "Return to Patient List" : "Create New Patient"}
         </button>
@@ -83,7 +83,7 @@
         <div id="allPatientSearch">
             <input
                 type="text"
-                class="w-full border-2 border-neutral-400 rounded-lg px-2 py-1"
+                class="w-3/4 border-2 border-neutral-400 rounded-3xl px-2 py-1"
                 placeholder="Search By Paitent Name"
                 autocomplete="off"
                 bind:value={inputValue} />
@@ -108,20 +108,27 @@
 
     <div
         id="newPatient"
-        class="w-full max-w-2xl text-center flex flex-col gap-2 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed
+        class="w-8/12 text-center flex flex-col gap-2 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed
             ? 'visible'
             : 'hidden'}">
         {#if form?.errors && form?.errors.formKey == "createPatient"}
             <p class="error text-red-500 mt-2">Please Fix The Errors Below:</p>
         {/if}
-        <form method="POST" class="flex flex-col items-center gap-2">
+        <form method="POST" class="flex flex-col items-center gap-4">
             <div class="flex flex-wrap w-full gap-y-4 gap-x-4">
                 <div
-                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
-                    <label for="fname" class="text-left text-md font-bold"
+                    class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
+                    <label
+                        for="fname"
+                        class="text-left text-md font-bold mt-2 mb-1 mx-4"
                         >First Name</label>
+                    {#if form?.errors?.firstName && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.firstName}
+                        </p>
+                    {/if}
                     <input
-                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        class="border-2 border-neutral-400 rounded-xl mx-4 mb-2 px-2 py-1"
                         id="fname"
                         name="firstName"
                         placeholder="Enter First Name"
@@ -129,18 +136,20 @@
                         type="text"
                         bind:value={firstName}
                         required />
-                    {#if form?.errors?.firstName && form?.errors.formKey == "createPatient"}
-                        <p class="text-red-500 text-sm">
-                            {form.errors.firstName}
-                        </p>
-                    {/if}
                 </div>
                 <div
-                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
-                    <label for="lname" class="text-left text-md font-bold"
+                    class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
+                    <label
+                        for="lname"
+                        class="text-left text-md font-bold mt-2 mb-1 mx-4"
                         >Last Name</label>
+                    {#if form?.errors?.lastName && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.lastName}
+                        </p>
+                    {/if}
                     <input
-                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        class="border-2 border-neutral-400 rounded-xl mx-4 mb-2 px-2 py-1"
                         id="lname"
                         name="lastName"
                         placeholder="Enter Last Name"
@@ -148,18 +157,20 @@
                         type="text"
                         bind:value={lastName}
                         required />
-                    {#if form?.errors?.lastName && form?.errors.formKey == "createPatient"}
-                        <p class="text-red-500 text-sm">
-                            {form.errors.lastName}
-                        </p>
-                    {/if}
                 </div>
                 <div
-                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
-                    <label for="dob" class="text-left text-md font-bold"
+                    class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
+                    <label
+                        for="dob"
+                        class="text-left text-md font-bold mt-2 mb-1 mx-4"
                         >Date of Birth</label>
+                    {#if form?.errors?.dateOfBirth && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.dateOfBirth}
+                        </p>
+                    {/if}
                     <input
-                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        class="border-2 border-neutral-400 rounded-xl mx-4 mb-2 px-2 py-1"
                         id="dob"
                         name="dateOfBirth"
                         placeholder="Select Date of Birth"
@@ -167,18 +178,18 @@
                         type="date"
                         bind:value={dateOfBirth}
                         required />
-                    {#if form?.errors?.dateOfBirth && form?.errors.formKey == "createPatient"}
-                        <p class="text-red-500 text-sm">
-                            {form.errors.dateOfBirth}
-                        </p>
-                    {/if}
                 </div>
                 <div
-                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
-                    <label for="email" class="text-left text-md font-bold"
+                    class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
+                    <label
+                        for="email"
+                        class="text-left text-md font-bold mt-2 mb-1 mx-4"
                         >Email</label>
+                    {#if form?.errors?.email && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">{form.errors.email}</p>
+                    {/if}
                     <input
-                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        class="border-2 border-neutral-400 rounded-xl mx-4 mb-2 px-2 py-1"
                         id="email"
                         name="email"
                         placeholder="Enter Email Address"
@@ -186,16 +197,18 @@
                         type="email"
                         bind:value={email}
                         required />
-                    {#if form?.errors?.email && form?.errors.formKey == "createPatient"}
-                        <p class="text-red-500 text-sm">{form.errors.email}</p>
-                    {/if}
                 </div>
                 <div
-                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
-                    <label for="phone" class="text-left text-md font-bold"
+                    class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
+                    <label
+                        for="phone"
+                        class="text-left text-md font-bold mt-2 mb-1 mx-4"
                         >Phone</label>
+                    {#if form?.errors?.phone && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">{form.errors.phone}</p>
+                    {/if}
                     <input
-                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        class="border-2 border-neutral-400 rounded-xl mx-4 mb-2 px-2 py-1"
                         id="phone"
                         name="phone"
                         placeholder="Enter Phone Number"
@@ -203,16 +216,20 @@
                         type="tel"
                         bind:value={phone}
                         required />
-                    {#if form?.errors?.phone && form?.errors.formKey == "createPatient"}
-                        <p class="text-red-500 text-sm">{form.errors.phone}</p>
-                    {/if}
                 </div>
                 <div
-                    class="flex flex-col mb-2 w-[calc(50%-8px)] bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
-                    <label for="address" class="text-left text-md font-bold"
+                    class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
+                    <label
+                        for="address"
+                        class="text-left text-md font-bold mt-2 mb-1 mx-4"
                         >Address</label>
+                    {#if form?.errors?.address && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.address}
+                        </p>
+                    {/if}
                     <input
-                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full mt-2"
+                        class="border-2 border-neutral-400 rounded-xl mx-4 mb-2 px-2 py-1"
                         id="address"
                         name="address"
                         placeholder="Enter Address"
@@ -220,33 +237,30 @@
                         type="text"
                         bind:value={address}
                         required />
-                    {#if form?.errors?.address && form?.errors.formKey == "createPatient"}
-                        <p class="text-red-500 text-sm">
-                            {form.errors.address}
-                        </p>
-                    {/if}
                 </div>
             </div>
             <div
-                class="flex mb-2 bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl gap-3 items-center">
-                <label for="insurance" class="text-left text-md font-bold"
-                    >Insurance</label>
-                <input
-                    class="border-2 border-neutral-400 rounded-lg px-2 py-1"
-                    id="insurance"
-                    name="insurance"
-                    type="checkbox"
-                    bind:checked={insurance} />
-
-                {#if form?.errors?.insurance && form?.errors.formKey == "createPatient"}
-                    <p class="text-red-500 text-sm">{form.errors.insurance}</p>
-                {/if}
+                class="flex mb-2 bg-cyan-50 p-2 rounded-3xl items-center justify-between">
+                <label for="insurance" class="text-md font-bold ml-4 mr-2">
+                    Insurance
+                </label>
+                <div class="flex flex-col items-end">
+                    {#if form?.errors?.insurance && form?.errors.formKey == "createPatient"}
+                        <p class="text-red-500 text-sm">
+                            {form.errors.insurance}
+                        </p>
+                    {/if}
+                    <input
+                        class="border-2 border-neutral-400 rounded-lg px-2 py-1 mr-4"
+                        id="insurance"
+                        name="insurance"
+                        type="checkbox"
+                        bind:checked={insurance} />
+                </div>
             </div>
             <button
-                type="submit"
-                class=" w-1/2 bg-green-600 hover:bg-green-700 border-2 border-green-800 rounded-xl px-4 py-2 text-white">
-                Submit
-            </button>
+                class=" w-4/12 bg-green-600 hover:bg-green-700 rounded-xl px-4 py-2 text-white"
+                type="submit">Submit</button>
         </form>
     </div>
 </main>

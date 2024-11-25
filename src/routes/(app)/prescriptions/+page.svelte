@@ -129,9 +129,11 @@
     in:fade={{delay: 400}}
     out:fade>
     <div id="pageHeader">
-        <h1 class="text-4xl my-4"><strong>View Prescriptions</strong></h1>
+        <h1 class="text-4xl text-white my-4">
+            <strong>View Prescriptions</strong>
+        </h1>
         <button
-            class="mb-6 rounded-xl bg-green-600 hover:bg-green-700 border-2 border-green-800 text-white py-1 px-4 text-xl"
+            class="mb-6 rounded-xl bg-green-600 hover:bg-green-700 text-white py-1 px-4 text-xl"
             on:click|preventDefault={() => (formDisplayed = !formDisplayed)}>
             {formDisplayed
                 ? "Return to Prescription List"
@@ -151,26 +153,25 @@
         <div id="allPrescriptionSearch">
             <input
                 type="text"
-                class="w-full border-2 border-neutral-400 rounded-lg px-2 py-1"
+                class="w-3/4 border-2 border-neutral-400 rounded-3xl px-2 py-1"
                 placeholder="Search By Patient Name"
                 autocomplete="off"
                 bind:value={inputValue} />
         </div>
         <div
             id="prescriptionDisplay"
-            class="flex flex-col items-center gap-2 mb-2 w-full overflow-y-auto scroll flex-grow max-h-[calc(80vh)]">
+            class="flex flex-col items-center gap-4 mb-2 w-full overflow-y-auto scroll flex-grow max-h-[calc(80vh)]">
             {#if Object.keys(displayed).length > 0}
-                <ul class="p-4 space-y-1 w-full">
+                <ul class="p-4 space-y-4 w-full">
                     {#each Object.entries(displayed) as [_key, value]}
-                        <div
-                            class="bg-neutral-200 border-2 border-neutral-400 p-4 rounded-3xl space-y-2">
+                        <div class="bg-cyan-50 p-4 rounded-3xl space-y-2">
                             <h2 class="text-xl font-semibold">
                                 {value[0].patient.firstName +
                                     " " +
                                     value[0].patient.lastName}
                             </h2>
-                            <hr />
                             {#each value as prescription}
+                                <hr />
                                 <div>
                                     <div
                                         class="flex justify-between items-center">
@@ -242,7 +243,7 @@
     </div>
     <div
         id="newPrescription"
-        class="w-full max-w-md text-center flex flex-col gap-4 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed
+        class="w-full max-w-lg text-center flex flex-col gap-4 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed
             ? 'visible'
             : 'hidden'}">
         {#if form?.errors && form?.errors.formKey == "createPrescription"}
@@ -250,15 +251,14 @@
         {/if}
 
         <form method="POST" class="flex flex-col text-left items-center gap-4">
-            <div
-                class="w-full bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+            <div class="w-full bg-cyan-50 p-2 rounded-3xl">
                 {#if form?.errors?.patientID && form?.errors.formKey == "createPrescription"}
                     <p class="error text-red-500 mt-2">
                         {form?.errors.patientID}
                     </p>
                 {/if}
 
-                <label for="patient" class="text-left text-md font-bold"
+                <label for="patient" class="text-left text-md mx-2 font-bold"
                     >Patient</label>
                 <SearchableInput
                     items={serverPatients.map((patient) => {
@@ -271,14 +271,13 @@
                     placeholder="Search Person By Name"
                     name="patient" />
             </div>
-            <div
-                class="w-full bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+            <div class="w-full bg-cyan-50 p-2 rounded-3xl">
                 {#if form?.errors?.productID && form?.errors.formKey == "createPrescription"}
                     <p class="error text-red-500 mt-2">
                         {form.errors.productID}
                     </p>
                 {/if}
-                <label for="product" class="text-left text-md font-bold"
+                <label for="product" class="text-left text-md mx-2 font-bold"
                     >Product</label>
                 <SearchableInput
                     items={serverProducts}
@@ -289,14 +288,13 @@
                 <p class="error text-red-500 mt-2">{form.errors.quantity}</p>
             {/if}
             <div class="w-full">
-                <div
-                    class="flex flex-col mb-4 bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
+                <div class="flex flex-col mb-4 bg-cyan-50 p-2 rounded-3xl">
                     <label
                         for="quantity"
-                        class="text-left text-md font-bold mb-2"
+                        class="text-left text-md font-bold mb-2 mx-2"
                         >Number of Pills</label>
                     <input
-                        class="border-2 border-neutral-400 rounded-xl px-2 py-1"
+                        class="border-2 border-neutral-400 rounded-xl px-2 py-1 mx-2"
                         id="quantity"
                         name="quantity"
                         autocomplete="off"
@@ -308,12 +306,13 @@
                 {#if form?.errors?.period && form?.errors.formKey == "createPrescription"}
                     <p class="error text-red-500 mb-2">{form.errors.period}</p>
                 {/if}
-                <div
-                    class="flex flex-col mb-4 bg-neutral-200 border-2 border-neutral-400 p-2 rounded-3xl">
-                    <label for="period" class="text-left text-md font-bold mb-2"
+                <div class="flex flex-col mb-4 bg-cyan-50 p-2 rounded-3xl">
+                    <label
+                        for="period"
+                        class="text-left text-md font-bold mb-2 mx-2"
                         >Prescription Period (# of Weeks)</label>
                     <input
-                        class="border-2 border-neutral-400 rounded-xl px-2 py-1"
+                        class="border-2 border-neutral-400 rounded-xl px-2 py-1 mx-2"
                         id="period"
                         name="period"
                         autocomplete="off"
@@ -323,9 +322,9 @@
                 </div>
             </div>
 
-            <div class=" w-3/4">
+            <div class="gap-4 w-3/4">
                 <button
-                    class="w-full bg-green-600 hover:bg-green-700 border-2 border-green-800 rounded-xl px-4 py-2 text-white"
+                    class="w-full bg-green-600 hover:bg-green-700 rounded-xl px-4 py-2 text-white"
                     type="submit">Submit</button>
             </div>
         </form>

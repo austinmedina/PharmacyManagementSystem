@@ -23,9 +23,9 @@
     $: displayed = search(items, inputValue);
 </script>
 
-<div id="search" class="w-full">
+<div id="search" class="w-full mr-2 mb-2 px-2">
     <input
-        class="w-full max-w-lg border-2 border-neutral-400 rounded-xl px-2 py-1 mt-2"
+        class="w-full border-2 border-neutral-400 rounded-xl px-2 py-1"
         {placeholder}
         autocomplete="off"
         bind:value={inputValue}

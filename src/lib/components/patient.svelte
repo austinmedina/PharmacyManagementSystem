@@ -129,8 +129,7 @@
     }
 </script>
 
-<div
-    class="flex-col bg-neutral-200 border-2 border-neutral-400 p-4 rounded-3xl">
+<div class="flex-col bg-cyan-50 p-4 rounded-3xl">
     <form method="POST" bind:this={editFormRef}>
         <div
             id="patientHeader"
@@ -160,13 +159,13 @@
                     name="firstName"
                     type="text"
                     bind:value={firstName}
-                    class={`text-left flex-1 inline-block bg-neutral-200 ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`} />
+                    class={`text-left flex-1 inline-block bg-cyan-50 ${edit ? "border border-neutral-400 rounded-xl px-2 py-1 m-1" : "border-none"}`} />
                 <input
                     id="lastName"
                     name="lastName"
                     type="text"
                     bind:value={lastName}
-                    class={`text-left flex-1 inline-block bg-neutral-200 ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`} />
+                    class={`text-left flex-1 inline-block bg-cyan-50 ${edit ? "border border-neutral-400 rounded-xl px-2 py-1 m-1" : "border-none"}`} />
             {/if}
         </div>
         {#if expanded}
@@ -190,7 +189,7 @@
                             name="dateOfBirth"
                             type="date"
                             bind:value={dateOfBirth}
-                            class={`text-left flex-1 bg-neutral-200 ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                            class={`text-left flex-1 bg-cyan-50 ${edit ? "border border-neutral-400 rounded-xl px-2 py-1 m-1" : "border-none"}`}
                             disabled={!edit} />
                     </p>
                     <div class="inline-block text-right space-x-2">
@@ -232,7 +231,7 @@
                         type="email"
                         bind:value={email}
                         use:resizeInputOnDynamicContent
-                        class={`text-left flex-1 bg-neutral-200 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                        class={`text-left flex-1 bg-cyan-50 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-neutral-400 rounded-xl px-2 py-1 m-1" : "border-none"}`}
                         disabled={!edit} />
                 </p>
                 <p>
@@ -246,7 +245,7 @@
                         type="tel"
                         bind:value={phone}
                         use:resizeInputOnDynamicContent
-                        class={`text-left flex-1 bg-neutral-200 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                        class={`text-left flex-1 bg-cyan-50 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-neutral-400 rounded-xl px-2 py-1 m-1" : "border-none"}`}
                         disabled={!edit} />
                 </p>
                 <p>
@@ -262,7 +261,7 @@
                         type="text"
                         bind:value={address}
                         use:resizeInputOnDynamicContent
-                        class={`text-left flex-1 bg-neutral-200 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                        class={`text-left flex-1 bg-cyan-50 max-w-full overflow-hidden whitespace-normal ${edit ? "border border-neutral-400 rounded-xl px-2 py-1 m-1" : "border-none"}`}
                         disabled={!edit} />
                 </p>
                 <p>
@@ -277,7 +276,7 @@
                         name="insurance"
                         type="checkbox"
                         bind:checked={insurance}
-                        class={`text-left flex-1 bg-neutral-200 ${edit ? "border border-black rounded-xl p-1 m-1" : "border-none"}`}
+                        class={`text-left flex-1 bg-cyan-50 ${edit ? "border border-neutral-400 rounded-xl px-2 py-1 m-1" : "border-none"}`}
                         disabled={!edit} />
                 </p>
             </div>
