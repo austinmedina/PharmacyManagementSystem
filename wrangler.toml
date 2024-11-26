@@ -7,6 +7,7 @@ compatibility_date = "2024-09-09"
 binding = "DB"
 database_name = "dev-legacy-pharmacy"
 database_id = "a4bc7bce-7050-432c-8509-e6db5be67fec"
+preview_database_id = "eefc6bd8-d156-46ef-8660-8deeafe7c508"
 migrations_dir = "src/lib/server/migrations"
 
 # Automatically place your workloads in an optimal location to minimize latency.
