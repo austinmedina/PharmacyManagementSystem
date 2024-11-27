@@ -12,57 +12,81 @@
 <main
     in:fade={{delay: 400}}
     out:fade
-    class="flex flex-col mx-auto w-1/2 border-2 border-green-500 rounded-lg px-2 py-1">
-    <h1 class="text-center text-4xl my-8">Create an Account</h1>
-
-    <form method="post" action="/createUser" class="flex flex-col gap-4 mb-8">
-        <div class="flex justify-evenly items-center gap-4">
-            <div class="flex flex-col">
-                <label for="firstName" class="text-lg">First Name</label>
+    class="flex flex-col mx-auto w-full max-w-2xl bg-gradient-to-br from-blue-400 to-purple-700 shadow-xl rounded-lg border border-black p-6 mt-10">
+    <h1 class="text-center text-4xl font-bold text-white my-6">
+        Create Account
+    </h1>
+    <!-- Form that manager fills out to create a new user -->
+    <form
+        method="post"
+        action="/createUser"
+        class="flex flex-col gap-6 bg-white p-8 rounded-lg shadow-md">
+        <!-- First and Last Name Boxes -->
+        <div class="flex flex-col md:flex-row justify-between gap-4">
+            <div class="flex-1">
+                <label
+                    for="firstName"
+                    class="block text-sm font-medium text-gray-800 mb-2"
+                    >First Name</label>
                 <input
                     name="firstName"
                     type="text"
                     bind:value={firstName}
-                    class="border-2 border-neutral-500 rounded-lg px-2 py-1"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     required />
             </div>
-            <div class="flex flex-col">
-                <label for="lastName" class="text-lg">Last Name</label>
+            <div class="flex-1">
+                <label
+                    for="lastName"
+                    class="block text-sm font-medium text-gray-800 mb-2"
+                    >Last Name</label>
                 <input
                     name="lastName"
                     type="text"
                     bind:value={lastName}
-                    class="border-2 border-neutral-500 rounded-lg px-2 py-1"
+                    class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     required />
             </div>
         </div>
 
-        <div class="flex flex-col mx-auto w-1/2">
-            <label for="username" class="text-lg">Username</label>
+        <!-- Username Box -->
+        <div class="flex flex-col">
+            <label
+                for="username"
+                class="block text-sm font-medium text-gray-800 mb-2"
+                >Username</label>
             <input
                 name="username"
                 type="text"
                 bind:value={username}
-                class="border-2 border-neutral-500 rounded-lg px-2 py-1"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required />
         </div>
 
-        <div class="flex flex-col mx-auto w-1/2">
-            <label for="password" class="text-lg">Password</label>
+        <!-- Password Box  -->
+        <div class="flex flex-col">
+            <label
+                for="password"
+                class="block text-sm font-medium text-gray-800 mb-2"
+                >Password</label>
             <input
                 name="password"
-                type="text"
+                type="password"
                 bind:value={password}
-                class="border-2 border-neutral-500 rounded-lg px-2 py-1"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required />
         </div>
 
-        <div class="flex flex-col mx-auto w-1/2">
-            <label for="userType" class="text-lg">User Type</label>
+        <!-- User Type Box/dropdown -->
+        <div class="flex flex-col">
+            <label
+                for="userType"
+                class="block text-sm font-medium text-gray-800 mb-2"
+                >User Type</label>
             <select
                 name="userType"
                 bind:value={userType}
-                class="border-2 border-neutral-500 rounded-lg px-2 py-1"
+                class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 required>
                 <option value="" disabled selected>Select User Type</option>
                 <option value="0">Pharmacy Manager</option>
@@ -72,18 +96,23 @@
             </select>
         </div>
 
+        <!-- Submit Button -->
         <div class="flex justify-center mt-4">
             <button
                 type="submit"
-                class="bg-purple-700 hover:text-purple-300 py-2 px-6 text-white text-xl rounded-xl"
-                >Create Account</button>
+                class="bg-gradient-to-r from-purple-700 to-pink-600 hover:from-pink-600 hover:to-purple-700 text-white font-semibold py-2 px-8 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                Create Account
+            </button>
         </div>
 
+        <!-- Feedback Messages, if is a valid account then user is created if not error appears on screen and boxes are emptied -->
         {#if form?.success}
-            <p id="newUser" class="fade-in-out">{form?.message}</p>
+            <p id="newUser" class="text-center text-green-700 mt-4 fade-in-out">
+                {form?.message}
+            </p>
         {:else if form?.error === 1}
-            <p id="errorUser" class="error-message">
-                User creation failed. Please try again. {form?.message}
+            <p id="errorUser" class="text-center text-red-700 mt-4">
+                {form?.message}
             </p>
         {/if}
     </form>

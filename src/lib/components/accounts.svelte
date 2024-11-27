@@ -6,6 +6,7 @@
     export let recoverUser;
 </script>
 
+<!-- This is essentially a row being created for each user in the manage accounts table-->
 <tr>
     {#if user}
         <td class="px-6 py-4 whitespace-nowrap">{user.firstName}</td>

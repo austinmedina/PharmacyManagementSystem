@@ -2,7 +2,7 @@ import {checkAccess, deleteUser} from "$lib/util";
 import type {D1Database} from "@cloudflare/workers-types";
 import type {RequestHandler} from "./$types";
 import {UserType} from "$lib/types";
-
+//Delete user functionality, ensuring user is deleted from db
 export const DELETE: RequestHandler = async ({request, locals}) => {
     checkAccess(locals.user?.type, [UserType.Manager]);
 
@@ -13,7 +13,7 @@ export const DELETE: RequestHandler = async ({request, locals}) => {
         return new Response("User deleted", {status: 200});
     } catch (error) {
         if (error instanceof Error) {
-            console.error(error.message); // Log the error message
+            console.error(error.message);
             return new Response("Failed to delete user: " + error.message, {
                 status: 500
             });
@@ -23,6 +23,7 @@ export const DELETE: RequestHandler = async ({request, locals}) => {
         }
     }
 };
+//Recover user functionality allows them to retry logging in
 export const POST: RequestHandler = async ({request, locals}) => {
     checkAccess(locals.user?.type, [UserType.Manager]);
 
@@ -38,7 +39,7 @@ export const POST: RequestHandler = async ({request, locals}) => {
         return new Response("User recovered", {status: 200});
     } catch (error) {
         if (error instanceof Error) {
-            console.error(error.message); // Log the error message
+            console.error(error.message);
             return new Response("Failed to recover user: " + error.message, {
                 status: 500
             });

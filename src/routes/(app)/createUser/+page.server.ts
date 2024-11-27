@@ -8,13 +8,14 @@ import {UserType} from "$lib/types";
 import {checkAccess} from "$lib/util";
 import type {PageServerLoad} from "./$types";
 
+//Makes sure current user is a manager
 export const load: PageServerLoad = async ({locals}) => {
     checkAccess(locals.user?.type, [UserType.Manager]);
 };
-
+//Checks if inputs are valid
 export const _validateInput = (user: User, password: string) => {
     const errors = [];
-
+    // Checks username for any special character and is between 3 and 31 chars
     if (
         typeof user.username !== "string" ||
         user.username.length < 3 ||
@@ -23,7 +24,7 @@ export const _validateInput = (user: User, password: string) => {
     ) {
         errors.push("Invalid username");
     }
-
+    // Checks if PW is 6 to 255 chars and has 1 capital letter, 1 special char and 1 number
     if (
         typeof password !== "string" ||
         password.length < 6 ||
@@ -34,7 +35,7 @@ export const _validateInput = (user: User, password: string) => {
     ) {
         errors.push("Invalid password");
     }
-
+    // Checks length of names
     if (
         typeof user.firstName !== "string" ||
         user.firstName.length < 1 ||
@@ -58,7 +59,7 @@ export const _validateInput = (user: User, password: string) => {
     }
     return "null";
 };
-
+// Checks if Username already exists
 export async function _checkUsers(
     db: D1Database,
     user_id: string
@@ -89,7 +90,7 @@ export async function _checkUsers(
     }
     return false;
 }
-
+// Converts option of usertype from number to specific type
 export function _getUserTypeFromValue(
     userTypeString: number
 ): UserType | undefined {

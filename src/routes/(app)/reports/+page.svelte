@@ -12,20 +12,20 @@
 
     let startDate = "";
     let endDate = "";
-
+    // Gets name of a product with product ID
     function getProduct(productID: number) {
         const product = products.find((p) => p.id === productID);
         return product ? product.name : "Unknown Product";
     }
-
+    //Changes action from 0/1 to added/removed
     function mapAction(action: number) {
-        return action === 1
+        return action === 0
             ? "Added"
-            : action === 2
+            : action === 1
               ? "Removed"
               : "Unknown Action";
     }
-
+    //Filters data based on if the user decides to specify a date range, this changes the report and the previews
     function updateReports() {
         filteredFinancialReports = financialReports.filter((report) => {
             const reportDate = new Date(report.time);
@@ -43,7 +43,7 @@
             );
         });
     }
-
+    //Creates the excel Reports for each one
     function downloadFinancialReport() {
         const data = filteredFinancialReports.map((report) => ({
             Time: new Date(report.time).toLocaleDateString(),
@@ -81,6 +81,7 @@
 
 <div class="max-w-7xl mx-auto p-4" in:fade={{delay: 400}} out:fade>
     <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+        <!-- Filter by Dates -->
         <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
             Filter Reports by Date
         </h1>
@@ -116,12 +117,12 @@
             </button>
         </div>
     </div>
-
+    <!--Financial Report Preview and download button-->
     <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-4 text-center">
             Financial Report Preview
         </h1>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto max-h-96">
             <table
                 class="table-auto w-full border-collapse border border-gray-300">
                 <thead>
@@ -175,11 +176,12 @@
             </button>
         </div>
     </div>
+    <!-- Inventory Report Preview and download button-->
     <div class="bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">
             Inventory Report Preview
         </h1>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto max-h-96">
             <table
                 class="table-auto w-full border-collapse border border-gray-300">
                 <thead>

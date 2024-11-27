@@ -6,7 +6,7 @@ import {loadUser_by_username, logLogLogLog} from "$lib/util";
 import type {Actions, PageServerLoad, RequestEvent} from "./$types";
 import {type User} from "$lib/types";
 
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 5;
 
 export async function _doesUsernameExist(db: D1Database, username: string) {
     const errors = [];
