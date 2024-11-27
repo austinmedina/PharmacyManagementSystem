@@ -3,6 +3,7 @@ import type {D1Database} from "@cloudflare/workers-types";
 import type {Actions} from "@sveltejs/kit";
 import type {User} from "$lib/types";
 import type {PageServerLoad} from "./$types";
+import {checkAccess} from "$lib/util";
 
 async function loadUser_by_id(
     db: D1Database,
@@ -23,6 +24,7 @@ async function loadUser_by_id(
 }
 
 export const load: PageServerLoad = async ({locals}) => {
+    checkAccess(locals.user?.type);
     const user = await loadUser_by_id(locals.db, locals.user?.id as string);
 
     const firstTimeLogin = user?.is_first_login ?? true;
@@ -34,6 +36,7 @@ export const load: PageServerLoad = async ({locals}) => {
 
 export const actions: Actions = {
     default: async ({request, locals}) => {
+        checkAccess(locals.user?.type);
         const formData = await request.formData();
         const oldPass = formData.get("password") as string;
         const newPass = formData.get("new-password") as string;

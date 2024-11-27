@@ -49,7 +49,7 @@ declare module "lucia" {
 }
 
 //MORE ATTRIBUTES CAN BE ADDED AS NEEDED
-interface DatabaseUserAttributes {
+export interface DatabaseUserAttributes {
     id: UserID;
     username: string;
     firstName: string;

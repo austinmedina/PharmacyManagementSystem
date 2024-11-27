@@ -1,9 +1,10 @@
 import {redirect} from "@sveltejs/kit";
 import type {Actions} from "./$types";
-import {logLogLogLog} from "$lib/util";
+import {checkAccess, logLogLogLog} from "$lib/util";
 
 export const actions: Actions = {
     logout: async (event) => {
+        checkAccess(event.locals.user?.type);
         const date = new Date().toISOString();
         const userID = String(event.locals.user?.id);
 

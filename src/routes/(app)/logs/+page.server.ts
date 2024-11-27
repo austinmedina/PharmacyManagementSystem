@@ -2,6 +2,7 @@ import type {PageServerLoad} from "./$types";
 import {LogType, type LogEntry} from "$lib/types";
 import {redirect} from "@sveltejs/kit";
 import {
+    checkAccess,
     loadFillLogs,
     loadInventoryLogs,
     loadLogLogLogs,
@@ -9,6 +10,7 @@ import {
 } from "$lib/util";
 
 export const load: PageServerLoad = async ({locals, url}) => {
+    checkAccess(locals.user?.type);
     try {
         const type: LogType = parseInt(url.searchParams.get("type") ?? "0");
         let logs: LogEntry[] = [];

@@ -1,10 +1,13 @@
-import {deletePatient, loadPatients} from "$lib/util";
+import {checkAccess, deletePatient, loadPatients} from "$lib/util";
 import type {D1Database} from "@cloudflare/workers-types";
+import type {RequestHandler} from "../user/$types";
+import {UserType} from "$lib/types";
 /* The following two functions are API endpoints that are called by the patient component which is implemented on the viewPatients page.  */
 
 /*This API endpoint allows for any componenet to call it and delete a patient using the common util function deletePatient. 
   It returns a string if deleted */
-export const DELETE = async ({request, locals}) => {
+export const DELETE: RequestHandler = async ({request, locals}) => {
+    checkAccess(locals.user?.type, [UserType.Pharmacist, UserType.Manager]);
     const {patientId} = (await request.json()) as {patientId: number};
 
     try {
@@ -28,7 +31,8 @@ export const DELETE = async ({request, locals}) => {
 
 /*This API endpoint allows for any componenet to call it and fetch an updated list of all patients using the common util function loadPatients. 
   It returns a list of patients and is usually called upon deletion of a patient*/
-export const GET = async ({locals}) => {
+export const GET: RequestHandler = async ({locals}) => {
+    checkAccess(locals.user?.type);
     try {
         const patients = await loadPatients(locals.db as D1Database);
         return new Response(JSON.stringify({patients}), {status: 200});

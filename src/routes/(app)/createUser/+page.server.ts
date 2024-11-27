@@ -5,6 +5,12 @@ import type {D1Database} from "@cloudflare/workers-types";
 import type {Actions} from "@sveltejs/kit";
 import type {User, UserID} from "$lib/types";
 import {UserType} from "$lib/types";
+import {checkAccess} from "$lib/util";
+import type {PageServerLoad} from "./$types";
+
+export const load: PageServerLoad = async ({locals}) => {
+    checkAccess(locals.user?.type, [UserType.Manager]);
+};
 
 export const _validateInput = (user: User, password: string) => {
     const errors = [];
@@ -103,6 +109,8 @@ export function _getUserTypeFromValue(
 
 export const actions: Actions = {
     default: async ({request, locals}) => {
+        checkAccess(locals.user?.type, [UserType.Manager]);
+
         const formData = await request.formData();
         const id: UserID = generateId(15);
         const tempPass = formData.get("password") as string;

@@ -1,8 +1,14 @@
-import type {PageServerLoad} from "./$types";
-import {loadPatients, insertPatient, updatePatient} from "$lib/util";
+import type {PageServerLoad, Actions} from "./$types";
+import {
+    loadPatients,
+    insertPatient,
+    updatePatient,
+    checkAccess
+} from "$lib/util";
 
 //When the broswer loads the viewPatients page this function is called ad returns all patients in the database
 export const load: PageServerLoad = async ({locals}) => {
+    checkAccess(locals.user?.type);
     const patients = await loadPatients(locals.db as D1Database);
     return {
         patients: patients
@@ -13,8 +19,9 @@ export const load: PageServerLoad = async ({locals}) => {
 The function allows for the creation and editting of a patient, 
 which both have the same form inputs in two different spots on the page
 */
-export const actions = {
+export const actions: Actions = {
     default: async ({request, locals}) => {
+        checkAccess(locals.user?.type);
         const data = await request.formData();
         const stringId = data.get("id") as string;
         const firstName = data.get("firstName") as string;

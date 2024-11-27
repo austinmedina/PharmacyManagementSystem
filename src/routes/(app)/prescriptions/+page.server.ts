@@ -1,16 +1,18 @@
 import {fail} from "@sveltejs/kit";
-import type {PageServerLoad} from "./$types";
+import type {PageServerLoad, Actions} from "./$types";
 import {
     loadPrescriptions,
     loadPatients,
     loadProducts,
     insertPrescription,
     checkPatientID,
-    checkProductID
+    checkProductID,
+    checkAccess
 } from "$lib/util";
 
 //On loading of the page in the browser, this function is called and fetches all products, patients, and prescriptions
 export const load: PageServerLoad = async ({locals}) => {
+    checkAccess(locals.user?.type);
     const prescriptions = await loadPrescriptions(locals.db);
     const patients = await loadPatients(locals.db);
     const products = await loadProducts(locals.db);
@@ -23,8 +25,10 @@ export const load: PageServerLoad = async ({locals}) => {
 };
 
 //This function is the default called from and form submitted in the page.svelte. Its only use is to validate form inputs for an new prescriptions
-export const actions = {
+export const actions: Actions = {
     default: async ({request, locals}) => {
+        checkAccess(locals.user?.type);
+
         const data = await request.formData();
         const patientID = parseInt(data.get("patientID") as string);
         const productID = parseInt(data.get("productID") as string);

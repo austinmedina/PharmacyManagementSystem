@@ -1,12 +1,11 @@
 import type {UserType} from "$lib/types";
 import {getAllInventory} from "$lib/util";
+import {error} from "@sveltejs/kit";
 import type {LayoutServerLoad} from "./$types";
 
 export const load: LayoutServerLoad = async ({locals}) => {
-    if (!locals.user) {
-        return {
-            userType: null
-        };
+    if (locals.user == null) {
+        error(401);
     }
 
     const userId = locals.user.id;

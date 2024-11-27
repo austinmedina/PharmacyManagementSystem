@@ -8,7 +8,7 @@ declare global {
         interface Locals {
             db: D1Database;
             lucia: import("$lib/server/auth").Auth;
-            user: import("lucia").User | null;
+            user: import("$lib/server/auth").DatabaseUserAttributes | null;
             session: import("lucia").Session | null;
         }
         interface Platform {

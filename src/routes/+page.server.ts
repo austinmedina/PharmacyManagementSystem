@@ -4,7 +4,7 @@ import {Argon2id} from "$lib/server/Argon2id.min";
 import {loadUser_by_username, logLogLogLog} from "$lib/util";
 
 import type {Actions, PageServerLoad, RequestEvent} from "./$types";
-import {UserType, type User} from "$lib/types";
+import {type User} from "$lib/types";
 
 const MAX_ATTEMPTS = 3;
 

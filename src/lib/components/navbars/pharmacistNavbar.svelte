@@ -48,10 +48,6 @@
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Inventory</a>
         <a
-            href="/reports"
-            class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
-            >Reports</a>
-        <a
             href="/logs"
             class="px-6 py-1 rounded-2xl hover:bg-blue-400 hover:text-white"
             >Logs</a>

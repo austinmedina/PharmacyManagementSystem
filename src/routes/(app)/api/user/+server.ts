@@ -1,7 +1,11 @@
-import {deleteUser} from "$lib/util";
+import {checkAccess, deleteUser} from "$lib/util";
 import type {D1Database} from "@cloudflare/workers-types";
+import type {RequestHandler} from "./$types";
+import {UserType} from "$lib/types";
 
-export const DELETE = async ({request, locals}) => {
+export const DELETE: RequestHandler = async ({request, locals}) => {
+    checkAccess(locals.user?.type, [UserType.Manager]);
+
     const {userId} = (await request.json()) as {userId: number};
 
     try {
@@ -19,7 +23,9 @@ export const DELETE = async ({request, locals}) => {
         }
     }
 };
-export const POST = async ({request, locals}) => {
+export const POST: RequestHandler = async ({request, locals}) => {
+    checkAccess(locals.user?.type, [UserType.Manager]);
+
     const {userId} = (await request.json()) as {userId: number};
 
     try {

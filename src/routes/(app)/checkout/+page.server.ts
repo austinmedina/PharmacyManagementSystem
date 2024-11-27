@@ -1,5 +1,6 @@
-import type {PageServerLoad} from "./$types.js";
+import type {PageServerLoad, Actions} from "./$types";
 import {
+    checkAccess,
     getAllInventory,
     loadPrescriptions,
     logPurchase,
@@ -10,6 +11,8 @@ import {ProductType} from "$lib/types.js";
 import {generateId} from "lucia";
 
 export const load: PageServerLoad = async ({locals}) => {
+    checkAccess(locals.user?.type);
+
     const db = locals.db;
     let inventory = await getAllInventory(db);
     inventory = inventory.filter(
@@ -23,8 +26,10 @@ export const load: PageServerLoad = async ({locals}) => {
     };
 };
 
-export const actions = {
+export const actions: Actions = {
     default: async ({request, locals}) => {
+        checkAccess(locals.user?.type);
+
         const db = locals.db;
         const data = await request.formData();
         const cartData = data.get("cart");
