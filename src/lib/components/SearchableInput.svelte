@@ -1,4 +1,8 @@
 <script lang="ts" generics="T extends Searchable">
+    /*
+    The following code creates a reusable input that reduces the HTML needed in the program.
+    It creats a input box that allows you to search for a given item in the items list fed into the component
+    */
     import type {Searchable} from "$lib/types";
 
     export let items: T[];
@@ -17,13 +21,14 @@
             });
         }
         return displayed;
-        // Function call to the database that returns a list of people names and their ids that will be hidden
+        // Filters the list of items given to the component and sets the displayed items to those matching the search input
     };
 
     $: displayed = search(items, inputValue);
 </script>
 
 <div id="search" class="w-full mr-2 mb-2 px-2">
+    <!-- Displays a search bar, and if the user is clicked on the input, will display the items matching the search -->
     <input
         class="w-full border-2 border-neutral-400 rounded-xl px-2 py-1"
         {placeholder}

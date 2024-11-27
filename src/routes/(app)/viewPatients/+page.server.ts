@@ -1,6 +1,7 @@
 import type {PageServerLoad} from "./$types";
 import {loadPatients, insertPatient, updatePatient} from "$lib/util";
 
+//When the broswer loads the viewPatients page this function is called ad returns all patients in the database
 export const load: PageServerLoad = async ({locals}) => {
     const patients = await loadPatients(locals.db as D1Database);
     return {
@@ -8,6 +9,10 @@ export const load: PageServerLoad = async ({locals}) => {
     };
 };
 
+/*This is the default form submission function. 
+The function allows for the creation and editting of a patient, 
+which both have the same form inputs in two different spots on the page
+*/
 export const actions = {
     default: async ({request, locals}) => {
         const data = await request.formData();
@@ -48,7 +53,7 @@ export const actions = {
             errors.dateOfBirth = "Invalid Date of Birth";
         }
 
-        // Email validation
+        // Email validation, ensuring emails match [characters]@[characters].[at least 2 characters]
         const validEmail =
             /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)*\.[a-zA-Z]{2,}$/;
         if (!email) {
@@ -96,7 +101,7 @@ export const actions = {
             }
         }
 
-        // Phone validation
+        // Phone validation, either 10 digit format, or 3 digits-3 digits-4 digits
         const validPhone = /^(?:\d{10}|\d{3}-\d{3}-\d{4})$/;
         if (!phone) {
             errors.phone = "Missing Phone";
@@ -111,6 +116,7 @@ export const actions = {
             errors.insurance = "Invalid Insurance status";
         }
 
+        //If there are any errors, then it will return those errors
         if (Object.keys(errors).length > 0) {
             if (id) {
                 errors.formKey = "editPatient";
@@ -131,6 +137,7 @@ export const actions = {
                 }
             };
         } else {
+            //put the phone number into a consistent format without dashes
             const phoneFormat = /^\d{3}-\d{3}-\d{4}$/;
             let updatedPhone = phone;
             if (phoneFormat.test(phone)) {
@@ -139,6 +146,7 @@ export const actions = {
                     phone.substring(4, 7) +
                     phone.substring(8);
             }
+            //If there is an id, the patient already exists and just needs to be edited
             if (id) {
                 await updatePatient(locals.db as D1Database, {
                     firstName,
@@ -151,15 +159,11 @@ export const actions = {
                     id
                 });
 
-                const _updatedPatient = await locals.db
-                    .prepare("SELECT * FROM patients WHERE id = ?")
-                    .bind(id)
-                    .first(); //will this get used?
-
                 return {
                     success: `${firstName} ${lastName} successfully updated!`,
                     formKey: "editPatient"
                 };
+                //If there is no id, they dont exist and need to be inserted
             } else {
                 await insertPatient(locals.db as D1Database, {
                     firstName,

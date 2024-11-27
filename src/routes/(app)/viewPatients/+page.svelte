@@ -11,6 +11,9 @@
     let displayed: PatientType[]; // Explicitly define the type for displayed
     let inputValue = "";
     let message = form?.success;
+    /*If the key is create patient then the error shows in for the create patient form and that form needs to be displayed, 
+    otherwise display the patient list
+    */
     let formDisplayed =
         form?.errors && form?.errors.formKey == "createPatient" ? true : false;
 
@@ -22,6 +25,7 @@
     let address = form?.values?.address || "";
     let insurance = form?.values?.insurance || false;
 
+    //Make the displayed list only contain those patients that match the user input
     const search = (
         items: PatientType[],
         inputValue: string
@@ -42,6 +46,8 @@
         patients: PatientType[]; // Define the expected shape of the response
     }
 
+    /* Fuction fed into the patient component that calls the delete patient api call when the remove button is clicked
+     */
     const onPatientRemoved = async (patientName: string) => {
         message = `Successfully removed ${patientName}`;
         const response = await fetch("/api/patient", {
@@ -75,11 +81,13 @@
         <p class="success text-green-500 mb-4">{message}</p>
     {/if}
 
+    <!-- View patients page which lists out each patient and their information if expanded -->
     <div
         id="viewPatients"
         class="w-full max-w-xl flex flex-col flex-grow gap-4 {formDisplayed
             ? 'hidden'
             : 'visible'}">
+        <!-- Input for the search bar which allows you to search a patient by name -->
         <div id="allPatientSearch">
             <input
                 type="text"
@@ -88,6 +96,7 @@
                 autocomplete="off"
                 bind:value={inputValue} />
         </div>
+        <!-- Displays all patients matching the inputted search above -->
         <div
             id="patientDisplay"
             class="flex flex-col items-center gap-4 mb-4 w-full overflow-y-auto flex-grow max-h-[calc(70vh-200px)]">
@@ -106,6 +115,7 @@
         </div>
     </div>
 
+    <!-- New patient creation form  -->
     <div
         id="newPatient"
         class="w-8/12 text-center flex flex-col gap-2 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed
@@ -116,6 +126,7 @@
         {/if}
         <form method="POST" class="flex flex-col items-center gap-4">
             <div class="flex flex-wrap w-full gap-y-4 gap-x-4">
+                <!-- First name input -->
                 <div
                     class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
                     <label
@@ -137,6 +148,7 @@
                         bind:value={firstName}
                         required />
                 </div>
+                <!-- Last name input -->
                 <div
                     class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
                     <label
@@ -158,6 +170,7 @@
                         bind:value={lastName}
                         required />
                 </div>
+                <!-- Date of Birth input -->
                 <div
                     class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
                     <label
@@ -179,6 +192,7 @@
                         bind:value={dateOfBirth}
                         required />
                 </div>
+                <!-- Email input -->
                 <div
                     class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
                     <label
@@ -198,6 +212,7 @@
                         bind:value={email}
                         required />
                 </div>
+                <!-- Phone input -->
                 <div
                     class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
                     <label
@@ -217,6 +232,7 @@
                         bind:value={phone}
                         required />
                 </div>
+                <!-- Address input -->
                 <div
                     class="flex flex-col w-[calc(50%-8px)] bg-cyan-50 rounded-3xl">
                     <label

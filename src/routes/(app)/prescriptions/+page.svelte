@@ -12,6 +12,7 @@
     import {fade} from "svelte/transition";
     export let form;
 
+    //This function reformats the prescriptions into a usable dictionary
     export let serverPrescriptions = data.prescriptions.reduce(
         (
             acc: {[key: number]: PrescriptionType[]},
@@ -31,6 +32,7 @@
     let displayed: {[key: number]: PrescriptionType[]} = {}; // Explicitly define the type for displayed
     let inputValue = "";
     let message = form?.success;
+    //Sets the form displayed boolean based on whether there are errors and the error relates to creating a prescription
     let formDisplayed =
         form?.errors && form?.errors.formKey == "createPrescription"
             ? true
@@ -39,6 +41,7 @@
     let numPills: number;
     let period: number;
 
+    //Filters prescriptions based on the prescription name compared to the value inputted by the user
     const search = (
         prescriptions: {[key: number]: PrescriptionType[]},
         inputValue: string
@@ -63,6 +66,11 @@
 
     let expandedPrescriptionIds = new Set<number>();
 
+    /*There is a set, expandedPrescriptionIds which contains the IDs of prescription cards that are expanded. 
+      When you toggle or untoggle a prescription card, its ID is added into the set or removed from it
+      In the HTML there is code that checks if the ID is in the set, and if so displays the expanded information, otherwise only the name of the patient and the name of their prescriptions is displayed
+      We use a set because it uses a key of the set, allowing svelte to reload the page dynamically anytime the set is updated
+    */
     function toggleExpansion(prescriptionId: number) {
         expandedPrescriptionIds = new Set(expandedPrescriptionIds);
         if (expandedPrescriptionIds.has(prescriptionId)) {
@@ -76,6 +84,7 @@
         prescriptions: PrescriptionType[]; // Define the expected shape of the response
     }
 
+    //A function fed into prescription component, which called the remove prescription API, then reloads the prescriptions upon successful removal
     const removePrescription = async (
         prescriptionID: number,
         patientName: string
@@ -121,6 +130,7 @@
         }
     };
 
+    //Constantly calls the search function to ensure the displayed options is updated
     $: displayed = search(serverPrescriptions, inputValue);
 </script>
 
@@ -145,6 +155,7 @@
         <p class="success text-green-500 mb-4">{message}</p>
     {/if}
 
+    <!-- If looking at the patients then display the prescription, otherwise if youve clicked create prescription dont display this page-->
     <div
         id="viewPrescriptions"
         class="w-full max-w-xl flex flex-col flex-grow gap-4 {formDisplayed
@@ -158,6 +169,7 @@
                 autocomplete="off"
                 bind:value={inputValue} />
         </div>
+        <!-- If there are prescriptions in the displayed list then display the patient and their prescriptions -->
         <div
             id="prescriptionDisplay"
             class="flex flex-col items-center gap-4 mb-2 w-full overflow-y-auto scroll flex-grow max-h-[calc(80vh)]">
@@ -203,6 +215,7 @@
                                             Remove
                                         </button>
                                     </div>
+                                    <!-- If the expanded set has the prescription id, its expanded so this html needs to be displayed to reflect is expanded nature -->
                                     {#if expandedPrescriptionIds.has(prescription.id)}
                                         <div class="text-left ml-4 space-y-1">
                                             <p>
@@ -233,6 +246,7 @@
                         </div>
                     {/each}
                 </ul>
+                <!-- If there is no prescriptions matching a name then display none -->
             {:else}
                 <p
                     class="border-2 border-neutral-400 rounded-lg px-2 py-1 w-full text-center">
@@ -241,6 +255,7 @@
             {/if}
         </div>
     </div>
+    <!-- This is the HTML for the new prescription form. This and the view prescriptions form can never be displayed at the same time -->
     <div
         id="newPrescription"
         class="w-full max-w-lg text-center flex flex-col gap-4 overflow-y-auto scroll flex-grow max-h-[calc(70vh-150px)] {formDisplayed

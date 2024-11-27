@@ -1,6 +1,7 @@
 <!-- The following HTML and TS are a combination of dialog component from https://dev.to/myleftshoe/svelte-dialogs-the-easy-way-e0f 
      and a signature package from https://github.com/captaincodeman/svelte-signature-pad 
-     I (Austin) added in the logic to make these static components function for our need -->
+     I (Austin) added in the logic to make these static components function for our need 
+     The code creatures a signature box upon saying purchase in the checkout page-->
 <script lang="ts">
     import {signature} from "svelte-signature-pad";
     import Icon from "@iconify/svelte";
@@ -24,6 +25,7 @@
     };
 </script>
 
+<!-- Binds the signature form to a variable allowing us to access ts properties throughout the code -->
 <dialog bind:this={signatureForm}>
     <button
         class="absolute top-4 right-4 text-sm text-gray-800"

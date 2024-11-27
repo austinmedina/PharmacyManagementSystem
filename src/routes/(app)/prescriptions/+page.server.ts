@@ -9,6 +9,7 @@ import {
     checkProductID
 } from "$lib/util";
 
+//On loading of the page in the browser, this function is called and fetches all products, patients, and prescriptions
 export const load: PageServerLoad = async ({locals}) => {
     const prescriptions = await loadPrescriptions(locals.db);
     const patients = await loadPatients(locals.db);
@@ -21,6 +22,7 @@ export const load: PageServerLoad = async ({locals}) => {
     };
 };
 
+//This function is the default called from and form submitted in the page.svelte. Its only use is to validate form inputs for an new prescriptions
 export const actions = {
     default: async ({request, locals}) => {
         const data = await request.formData();

@@ -1,5 +1,8 @@
 <script lang="ts">
     import Icon from "@iconify/svelte";
+    /*
+    The following code is the footer that is displayed at the bottom of every page and static
+    */
 </script>
 
 <div

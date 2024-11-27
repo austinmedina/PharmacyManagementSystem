@@ -1,6 +1,9 @@
 import {deletePatient, loadPatients} from "$lib/util";
 import type {D1Database} from "@cloudflare/workers-types";
+/* The following two functions are API endpoints that are called by the patient component which is implemented on the viewPatients page.  */
 
+/*This API endpoint allows for any componenet to call it and delete a patient using the common util function deletePatient. 
+  It returns a string if deleted */
 export const DELETE = async ({request, locals}) => {
     const {patientId} = (await request.json()) as {patientId: number};
 
@@ -23,6 +26,8 @@ export const DELETE = async ({request, locals}) => {
     }
 };
 
+/*This API endpoint allows for any componenet to call it and fetch an updated list of all patients using the common util function loadPatients. 
+  It returns a list of patients and is usually called upon deletion of a patient*/
 export const GET = async ({locals}) => {
     try {
         const patients = await loadPatients(locals.db as D1Database);
