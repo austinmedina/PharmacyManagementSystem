@@ -70,6 +70,10 @@ export async function checkProductID(
     return result !== null && result !== undefined && result.count > 0;
 }
 
+/**
+ * Loads all prescriptions from the db along with associated product and patient.
+ * Has options to specify whether prescription is currently filled or can be filled.
+ */
 export async function loadPrescriptions(
     db: D1Database,
     filled: boolean | undefined = undefined,
@@ -146,6 +150,7 @@ export async function loadPrescriptions(
     });
 }
 
+/** Loads a specific prescription from the db along with associated product and patient */
 export async function getPrescription(
     db: D1Database,
     id: types.PrescriptionID
@@ -262,6 +267,7 @@ export async function addInventory(
         .run();
 }
 
+/** Removes items from inventory and logs the event */
 export async function removeInventory(
     db: D1Database,
     product: types.ProductID,
@@ -270,6 +276,7 @@ export async function removeInventory(
     await db.batch(await removeInventoryStatements(db, product, quantity));
 }
 
+/** Returns the db statments required to remove a specified number of items from inventory and log the event */
 export async function removeInventoryStatements(
     db: D1Database,
     product: types.ProductID,
@@ -329,6 +336,7 @@ export async function removeInventoryStatements(
     return statements;
 }
 
+/** Fills a prescription, logs the event and updates the inventory */
 export async function fillPrescription(
     db: D1Database,
     p: types.Prescription,
@@ -479,6 +487,7 @@ export async function deleteUser(
     await db.prepare("DELETE FROM users WHERE id = ?").bind(userId).run();
 }
 
+/** Loads login/logout logs along with users' first and last name and username */
 export async function loadLogLogLogs(
     db: D1Database
 ): Promise<(types.LogLogLogEntry & {name: string; username: string})[]> {
@@ -495,6 +504,7 @@ export async function loadLogLogLogs(
     });
 }
 
+/** Loads purchase logs, along with product name */
 export async function loadPurchaseLogs(
     db: D1Database
 ): Promise<(types.PurchaseLogEntry & {name: string})[]> {
@@ -511,6 +521,7 @@ export async function loadPurchaseLogs(
     });
 }
 
+/** Loads inventory logs along with product name */
 export async function loadInventoryLogs(
     db: D1Database
 ): Promise<(types.InventoryLogEntry & {name: string})[]> {
@@ -527,6 +538,7 @@ export async function loadInventoryLogs(
     });
 }
 
+/** Loads fill logs along with patient info and user info */
 export async function loadFillLogs(db: D1Database): Promise<
     (types.FillLogEntry & {
         name: string;
@@ -622,6 +634,7 @@ export async function addProduct(
         .run();
 }
 
+/** Verifies that the user of the specified type is allowed to view the current page */
 export function checkAccess(
     u: types.UserType | undefined,
     allowed: types.UserType[] = [

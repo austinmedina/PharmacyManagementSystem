@@ -9,7 +9,6 @@ import {fail} from "@sveltejs/kit";
 import {UserType} from "$lib/types";
 
 export const load: PageServerLoad = async ({locals}) => {
-    console.log(locals.user?.type);
     checkAccess(locals.user?.type, [UserType.Pharmacist]);
     return {
         prescriptions: await loadPrescriptions(locals.db, false, true)

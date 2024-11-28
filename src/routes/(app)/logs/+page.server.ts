@@ -12,8 +12,11 @@ import {
 export const load: PageServerLoad = async ({locals, url}) => {
     checkAccess(locals.user?.type);
     try {
+        // Checking log type
         const type: LogType = parseInt(url.searchParams.get("type") ?? "0");
         let logs: LogEntry[] = [];
+
+        // Loading logs of correct type from db
         if (type == LogType.LogLog) {
             logs = await loadLogLogLogs(locals.db);
         } else if (type == LogType.Purchase) {
