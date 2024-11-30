@@ -36,3 +36,22 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+# Submission Requirements
+
+## File list
+
+We have too many files to list the contents of each individually, but all you need to know is that each path under `src/routes/` is a page of our website. We have some accompanying code under `src/utils`, and a bunch of configuration files and other files required for SvelteKit around as well.
+
+For more information about the file structure, see https://svelte.dev/docs/kit/routing.
+
+## Steps to run the project
+
+Pre-requisites: node,npm,git
+
+```bash
+git clone https://gitlab.com/jath03/dev-legacy-pharmacy
+cd dev-legacy-pharmacy
+npm install
+npm run dev
+```
